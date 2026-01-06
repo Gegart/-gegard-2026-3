@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026: ЭПИЦЕНТР БУДУЩЕГО | Гепард Про</title>
+    <style>
+        /* ==================== СБРОС И БАЗОВЫЕ СТИЛИ ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --neon-red: #ff0055;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0514;
+            --glass-bg: rgba(10, 5, 20, 0.7);
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* ==================== НЕОНОВЫЙ ФОН ==================== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--neon-pink) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--neon-cyan) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, var(--neon-purple) 0%, transparent 20%);
+            opacity: 0.15;
+            z-index: -2;
+        }
+        
+        /* Сканирующие линии */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanlines 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes scanlines {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+        
+        /* ==================== КОНТЕЙНЕР ==================== */
+        .container {
+            max-width: 1100px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple)) 1;
+            position: relative;
+            box-shadow: 
+                0 0 60px rgba(255, 0, 255, 0.4),
+                0 0 120px rgba(0, 255, 255, 0.2);
+        }
+        
+        /* ==================== ГЛИТЧ-ЗАГОЛОВОК ==================== */
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .glitch-text {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            background: linear-gradient(
+                90deg,
+                var(--neon-red),
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-cyan),
+                var(--neon-green),
+                var(--neon-yellow)
+            );
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbowText 6s linear infinite;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .glitch-text::before {
+            animation: glitch 3s infinite linear alternate-reverse;
+            left: 2px;
+            text-shadow: 2px 0 var(--neon-cyan);
+            opacity: 0.8;
+        }
+        
+        .glitch-text::after {
+            animation: glitch 2s infinite linear alternate-reverse;
+            left: -2px;
+            text-shadow: -2px 0 var(--neon-pink);
+            opacity: 0.8;
+        }
+        
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes glitch {
+            0%, 100% { clip-path: inset(0 0 0 0); }
+            10% { clip-path: inset(20% 0 30% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            30% { clip-path: inset(40% 0 20% 0); }
+        }
+        
+        .artist-name {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            color: transparent;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin: 10px 0;
+            animation: shine 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shine {
+            0% { 
+                filter: brightness(1) drop-shadow(0 0 10px var(--neon-cyan));
+            }
+            100% { 
+                filter: brightness(1.5) drop-shadow(0 0 30px var(--neon-pink));
+            }
+        }
+        
+        /* ==================== 3D ОБЛОЖКА ==================== */
+        .cover-section {
+            position: relative;
+            width: min(400px, 90vw);
+            height: min(400px, 90vw);
+            margin: 50px auto;
+            perspective: 1000px;
+        }
+        
+        .cover-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(5deg); }
+            50% { transform: translateY(-20px) rotateX(-5deg) rotateY(-5deg); }
+        }
+        
+        .cover-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 4px solid transparent;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan)) border-box;
+            box-shadow: 
+                0 0 40px rgba(255, 0, 255, 0.5),
+                0 0 80px rgba(0, 255, 255, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cover-glow {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
+            border-radius: 30px;
+            filter: blur(40px);
+            opacity: 0.5;
+            z-index: 1;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+        
+        .badge-premium {
+            position: absolute;
+            top: 30px;
+            right: -15px;
+            background: linear-gradient(45deg, var(--neon-red), var(--neon-pink));
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 3;
+            transform: rotate(15deg);
+            animation: badgeGlow 2s ease-in-out infinite alternate;
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5);
+        }
+        
+        @keyframes badgeGlow {
+            0% { box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5); }
+            100% { box-shadow: 0 15px 50px rgba(255, 0, 85, 0.8); }
+        }
+        
+        /* ==================== КНОПКА СКАЧИВАНИЯ ==================== */
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(
+                90deg,
+                var(--neon-red),
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-cyan),
+                var(--neon-green)
+            );
+            background-size: 400% 100%;
+            color: white;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: bold;
+            padding: 20px 50px;
+            border-radius: 60px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            animation: gradientShift 4s linear infinite;
+            box-shadow: 
+                0 10px 40px rgba(255, 0, 255, 0.4),
+                0 0 30px rgba(0, 255, 255, 0.3);
+            margin: 30px 0;
+            transition: all 0.3s;
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shineOverlay 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes shineOverlay {
+            0% { left: -100%; }
+            20%, 100% { left: 100%; }
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 20px 60px rgba(255, 0, 255, 0.6),
+                0 0 50px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* ==================== ИНФО КАРТОЧКИ ==================== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+        }
+        
+        .info-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-cyan);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.3),
+                0 0 25px rgba(0, 255, 255, 0.2);
+        }
+        
+        .info-card h3 {
+            color: var(--neon-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* ==================== ШЕСТЕРЁНКА НАСТРОЕК ==================== */
+        .settings-gear {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 10000;
+            box-shadow: 
+                0 0 25px rgba(255, 0, 255, 0.6),
+                0 0 50px rgba(0, 255, 255, 0.4);
+            animation: rotateGear 10s linear infinite;
+            transition: all 0.3s;
+            border: 3px solid white;
+        }
+        
+        @keyframes rotateGear {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .settings-gear:hover {
+            animation: rotateGear 3s linear infinite;
+            transform: scale(1.1);
+        }
+        
+        /* ==================== ПАНЕЛЬ НАСТРОЕК (ИСПРАВЛЕНА!) ==================== */
+        .settings-panel {
+            position: fixed;
+            top: 100px;
+            right: 25px;
+            width: 320px;
+            max-height: 80vh; /* ОГРАНИЧЕНИЕ ВЫСОТЫ! */
+            overflow-y: auto; /* ПРОКРУТКА ВНУТРИ! */
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 
+                0 15px 50px rgba(0, 0, 0, 0.9),
+                0 0 40px rgba(0, 255, 255, 0.3);
+            z-index: 9999;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        /* СКРОЛЛБАР ДЛЯ ПАНЕЛИ */
+        .settings-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .settings-panel::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .settings-panel::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+            border-radius: 10px;
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1;
+        }
+        
+        .settings-header h4 {
+            color: var(--neon-cyan);
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .close-settings {
+            background: none;
+            border: none;
+            color: var(--neon-pink);
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .close-settings:hover {
+            background: rgba(255, 0, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        /* КОНТЕНТ ПАНЕЛИ (С ПРОКРУТКОЙ) */
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .settings-section h5 {
+            color: var(--neon-yellow);
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .settings-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: var(--neon-cyan);
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+        }
+        
+        .settings-btn.active {
+            background: linear-gradient(90deg, 
+                rgba(255, 0, 255, 0.25), 
+                rgba(0, 255, 255, 0.25));
+            color: white;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        /* ==================== СТАТИСТИКА В НАСТРОЙКАХ ==================== */
+        .stats-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        
+        .stat-item:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateX(3px);
+        }
+        
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .stat-value {
+            color: var(--neon-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        /* ==================== АДМИН КНОПКИ ==================== */
+        .admin-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .admin-btn {
+            background: linear-gradient(90deg, 
+                rgba(255, 0, 85, 0.25), 
+                rgba(255, 165, 0, 0.25));
+            color: white;
+            border: 1px solid rgba(255, 0, 85, 0.5);
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .admin-btn:hover {
+            background: linear-gradient(90deg, 
+                rgba(255, 0, 85, 0.4), 
+                rgba(255, 165, 0, 0.4));
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 0, 85, 0.3);
+        }
+        
+        /* ==================== АДМИН ПАНЕЛЬ (ПЛАВАЮЩАЯ) ==================== */
+        .admin-counter {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(0, 0, 0, 0.9);
+            color: var(--neon-cyan);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--neon-pink);
+            font-family: monospace;
+            font-size: 0.9rem;
+            z-index: 9999;
+            display: none;
+            cursor: move;
+            user-select: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 10px 35px rgba(255, 0, 255, 0.4),
+                0 0 25px rgba(0, 255, 255, 0.3);
+            animation: panelGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes panelGlow {
+            0% { 
+                border-color: var(--neon-pink);
+                box-shadow: 
+                    0 10px 35px rgba(255, 0, 255, 0.4),
+                    0 0 25px rgba(0, 255, 255, 0.3);
+            }
+            100% { 
+                border-color: var(--neon-cyan);
+                box-shadow: 
+                    0 15px 45px rgba(0, 255, 255, 0.5),
+                    0 0 30px rgba(255, 0, 255, 0.4);
+            }
+        }
+        
+        /* ==================== УВЕДОМЛЕНИЯ ==================== */
+        .quick-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            padding: 20px 35px;
+            border-radius: 18px;
+            font-weight: bold;
+            z-index: 10001;
+            backdrop-filter: blur(20px);
+            animation: notificationPop 2s forwards;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.9),
+                0 0 50px rgba(0, 255, 255, 0.4);
+            text-align: center;
+            min-width: 250px;
+        }
+        
+        @keyframes notificationPop {
+            0% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.7); 
+            }
+            15% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1.05); 
+            }
+            30% { 
+                transform: translate(-50%, -50%) scale(0.95); 
+            }
+            45% { 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+            85% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.8); 
+            }
+        }
+        
+        /* ==================== ЭФФЕКТЫ ЧАСТИЦ ==================== */
+        .particles {
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 1s ease-out forwards;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+        
+        /* ==================== ФУТЕР ==================== */
+        footer {
+            margin-top: 60px;
+            padding: 40px;
+            text-align: center;
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.8),
+                transparent
+            );
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            width: 100%;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent,
+                var(--neon-cyan),
+                var(--neon-pink),
+                var(--neon-purple),
+                transparent
+            );
+        }
+        
+        .new-year {
+            color: var(--neon-yellow);
+            font-size: 1.4rem;
+            margin-top: 25px;
+            display: inline-block;
+            padding: 12px 35px;
+            background: rgba(255, 255, 0, 0.1);
+            border-radius: 50px;
+            border: 2px solid var(--neon-yellow);
+            animation: newYearPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes newYearPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 255, 0, 0.6);
+            }
+        }
+        
+        /* ==================== МЕДИА ЗАПРОСЫ ==================== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 20px auto;
+            }
+            
+            .settings-panel {
+                width: 90%;
+                max-width: 320px;
+                right: 5%;
+                left: 5%;
+                margin: 0 auto;
+                max-height: 70vh;
+            }
+            
+            .settings-gear {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .cover-section {
+                width: min(350px, 85vw);
+                height: min(350px, 85vw);
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-counter {
+                bottom: 15px;
+                right: 15px;
+                font-size: 0.85rem;
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .glitch-text {
+                font-size: 2rem;
+            }
+            
+            .artist-name {
+                font-size: 1.5rem;
+            }
+            
+            .download-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .settings-panel {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+        
+        /* ФИКС ДЛЯ МОБИЛЬНЫХ */
+        @supports (-webkit-touch-callout: none) {
+            .settings-btn,
+            .admin-btn,
+            .download-btn {
+                min-height: 44px;
+            }
+            
+            .settings-gear {
+                min-height: 44px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://i.postimg.cc/pXxpyDTj/IMG-20260105-032954-283.jpg">
+</head>
+<body>
+    <!-- ШЕСТЕРЁНКА -->
+    <div class="settings-gear" id="settingsGear">⚙</div>
+    
+    <!-- ПАНЕЛЬ НАСТРОЕК (ИСПРАВЛЕНА - С ПРОКРУТКОЙ) -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h4 id="settingsTitle">⚙ НАСТРОЙКИ</h4>
+            <button class="close-settings" onclick="toggleSettings()">×</button>
+        </div>
+        
+        <div class="settings-content">
+            <div class="settings-section">
+                <h5 id="langTitle">🌍 Язык</h5>
+                <div class="settings-buttons">
+                    <button class="settings-btn active" onclick="switchLanguage('ru')" id="btnRu">
+                        🇷🇺 Русский
+                    </button>
+                    <button class="settings-btn" onclick="switchLanguage('en')" id="btnEn">
+                        🇺🇸 English
+                    </button>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h5 id="modeTitle">⚡ Режим</h5>
+                <div class="settings-buttons">
+                    <button class="settings-btn active" onclick="setMode('full')" id="btnFull">
+                        💻 Полная версия
+                    </button>
+                    <button class="settings-btn" onclick="setMode('light')" id="btnLight">
+                        📱 Лёгкая версия
+                    </button>
+                </div>
+            </div>
+            
+            <div class="settings-section stats-section" id="statsSection" style="display: none;">
+                <h5 id="statsTitle">📊 Статистика</h5>
+                <div class="stats-display">
+                    <div class="stat-item">
+                        <span class="stat-label" id="statVisitorsLabel">Посетители:</span>
+                        <span class="stat-value" id="statsVisitors">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" id="statDownloadsLabel">Скачивания:</span>
+                        <span class="stat-value" id="statsDownloads">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section admin-section" id="adminSection" style="display: none;">
+                <h5 id="adminTitle">🔐 Админ-доступ</h5>
+                <div class="admin-links">
+                    <button class="admin-btn" onclick="copyAdminLink()" id="btnCopyLink">
+                        🔗 Копировать ссылку
+                    </button>
+                    <button class="admin-btn" onclick="toggleAdminPanel()" id="btnAdminPanel">
+                        👑 Панель администратора
+                    </button>
+                    <button class="admin-btn" onclick="showDetailedStats()" id="btnStats">
+                        📈 Детальная статистика
+                    </button>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <small id="settingsFooterText" style="color: #888; text-align: center; display: block;">
+                    Настройки сохраняются автоматически
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- АДМИН ПАНЕЛЬ -->
+    <div class="admin-counter" id="adminCounter">
+        👥: <span id="visitorCount">0</span> | 💾: <span id="downloadCount">0</span>
+    </div>
+    
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="container">
+        <div class="header" style="text-align: center;">
+            <div class="glitch-container">
+                <h1 class="glitch-text" data-text="2026: ЭПИЦЕНТР БУДУЩЕГО" id="title">
+                    2026: ЭПИЦЕНТР БУДУЩЕГО
+                </h1>
+            </div>
+            
+            <div class="artist-name" id="artist">ГЕПАРД ПРО</div>
+            <div class="tagline" id="tagline">Футуристичный новогодний гипнотик</div>
+        </div>
+        
+        <div class="cover-section">
+            <div class="cover-3d">
+                <img src="https://i.postimg.cc/pXxpyDTj/IMG-20260105-032954-283.jpg" 
+                     alt="Обложка трека 2026" 
+                     class="cover-image">
+                <div class="cover-glow"></div>
+                <div class="badge-premium" id="badge">ПРЕМЬЕРА 2026</div>
+            </div>
+        </div>
+        
+        <div style="text-align: center;">
+            <a href="https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file" 
+               class="download-btn" 
+               download="2026_Epicenter_of_Future_GepardPro.mp3"
+               onclick="trackDownload()"
+               id="downloadLink">
+               <i class="fas fa-bolt"></i> <span id="downloadBtnText">СКАЧАТЬ ТРЕК</span>
+            </a>
+            
+            <div style="margin-top: 30px; padding: 20px; background: rgba(0,255,255,0.1); border-radius: 15px;">
+                <p style="color: var(--neon-yellow); margin-bottom: 15px;">
+                    <i class="fas fa-info-circle"></i> 
+                    <span id="howToDownload">Нажмите кнопку → Скачивание начнётся мгновенно</span>
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                    <div><strong id="filenameLabel">Файл:</strong> 2026_Epicenter_of_Future_GepardPro.mp3</div>
+                    <div><strong id="filesizeLabel">Размер:</strong> ~8 МБ</div>
+                    <div><strong id="formatLabel">Формат:</strong> MP3 320 кбит/с</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3><i class="fas fa-music"></i> <span id="aboutTrack">О ТРЕКЕ</span></h3>
+                <p id="aboutText" style="line-height: 1.6;">
+                    Футуристичный новогодний гипнотик, создающий атмосферу эпицентра будущего. 
+                    Идеально для видеоконтента, стримов, заставок и встречи 2026 года.
+                </p>
+                <div style="margin-top: 20px;">
+                    <h4><i class="fas fa-microchip"></i> <span id="specs">ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ</span></h4>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li><strong id="formatLabel2">Формат:</strong> MP3 (320 kbps)</li>
+                        <li><strong>Жанр:</strong> Electronic / Futuristic</li>
+                        <li><strong>Темп:</strong> 128 BPM</li>
+                        <li><strong>Ключ:</strong> C# Minor</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-rocket"></i> <span id="forCreators">ДЛЯ КОНТЕНТ-МЕЙКЕРОВ</span></h3>
+                <p id="forCreatorsText" style="margin-bottom: 15px;">
+                    Этот трек идеально подходит для:
+                </p>
+                <ul style="padding-left: 20px;">
+                    <li>YouTube-видео и обзоров</li>
+                    <li>TikTok и Instagram Reels</li>
+                    <li>Стримов на Twitch/YouTube</li>
+                    <li>Подкастов и презентаций</li>
+                    <li>Футуристичных проектов</li>
+                </ul>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,0,0.1); border-radius: 10px;">
+                    <p style="color: var(--neon-yellow); margin: 0;">
+                        <i class="fas fa-exclamation-circle"></i> 
+                        <strong id="importantLabel">ВАЖНО:</strong> 
+                        <span id="importantText">При использовании укажите автора: </span>
+                        <span style="color:var(--neon-pink); font-weight: bold;" id="authorName">Гепард Про</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-heart"></i> <span id="support">ПОДДЕРЖАТЬ АВТОРА</span></h3>
+                <p id="supportText" style="margin-bottom: 15px;">
+                    Если трек вам понравился:
+                </p>
+                <ul style="padding-left: 20px;">
+                    <li id="supportItem1">Подпишитесь на YouTube-канал</li>
+                    <li id="supportItem2">Поставьте лайк и напишите комментарий</li>
+                    <li id="supportItem3">Поделитесь треком с друзьями</li>
+                    <li id="supportItem4">Используйте в своих видео с указанием автора</li>
+                </ul>
+                
+                <div style="margin-top: 25px; text-align: center;">
+                    <a href="https://youtube.com/channel/UCdUPvyLSlBt1EkFMQsGSAJQ?si=5gddUteDxzHmuXBi" 
+                       class="admin-btn" 
+                       target="_blank"
+                       style="text-decoration: none; display: inline-block; width: auto; padding: 12px 25px;">
+                       <i class="fab fa-youtube"></i> <span id="youtubeBtn">YouTube Канал</span>
+                    </a>
+                </div>
+                
+                <p style="margin-top: 25px; text-align: center; color: var(--neon-green);">
+                    <i class="fas fa-star"></i> 
+                    <span id="inspirationText">Ваша поддержка вдохновляет на создание новой музыки!</span> 
+                    <i class="fas fa-star"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="copyright">
+            <p id="copyright">
+                © 2026 <span style="color:var(--neon-cyan); font-weight: bold;">ГЕПАРД ПРО</span>. 
+                Все права на композицию защищены.
+            </p>
+            <p id="licenseText" style="margin-top: 10px;">
+                Трек предоставляется бесплатно для некоммерческого использования.
+            </p>
+            <p id="contactText">
+                При использовании в коммерческих проектах — свяжитесь с автором.
+            </p>
+        </div>
+        
+        <div class="new-year" id="newYearText">
+            <i class="fas fa-fire"></i> С новым 2026 годом! <i class="fas fa-fire"></i>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== УМНЫЙ СЧЁТЧИК ====================
+        class SmartCounter {
+            constructor() {
+                this.adminKey = 'gepard_admin_2026';
+                this.isAdmin = false;
+            }
+            
+            init() {
+                this.checkIfAdmin();
+                if (!this.isAdmin) {
+                    this.countVisitor();
+                }
+                this.updateDisplay();
+                this.updateSettingsPanel();
+            }
+            
+            checkIfAdmin() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('admin') === 'gepard2026') {
+                    this.isAdmin = true;
+                    localStorage.setItem(this.adminKey, 'true');
+                    return true;
+                }
+                
+                if (localStorage.getItem(this.adminKey) === 'true') {
+                    this.isAdmin = true;
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            countVisitor() {
+                const today = new Date().toDateString();
+                const todayKey = 'visitors_' + today;
+                const visitorId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
+                let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || [];
+                
+                if (todayVisitors.length < 50) {
+                    todayVisitors.push(visitorId);
+                    localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
+                    
+                    let totalVisitors = parseInt(localStorage.getItem('totalVisitors')) || 0;
+                    totalVisitors++;
+                    localStorage.setItem('totalVisitors', totalVisitors.toString());
+                }
+            }
+            
+            updateDisplay() {
+                const visitors = parseInt(localStorage.getItem('totalVisitors')) || 0;
+                const downloads = parseInt(localStorage.getItem('totalDownloads')) || 0;
+                
+                document.getElementById('visitorCount').textContent = visitors;
+                document.getElementById('downloadCount').textContent = downloads;
+                
+                document.getElementById('statsVisitors').textContent = visitors;
+                document.getElementById('statsDownloads').textContent = downloads;
+            }
+            
+            updateSettingsPanel() {
+                const statsSection = document.getElementById('statsSection');
+                const adminSection = document.getElementById('adminSection');
+                
+                if (this.isAdmin) {
+                    statsSection.style.display = 'block';
+                    adminSection.style.display = 'block';
+                } else {
+                    statsSection.style.display = 'none';
+                    adminSection.style.display = 'none';
+                }
+            }
+            
+            trackDownload() {
+                if (!this.isAdmin) {
+                    let downloads = parseInt(localStorage.getItem('totalDownloads')) || 0;
+                    downloads++;
+                    localStorage.setItem('totalDownloads', downloads.toString());
+                }
+                this.updateDisplay();
+            }
+        }
+        
+        // ==================== ПЕРЕВОДЫ ====================
+        const translations = {
+            ru: {
+                title: "2026: ЭПИЦЕНТР БУДУЩЕГО",
+                artist: "ГЕПАРД ПРО",
+                tagline: "Футуристичный новогодний гипнотик",
+                badge: "ПРЕМЬЕРА 2026",
+                downloadBtnText: "СКАЧАТЬ ТРЕК",
+                howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",
+                filenameLabel: "Файл:",
+                filesizeLabel: "Размер:",
+                formatLabel: "Формат:",
+                aboutTrack: "О ТРЕКЕ",
+                aboutText: "Футуристичный новогодний гипнотик, создающий атмосферу эпицентра будущего. Идеально для видеоконтента, стримов, заставок и встречи 2026 года.",
+                specs: "ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ",
+                forCreators: "ДЛЯ КОНТЕНТ-МЕЙКЕРОВ",
+                forCreatorsText: "Этот трек идеально подходит для:",
+                support: "ПОДДЕРЖАТЬ АВТОРА",
+                supportText: "Если трек вам понравился:",
+                supportItem1: "Подпишитесь на YouTube-канал",
+                supportItem2: "Поставьте лайк и напишите комментарий",
+                supportItem3: "Поделитесь треком с друзьями",
+                supportItem4: "Используйте в своих видео с указанием автора",
+                importantLabel: "ВАЖНО:",
+                importantText: "При использовании укажите автора: ",
+                authorName: "Гепард Про",
+                inspirationText: "Ваша поддержка вдохновляет на создание новой музыки!",
+                copyright: "© 2026 ГЕПАРД ПРО. Все права на композицию защищены.",
+                licenseText: "Трек предоставляется бесплатно для некоммерческого использования.",
+                contactText: "При использовании в коммерческих проектах — свяжитесь с автором.",
+                newYearText: "С новым 2026 годом!",
+                youtubeBtn: "YouTube Канал",
+                formatLabel2: "Формат:",
+                settingsTitle: "⚙ НАСТРОЙКИ",
+                langTitle: "🌍 Язык",
+                modeTitle: "⚡ Режим",
+                statsTitle: "📊 Статистика",
+                adminTitle: "🔐 Админ-доступ",
+                btnRu: "🇷🇺 Русский",
+                btnEn: "🇺🇸 English",
+                btnFull: "💻 Полная версия",
+                btnLight: "📱 Лёгкая версия",
+                btnCopyLink: "🔗 Копировать ссылку",
+                btnAdminPanel: "👑 Панель администратора",
+                statVisitorsLabel: "Посетители:",
+                statDownloadsLabel: "Скачивания:",
+                settingsFooterText: "Настройки сохраняются автоматически"
+            },
+            en: {
+                title: "2026: EPICENTER OF THE FUTURE",
+                artist: "GEPARD PRO",
+                tagline: "Futuristic New Year Hypnotic",
+                badge: "PREMIERE 2026",
+                downloadBtnText: "DOWNLOAD TRACK",
+                howToDownload: "Click the button → Download will start instantly",
+                filenameLabel: "File:",
+                filesizeLabel: "Size:",
+                formatLabel: "Format:",
+                aboutTrack: "ABOUT THE TRACK",
+                aboutText: "Futuristic New Year hypnotic, creating the atmosphere of the epicenter of the future. Perfect for video content, streams, screensavers and meeting 2026.",
+                specs: "TECHNICAL SPECIFICATIONS",
+                forCreators: "FOR CONTENT CREATORS",
+                forCreatorsText: "This track is perfect for:",
+                support: "SUPPORT THE AUTHOR",
+                supportText: "If you liked the track:",
+                supportItem1: "Subscribe to YouTube channel",
+                supportItem2: "Like and comment",
+                supportItem3: "Share the track with friends",
+                supportItem4: "Use in your videos with author mention",
+                importantLabel: "IMPORTANT:",
+                importantText: "When using, please credit the author: ",
+                authorName: "Gepard Pro",
+                inspirationText: "Your support inspires the creation of new music!",
+                copyright: "© 2026 GEPARD PRO. All composition rights reserved.",
+                licenseText: "The track is provided free of charge for non-commercial use.",
+                contactText: "For commercial projects — contact the author.",
+                newYearText: "Happy New Year 2026!",
+                youtubeBtn: "YouTube Channel",
+                formatLabel2: "Format:",
+                settingsTitle: "⚙ SETTINGS",
+                langTitle: "🌍 Language",
+                modeTitle: "⚡ Mode",
+                statsTitle: "📊 Statistics",
+                adminTitle: "🔐 Admin Access",
+                btnRu: "🇷🇺 Russian",
+                btnEn: "🇺🇸 English",
+                btnFull: "💻 Full Version",
+                btnLight: "📱 Light Version",
+                btnCopyLink: "🔗 Copy Link",
+                btnAdminPanel: "👑 Admin Panel",
+                statVisitorsLabel: "Visitors:",
+                statDownloadsLabel: "Downloads:",
+                settingsFooterText: "Settings are saved automatically"
+            }
+        };
+        
+        // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
+        const smartCounter = new SmartCounter();
+        
+        // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
+        function switchLanguage(lang) {
+            const t = translations[lang];
+            
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) element.textContent = t[key];
+            });
+            
+            updateButtonStates(lang);
+            localStorage.setItem('siteLanguage', lang);
+            showNotification(lang === 'ru' ? 'Язык изменён' : 'Language changed');
+        }
+        
+        function updateButtonStates(lang) {
+            document.querySelectorAll('.settings-btn').forEach(btn => btn.classList.remove('active'));
+            if (lang === 'ru') {
+                document.getElementById('btnRu').classList.add('active');
+            } else {
+                document.getElementById('btnEn').classList.add('active');
+            }
+        }
+        
+        function setMode(mode) {
+            if (mode === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('btnLight').classList.add('active');
+                document.getElementById('btnFull').classList.remove('active');
+                showNotification('Лёгкая версия');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.getElementById('btnFull').classList.add('active');
+                document.getElementById('btnLight').classList.remove('active');
+                showNotification('Полная версия');
+            }
+            localStorage.setItem('siteMode', mode);
+        }
+        
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function copyAdminLink() {
+            const link = window.location.origin + window.location.pathname + '?admin=gepard2026';
+            navigator.clipboard.writeText(link)
+                .then(() => showNotification('Ссылка скопирована'))
+                .catch(() => prompt('Скопируйте ссылку:', link));
+        }
+        
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminCounter');
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+                showNotification('Панель скрыта');
+            } else {
+                panel.style.display = 'block';
+                makeDraggable(panel);
+                showNotification('Панель показана');
+            }
+        }
+        
+        function makeDraggable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            
+            element.onmousedown = dragMouseDown;
+            element.ontouchstart = dragTouchStart;
+            
+            function dragMouseDown(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+            }
+            
+            function dragTouchStart(e) {
+                const touch = e.touches[0];
+                pos3 = touch.clientX;
+                pos4 = touch.clientY;
+                document.ontouchend = closeDragElement;
+                document.ontouchmove = elementDragTouch;
+            }
+            
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+            
+            function elementDragTouch(e) {
+                const touch = e.touches[0];
+                pos1 = pos3 - touch.clientX;
+                pos2 = pos4 - touch.clientY;
+                pos3 = touch.clientX;
+                pos4 = touch.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+            
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+                document.ontouchend = null;
+                document.ontouchmove = null;
+            }
+        }
+        
+        function trackDownload() {
+            smartCounter.trackDownload();
+            createParticles(event);
+            
+            const lang = localStorage.getItem('siteLanguage') || 'ru';
+            showNotification(lang === 'ru' ? 'Скачивание началось' : 'Download started');
+            
+            setTimeout(() => {
+                window.open('https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file', '_blank');
+            }, 300);
+            
+            return true;
+        }
+        
+        function createParticles(event) {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles';
+            document.body.appendChild(particlesContainer);
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = (event.clientX - 2) + 'px';
+                particle.style.top = (event.clientY - 2) + 'px';
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 150 + 'px');
+                particle.style.setProperty('--ty', (Math.random() - 0.5) * 150 + 'px');
+                particle.style.background = i % 3 === 0 ? 'var(--neon-pink)' : 
+                                          i % 3 === 1 ? 'var(--neon-cyan)' : 
+                                                       'var(--neon-yellow)';
+                particlesContainer.appendChild(particle);
+            }
+            
+            setTimeout(() => particlesContainer.remove(), 1000);
+        }
+        
+        function showDetailedStats() {
+            const stats = {
+                visitors: parseInt(localStorage.getItem('totalVisitors')) || 0,
+                downloads: parseInt(localStorage.getItem('totalDownloads')) || 0,
+                today: new Date().toDateString()
+            };
+            
+            const lang = localStorage.getItem('siteLanguage') || 'ru';
+            
+            const statsHTML = `
+                <div style="text-align: left; padding: 20px;">
+                    <h3 style="color: var(--neon-cyan); margin-bottom: 20px;">📊 ${lang === 'ru' ? 'ДЕТАЛЬНАЯ СТАТИСТИКА' : 'DETAILED STATISTICS'}</h3>
+                    
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="color: #aaa;">${lang === 'ru' ? '👥 Всего посетителей' : '👥 Total Visitors'}</div>
+                        <div style="color: var(--neon-green); font-size: 2rem; font-weight: bold;">${stats.visitors}</div>
+                    </div>
+                    
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="color: #aaa;">💾 ${lang === 'ru' ? 'Скачиваний трека' : 'Track Downloads'}</div>
+                        <div style="color: var(--neon-yellow); font-size: 2rem; font-weight: bold;">${stats.downloads}</div>
+                    </div>
+                    
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
+                        <div style="color: #aaa;">📅 ${lang === 'ru' ? 'Дата' : 'Date'}</div>
+                        <div style="color: var(--neon-pink);">${stats.today}</div>
+                    </div>
+                </div>
+            `;
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 100000;
+                backdrop-filter: blur(20px);
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: rgba(10,5,20,0.95); 
+                           padding: 30px; 
+                           border-radius: 20px; 
+                           max-width: 400px; 
+                           width: 90%; 
+                           border: 2px solid var(--neon-cyan); 
+                           box-shadow: 0 0 60px rgba(0,255,255,0.4);">
+                    ${statsHTML}
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button onclick="this.parentElement.parentElement.remove()" 
+                                style="background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan)); 
+                                       color: white; 
+                                       border: none; 
+                                       padding: 12px 40px; 
+                                       border-radius: 10px; 
+                                       cursor: pointer; 
+                                       font-weight: bold;">
+                            ${lang === 'ru' ? 'Закрыть' : 'Close'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'quick-notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 2000);
+        }
+        
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация счётчика
+            smartCounter.init();
+            
+            // Загрузка настроек
+            const savedLang = localStorage.getItem('siteLanguage') || 'ru';
+            const savedMode = localStorage.getItem('siteMode') || 'full';
+            
+            switchLanguage(savedLang);
+            setMode(savedMode);
+            
+            // Шестерёнка
+            document.getElementById('settingsGear').addEventListener('click', toggleSettings);
+            
+            // Закрытие панели при клике вне её
+            document.addEventListener('click', function(e) {
+                const panel = document.getElementById('settingsPanel');
+                const gear = document.getElementById('settingsGear');
+                
+                if (panel.style.display === 'block' && 
+                    !panel.contains(e.target) && 
+                    !gear.contains(e.target)) {
+                    panel.style.display = 'none';
+                }
+            });
+            
+            // Админ-панель при загрузке
+            if (smartCounter.isAdmin) {
+                setTimeout(() => {
+                    document.getElementById('adminCounter').style.display = 'block';
+                    makeDraggable(document.getElementById('adminCounter'));
+                    showNotification('Админ-панель активирована');
+                }, 500);
+            }
+            
+            // Эффекты частиц для кнопок
+            document.querySelectorAll('.download-btn, .settings-btn, .admin-btn').forEach(btn => {
+                btn.addEventListener('click', createParticles);
+            });
+            
+            console.log('🚀 Ультра-дизайн загружен! Админ:', smartCounter.isAdmin);
+        });
+    </script>
+</body>
+</html>
