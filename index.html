@@ -971,11 +971,11 @@
                     <i class="fas fa-info-circle"></i> 
                     <span id="howToDownload">Нажмите кнопку → Скачивание начнётся мгновенно</span>
                 </p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-                    <div><strong id="filenameLabel">Файл:</strong> 2026_Epicenter_of_Future_GepardPro.mp3</div>
-                    <div><strong id="filesizeLabel">Размер:</strong> ~8 МБ</div>
-                    <div><strong id="formatLabel">Формат:</strong> MP3 320 кбит/с</div>
-                </div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+    <div><strong id="filenameLabel">Файл:</strong> <span id="filenameText">2026_Epicenter_of_Future_GepardPro.mp3</span></div>
+    <div><strong id="filesizeLabel">Размер:</strong> <span id="filesizeText">~8 МБ</span></div>
+    <div><strong id="formatLabel">Формат:</strong> <span id="formatText">MP3 320 кбит/с</span></div>
+</div>
             </div>
         </div>
         
@@ -989,11 +989,11 @@
                 <div style="margin-top: 20px;">
                     <h4><i class="fas fa-microchip"></i> <span id="specs">ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ</span></h4>
                     <ul style="margin-top: 10px; padding-left: 20px;">
-                        <li><strong id="formatLabel2">Формат:</strong> MP3 (320 kbps)</li>
-                        <li><strong>Жанр:</strong> Electronic / Futuristic</li>
-                        <li><strong>Темп:</strong> 128 BPM</li>
-                        <li><strong>Ключ:</strong> C# Minor</li>
-                    </ul>
+    <li><strong>Формат:</strong> <span id="formatValue">MP3 (320 kbps)</span></li>
+    <li><strong>Жанр:</strong> <span id="genreValue">Electronic / Futuristic</span></li>
+    <li><strong>Темп:</strong> <span id="tempoValue">128 BPM</span></li>
+    <li><strong>Ключ:</strong> <span id="keyValue">C# Minor</span></li>
+</ul>
                 </div>
             </div>
             
@@ -1002,13 +1002,13 @@
                 <p id="forCreatorsText" style="margin-bottom: 15px;">
                     Этот трек идеально подходит для:
                 </p>
-                <ul style="padding-left: 20px;">
-                    <li>YouTube-видео и обзоров</li>
-                    <li>TikTok и Instagram Reels</li>
-                    <li>Стримов на Twitch/YouTube</li>
-                    <li>Подкастов и презентаций</li>
-                    <li>Футуристичных проектов</li>
-                </ul>
+               <ul style="padding-left: 20px;">
+    <li id="creatorItem1">YouTube-видео и обзоров</li>
+    <li id="creatorItem2">TikTok и Instagram Reels</li>
+    <li id="creatorItem3">Стримов на Twitch/YouTube</li>
+    <li id="creatorItem4">Подкастов и презентаций</li>
+    <li id="creatorItem5">Футуристичных проектов</li>
+</ul>
                 
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,0,0.1); border-radius: 10px;">
                     <p style="color: var(--neon-yellow); margin: 0;">
@@ -1154,117 +1154,199 @@
         }
         
         // ==================== ПЕРЕВОДЫ ====================
-        const translations = {
-            ru: {
-                title: "2026: ЭПИЦЕНТР БУДУЩЕГО",
-                artist: "ГЕПАРД ПРО",
-                tagline: "Футуристичный новогодний гипнотик",
-                badge: "ПРЕМЬЕРА 2026",
-                downloadBtnText: "СКАЧАТЬ ТРЕК",
-                howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",
-                filenameLabel: "Файл:",
-                filesizeLabel: "Размер:",
-                formatLabel: "Формат:",
-                aboutTrack: "О ТРЕКЕ",
-                aboutText: "Футуристичный новогодний гипнотик, создающий атмосферу эпицентра будущего. Идеально для видеоконтента, стримов, заставок и встречи 2026 года.",
-                specs: "ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ",
-                forCreators: "ДЛЯ КОНТЕНТ-МЕЙКЕРОВ",
-                forCreatorsText: "Этот трек идеально подходит для:",
-                support: "ПОДДЕРЖАТЬ АВТОРА",
-                supportText: "Если трек вам понравился:",
-                supportItem1: "Подпишитесь на YouTube-канал",
-                supportItem2: "Поставьте лайк и напишите комментарий",
-                supportItem3: "Поделитесь треком с друзьями",
-                supportItem4: "Используйте в своих видео с указанием автора",
-                importantLabel: "ВАЖНО:",
-                importantText: "При использовании укажите автора: ",
-                authorName: "Гепард Про",
-                inspirationText: "Ваша поддержка вдохновляет на создание новой музыки!",
-                copyright: "© 2026 ГЕПАРД ПРО. Все права на композицию защищены.",
-                licenseText: "Трек предоставляется бесплатно для некоммерческого использования.",
-                contactText: "При использовании в коммерческих проектах — свяжитесь с автором.",
-                newYearText: "С новым 2026 годом!",
-                youtubeBtn: "YouTube Канал",
-                formatLabel2: "Формат:",
-                settingsTitle: "⚙ НАСТРОЙКИ",
-                langTitle: "🌍 Язык",
-                modeTitle: "⚡ Режим",
-                statsTitle: "📊 Статистика",
-                adminTitle: "🔐 Админ-доступ",
-                btnRu: "🇷🇺 Русский",
-                btnEn: "🇺🇸 English",
-                btnFull: "💻 Полная версия",
-                btnLight: "📱 Лёгкая версия",
-                btnCopyLink: "🔗 Копировать ссылку",
-                btnAdminPanel: "👑 Панель администратора",
-                statVisitorsLabel: "Посетители:",
-                statDownloadsLabel: "Скачивания:",
-                settingsFooterText: "Настройки сохраняются автоматически"
-            },
-            en: {
-                title: "2026: EPICENTER OF THE FUTURE",
-                artist: "GEPARD PRO",
-                tagline: "Futuristic New Year Hypnotic",
-                badge: "PREMIERE 2026",
-                downloadBtnText: "DOWNLOAD TRACK",
-                howToDownload: "Click the button → Download will start instantly",
-                filenameLabel: "File:",
-                filesizeLabel: "Size:",
-                formatLabel: "Format:",
-                aboutTrack: "ABOUT THE TRACK",
-                aboutText: "Futuristic New Year hypnotic, creating the atmosphere of the epicenter of the future. Perfect for video content, streams, screensavers and meeting 2026.",
-                specs: "TECHNICAL SPECIFICATIONS",
-                forCreators: "FOR CONTENT CREATORS",
-                forCreatorsText: "This track is perfect for:",
-                support: "SUPPORT THE AUTHOR",
-                supportText: "If you liked the track:",
-                supportItem1: "Subscribe to YouTube channel",
-                supportItem2: "Like and comment",
-                supportItem3: "Share the track with friends",
-                supportItem4: "Use in your videos with author mention",
-                importantLabel: "IMPORTANT:",
-                importantText: "When using, please credit the author: ",
-                authorName: "Gepard Pro",
-                inspirationText: "Your support inspires the creation of new music!",
-                copyright: "© 2026 GEPARD PRO. All composition rights reserved.",
-                licenseText: "The track is provided free of charge for non-commercial use.",
-                contactText: "For commercial projects — contact the author.",
-                newYearText: "Happy New Year 2026!",
-                youtubeBtn: "YouTube Channel",
-                formatLabel2: "Format:",
-                settingsTitle: "⚙ SETTINGS",
-                langTitle: "🌍 Language",
-                modeTitle: "⚡ Mode",
-                statsTitle: "📊 Statistics",
-                adminTitle: "🔐 Admin Access",
-                btnRu: "🇷🇺 Russian",
-                btnEn: "🇺🇸 English",
-                btnFull: "💻 Full Version",
-                btnLight: "📱 Light Version",
-                btnCopyLink: "🔗 Copy Link",
-                btnAdminPanel: "👑 Admin Panel",
-                statVisitorsLabel: "Visitors:",
-                statDownloadsLabel: "Downloads:",
-                settingsFooterText: "Settings are saved automatically"
-            }
+       const translations = {
+    ru: {
+        title: "2026: ЭПИЦЕНТР БУДУЩЕГО",
+        artist: "ГЕПАРД ПРО",
+        tagline: "Футуристичный новогодний гипнотик",
+        badge: "ПРЕМЬЕРА 2026",
+        downloadBtnText: "СКАЧАТЬ ТРЕК",
+        howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",
+        filenameLabel: "Файл:",
+        filesizeLabel: "Размер:",
+        formatLabel: "Формат:",
+        aboutTrack: "О ТРЕКЕ",
+        aboutText: "Футуристичный новогодний гипнотик, создающий атмосферу эпицентра будущего. Идеально для видеоконтента, стримов, заставок и встречи 2026 года.",
+        specs: "ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ",
+        forCreators: "ДЛЯ КОНТЕНТ-МЕЙКЕРОВ",
+        forCreatorsText: "Этот трек идеально подходит для:",
+        support: "ПОДДЕРЖАТЬ АВТОРА",
+        supportText: "Если трек вам понравился:",
+        importantLabel: "ВАЖНО:",
+        importantText: "При использовании укажите автора: ",
+        authorName: "Гепард Про",
+        inspirationText: "Ваша поддержка вдохновляет на создание новой музыки!",
+        copyright: "© 2026 ГЕПАРД ПРО. Все права на композицию защищены.",
+        licenseText: "Трек предоставляется бесплатно для некоммерческого использования.",
+        contactText: "При использовании в коммерческих проектах — свяжитесь с автором.",
+        newYearText: "С новым 2026 годом!",
+        youtubeBtn: "YouTube Канал",
+        formatLabel2: "Формат:",
+        settingsTitle: "⚙ НАСТРОЙКИ",
+        langTitle: "🌍 Язык",
+        modeTitle: "⚡ Режим",
+        statsTitle: "📊 Статистика",
+        adminTitle: "🔐 Админ-доступ",
+        btnRu: "🇷🇺 Русский",
+        btnEn: "🇺🇸 English",
+        btnFull: "💻 Полная версия",
+        btnLight: "📱 Лёгкая версия",
+        btnCopyLink: "🔗 Копировать ссылку",
+        btnAdminPanel: "👑 Панель администратора",
+        statVisitorsLabel: "Посетители:",
+        statDownloadsLabel: "Скачивания:",
+        settingsFooterText: "Настройки сохраняются автоматически",
+        // НОВЫЕ ПЕРЕВОДЫ:
+        filenameText: '2026_Epicenter_of_Future_GepardPro.mp3',
+        filesizeText: '~8 МБ',
+        formatText: 'MP3 320 кбит/с',
+        formatValue: 'MP3 (320 kbps)',
+        genreValue: 'Electronic / Futuristic',
+        tempoValue: '128 BPM',
+        keyValue: 'C# Minor',
+        creatorItem1: 'YouTube-видео и обзоров',
+        creatorItem2: 'TikTok и Instagram Reels',
+        creatorItem3: 'Стримов на Twitch/YouTube',
+        creatorItem4: 'Подкастов и презентаций',
+        creatorItem5: 'Футуристичных проектов',
+        supportItem1: 'Подпишитесь на YouTube-канал',
+        supportItem2: 'Поставьте лайк и напишите комментарий',
+        supportItem3: 'Поделитесь треком с друзьями',
+        supportItem4: 'Используйте в своих видео с указанием автора'
+    },
+    en: {
+        title: "2026: EPICENTER OF THE FUTURE",
+        artist: "GEPARD PRO",
+        tagline: "Futuristic New Year Hypnotic",
+        badge: "PREMIERE 2026",
+        downloadBtnText: "DOWNLOAD TRACK",
+        howToDownload: "Click the button → Download will start instantly",
+        filenameLabel: "File:",
+        filesizeLabel: "Size:",
+        formatLabel: "Format:",
+        aboutTrack: "ABOUT THE TRACK",
+        aboutText: "Futuristic New Year hypnotic, creating the atmosphere of the epicenter of the future. Perfect for video content, streams, screensavers and meeting 2026.",
+        specs: "TECHNICAL SPECIFICATIONS",
+        forCreators: "FOR CONTENT CREATORS",
+        forCreatorsText: "This track is perfect for:",
+        support: "SUPPORT THE AUTHOR",
+        supportText: "If you liked the track:",
+        importantLabel: "IMPORTANT:",
+        importantText: "When using, please credit the author: ",
+        authorName: "Gepard Pro",
+        inspirationText: "Your support inspires the creation of new music!",
+        copyright: "© 2026 GEPARD PRO. All composition rights reserved.",
+        licenseText: "The track is provided free of charge for non-commercial use.",
+        contactText: "For commercial projects — contact the author.",
+        newYearText: "Happy New Year 2026!",
+        youtubeBtn: "YouTube Channel",
+        formatLabel2: "Format:",
+        settingsTitle: "⚙ SETTINGS",
+        langTitle: "🌍 Language",
+        modeTitle: "⚡ Mode",
+        statsTitle: "📊 Statistics",
+        adminTitle: "🔐 Admin Access",
+        btnRu: "🇷🇺 Russian",
+        btnEn: "🇺🇸 English",
+        btnFull: "💻 Full Version",
+        btnLight: "📱 Light Version",
+        btnCopyLink: "🔗 Copy Link",
+        btnAdminPanel: "👑 Admin Panel",
+        statVisitorsLabel: "Visitors:",
+        statDownloadsLabel: "Downloads:",
+        settingsFooterText: "Settings are saved automatically",
+        // НОВЫЕ ПЕРЕВОДЫ:
+        filenameText: '2026_Epicenter_of_Future_GepardPro.mp3',
+        filesizeText: '~8 MB',
+        formatText: 'MP3 320 kbps',
+        formatValue: 'MP3 (320 kbps)',
+        genreValue: 'Electronic / Futuristic',
+        tempoValue: '128 BPM',
+        keyValue: 'C# Minor',
+        creatorItem1: 'YouTube videos and reviews',
+        creatorItem2: 'TikTok and Instagram Reels',
+        creatorItem3: 'Twitch/YouTube streams',
+        creatorItem4: 'Podcasts and presentations',
+        creatorItem5: 'Futuristic projects',
+        supportItem1: 'Subscribe to YouTube channel',
+        supportItem2: 'Like and comment',
+        supportItem3: 'Share the track with friends',
+        supportItem4: 'Use in your videos with author mention'
+    }
+};
         };
         
         // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
         const smartCounter = new SmartCounter();
         
         // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
-        function switchLanguage(lang) {
-            const t = translations[lang];
-            
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) element.textContent = t[key];
-            });
-            
-            updateButtonStates(lang);
-            localStorage.setItem('siteLanguage', lang);
-            showNotification(lang === 'ru' ? 'Язык изменён' : 'Language changed');
+       function switchLanguage(lang) {
+    const t = translations[lang];
+    
+    // 1. Обновляем все простые текстовые элементы
+    Object.keys(t).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+            // Для кнопки скачивания (там есть иконка)
+            if (key === 'downloadBtnText') {
+                element.innerHTML = `<i class="fas fa-bolt"></i> ${t[key]}`;
+            }
+            // Для кнопки YouTube (там есть иконка)
+            else if (key === 'youtubeBtn') {
+                element.innerHTML = `<i class="fab fa-youtube"></i> ${t[key]}`;
+            }
+            // Для заголовка (нужно обновить data-text для глитча)
+            else if (key === 'title') {
+                element.textContent = t[key];
+                element.setAttribute('data-text', t[key]);
+            }
+            // Для обычных текстов
+            else {
+                element.textContent = t[key];
+            }
         }
+    });
+    
+    // 2. Обновляем списки "Для контент-мейкеров"
+    const creatorItems = [
+        'creatorItem1',
+        'creatorItem2', 
+        'creatorItem3',
+        'creatorItem4',
+        'creatorItem5'
+    ];
+    
+    creatorItems.forEach(itemId => {
+        const element = document.getElementById(itemId);
+        if (element && t[itemId]) {
+            element.textContent = t[itemId];
+        }
+    });
+    
+    // 3. Обновляем список "Поддержать автора"
+    const supportItems = [
+        'supportItem1',
+        'supportItem2',
+        'supportItem3',
+        'supportItem4'
+    ];
+    
+    supportItems.forEach(itemId => {
+        const element = document.getElementById(itemId);
+        if (element && t[itemId]) {
+            element.textContent = t[itemId];
+        }
+    });
+    
+    // 4. Обновляем активные кнопки языка
+    updateButtonStates(lang);
+    
+    // 5. Сохраняем язык
+    localStorage.setItem('siteLanguage', lang);
+    
+    // 6. Показываем уведомление
+    showNotification(lang === 'ru' ? 'Язык изменён' : 'Language changed');
+}
         
         function updateButtonStates(lang) {
             document.querySelectorAll('.settings-btn').forEach(btn => btn.classList.remove('active'));
