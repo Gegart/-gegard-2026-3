@@ -1027,7 +1027,99 @@
             </div>
         </div>
     </div>
+    <!-- Админ панель прямо на сайте -->
+<div id="admin-panel" style="display:none;">
+    <div style="
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 1200px;
+        height: 90vh;
+        background: #0a0a0a;
+        color: white;
+        padding: 20px;
+        border-radius: 20px;
+        z-index: 10000;
+        overflow-y: auto;
+        border: 3px solid #ff0000;
+    ">
+        <!-- Кнопка закрытия -->
+        <div style="text-align: right; margin-bottom: 20px;">
+            <button onclick="closeAdminPanel()" style="
+                background: #ff0000;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 10px;
+                cursor: pointer;
+                font-weight: bold;
+            ">
+                ✕ Закрыть панель
+            </button>
+        </div>
+        
+        <!-- Контент панели -->
+        <div id="admin-content">
+            <h1 style="color: #ff0000; text-align: center; margin-bottom: 30px;">
+                🔥 АДМИН ПАНЕЛЬ - РЕАЛЬНЫЕ ПОЛЬЗОВАТЕЛИ
+            </h1>
+            
+            <!-- Здесь будет загружена ваша панель -->
+            <iframe src="analitik_real.html" 
+                    style="width:100%; height:80vh; border:none; border-radius:10px;"></iframe>
+        </div>
+    </div>
     
+    <!-- Фон -->
+    <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 9999;
+    " onclick="closeAdminPanel()"></div>
+</div>
+
+<!-- Кнопка для открытия -->
+<button onclick="openAdminPanel()" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(45deg, #ff0000, #ff8800);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+">
+    <span>📊</span> Админ-панель
+</button>
+
+<script>
+// Функции управления панелью
+function openAdminPanel() {
+    document.getElementById('admin-panel').style.display = 'block';
+}
+
+function closeAdminPanel() {
+    document.getElementById('admin-panel').style.display = 'none';
+}
+
+// Закрытие по Esc
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAdminPanel();
+});
+</script>
     <!-- АДМИН ПАНЕЛЬ -->
     <div class="admin-counter" id="adminCounter">
         👥: <span id="visitorCount">0</span> | 💾: <span id="downloadCount">0</span>
