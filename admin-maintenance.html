@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | Технические работы | Гепард Про</title>
+    <style>
+        /* ==================== ТВОЙ СТИЛЬ ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --neon-red: #ff0055;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0514;
+            --glass-bg: rgba(10, 5, 20, 0.7);
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* НЕОНОВЫЙ ФОН */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--neon-pink) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--neon-cyan) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, var(--neon-purple) 0%, transparent 20%);
+            opacity: 0.15;
+            z-index: -2;
+        }
+        
+        /* КОНТЕЙНЕР */
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple)) 1;
+            position: relative;
+            box-shadow: 
+                0 0 60px rgba(255, 0, 255, 0.4),
+                0 0 120px rgba(0, 255, 255, 0.2);
+        }
+        
+        /* ГЛИТЧ-ЗАГОЛОВОК */
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .glitch-text {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            background: linear-gradient(
+                90deg,
+                var(--neon-red),
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-cyan),
+                var(--neon-green),
+                var(--neon-yellow)
+            );
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbowText 6s linear infinite;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        /* АДМИН-КОНТРОЛЬ */
+        .admin-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .control-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .control-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .control-card.active {
+            border-color: var(--neon-green);
+            background: rgba(0, 255, 0, 0.1);
+        }
+        
+        .control-card.inactive {
+            border-color: var(--neon-red);
+            background: rgba(255, 0, 0, 0.1);
+        }
+        
+        .control-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .control-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--neon-cyan);
+        }
+        
+        .control-desc {
+            color: #aaa;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        /* КНОПКИ */
+        .control-btn {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+        }
+        
+        .control-btn.red {
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-pink));
+        }
+        
+        .control-btn.green {
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+        }
+        
+        /* СТАТУС */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .status-on {
+            background: rgba(0, 255, 0, 0.15);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+        
+        .status-off {
+            background: rgba(255, 0, 0, 0.15);
+            border: 2px solid var(--neon-red);
+            color: var(--neon-red);
+        }
+        
+        .status-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-dot.on {
+            background: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        .status-dot.off {
+            background: var(--neon-red);
+            box-shadow: 0 0 20px var(--neon-red);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* ТАЙМЕР */
+        .timer-display {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 0, 0.1);
+            border-radius: 20px;
+            border: 2px solid var(--neon-yellow);
+        }
+        
+        .timer-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 20px currentColor;
+            margin: 10px 0;
+        }
+        
+        /* ЛОГИ */
+        .log-container {
+            margin: 30px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-title {
+            color: var(--neon-cyan);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .log-entry {
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-cyan);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry.success {
+            border-left-color: var(--neon-green);
+        }
+        
+        .log-entry.warning {
+            border-left-color: var(--neon-yellow);
+        }
+        
+        .log-entry.error {
+            border-left-color: var(--neon-red);
+        }
+        
+        /* КНОПКА ВОЗВРАТА */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon-cyan);
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 30px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+        
+        /* МОБИЛЬНАЯ ВЕРСИЯ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 20px auto;
+            }
+            
+            .admin-controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ЗАГОЛОВОК -->
+        <div class="glitch-container">
+            <h1 class="glitch-text">АДМИН-ПАНЕЛЬ</h1>
+        </div>
+        
+        <div style="text-align: center; color: var(--neon-pink); font-size: 1.2rem; margin-bottom: 30px;">
+            <i class="fas fa-user-shield"></i> Управление техническими работами
+        </div>
+        
+        <!-- СТАТУС -->
+        <div id="statusIndicator" class="status-indicator status-off">
+            <div class="status-dot off"></div>
+            <span id="statusText">Заглушка ВЫКЛЮЧЕНА</span>
+        </div>
+        
+        <!-- АДМИН-КОНТРОЛЬ -->
+        <div class="admin-controls">
+            <!-- ВКЛЮЧИТЬ ЗАГЛУШКУ -->
+            <div class="control-card inactive" id="activateCard">
+                <div class="control-icon" style="color: var(--neon-red);">
+                    <i class="fas fa-power-off"></i>
+                </div>
+                <div class="control-title">ВКЛЮЧИТЬ ЗАГЛУШКУ</div>
+                <div class="control-desc">
+                    Активирует страницу технических работ для всех пользователей
+                </div>
+                <button class="control-btn red" onclick="activateMaintenance()">
+                    <i class="fas fa-play"></i> АКТИВИРОВАТЬ
+                </button>
+            </div>
+            
+            <!-- ВЫКЛЮЧИТЬ ЗАГЛУШКУ -->
+            <div class="control-card active" id="deactivateCard">
+                <div class="control-icon" style="color: var(--neon-green);">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="control-title">ВЫКЛЮЧИТЬ ЗАГЛУШКУ</div>
+                <div class="control-desc">
+                    Отключает технические работы, сайт становится доступным
+                </div>
+                <button class="control-btn green" onclick="deactivateMaintenance()">
+                    <i class="fas fa-stop"></i> ДЕАКТИВИРОВАТЬ
+                </div>
+            </div>
+        </div>
+        
+        <!-- ТАЙМЕР -->
+        <div class="timer-display">
+            <div style="color: var(--neon-yellow); font-size: 1.1rem;">
+                <i class="fas fa-clock"></i> Таймер заглушки
+            </div>
+            <div class="timer-value" id="timerValue">00:00:00</div>
+            <div style="color: #aaa; font-size: 0.9rem;">
+                Длительность: <span id="duration">не установлено</span>
+            </div>
+        </div>
+        
+        <!-- НАСТРОЙКИ ТАЙМЕРА -->
+        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin: 25px 0;">
+            <h3 style="color: var(--neon-cyan); margin-bottom: 15px;">
+                <i class="fas fa-cog"></i> Настройки таймера
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                <div>
+                    <label style="display: block; color: #aaa; margin-bottom: 8px;">Часы:</label>
+                    <input type="number" id="hoursInput" min="0" max="24" value="1" 
+                           style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); 
+                                  border: 1px solid var(--neon-cyan); border-radius: 8px; color: white;">
+                </div>
+                <div>
+                    <label style="display: block; color: #aaa; margin-bottom: 8px;">Минуты:</label>
+                    <input type="number" id="minutesInput" min="0" max="59" value="30" 
+                           style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); 
+                                  border: 1px solid var(--neon-cyan); border-radius: 8px; color: white;">
+                </div>
+                <div>
+                    <label style="display: block; color: #aaa; margin-bottom: 8px;">Сообщение:</label>
+                    <input type="text" id="messageInput" placeholder="Причина техработ" 
+                           style="width: 100%; padding: 10px; background: rgba(255,255,255,0.1); 
+                                  border: 1px solid var(--neon-cyan); border-radius: 8px; color: white;">
+                </div>
+            </div>
+            
+            <button onclick="setTimer()" 
+                    style="margin-top: 20px; background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+                           color: white; border: none; padding: 12px 25px; border-radius: 10px; cursor: pointer;">
+                <i class="fas fa-save"></i> Установить таймер
+            </button>
+        </div>
+        
+        <!-- ЛОГ ДЕЙСТВИЙ -->
+        <div class="log-container">
+            <div class="log-title">
+                <i class="fas fa-history"></i> Лог действий
+            </div>
+            <div id="actionLog">
+                <div class="log-entry">Админ-панель загружена</div>
+            </div>
+        </div>
+        
+        <!-- КНОПКИ ВОЗВРАТА -->
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-home"></i> На главную
+            </a>
+            
+            <a href="#" onclick="openMaintenancePage()" class="back-btn" style="margin-left: 15px;">
+                <i class="fas fa-eye"></i> Посмотреть заглушку
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ==================== ПЕРЕМЕННЫЕ ====================
+        let maintenanceActive = false;
+        let maintenanceTimer = null;
+        let endTime = null;
+        let logEntries = [];
+        
+        // ==================== ЛОГИРОВАНИЕ ====================
+        function addLog(message, type = 'info') {
+            const log = {
+                time: new Date().toLocaleTimeString(),
+                message: message,
+                type: type
+            };
+            
+            logEntries.unshift(log); // Добавляем в начало
+            
+            // Обновляем отображение
+            const logContainer = document.getElementById('actionLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${log.time}] ${log.message}`;
+            
+            logContainer.prepend(entry);
+            
+            // Сохраняем в localStorage
+            localStorage.setItem('maintenanceLog', JSON.stringify(logEntries.slice(0, 20)));
+            
+            console.log(`📝 ${message}`);
+        }
+        
+        // ==================== УПРАВЛЕНИЕ ЗАГЛУШКОЙ ====================
+        function activateMaintenance() {
+            if (maintenanceActive) {
+                addLog('Заглушка уже активна', 'warning');
+                return;
+            }
+            
+            maintenanceActive = true;
+            updateUI();
+            
+            // Сохраняем состояние
+            localStorage.setItem('maintenanceActive', 'true');
+            
+            // Устанавливаем время окончания если есть таймер
+            const hours = parseInt(document.getElementById('hoursInput').value) || 1;
+            const minutes = parseInt(document.getElementById('minutesInput').value) || 30;
+            const totalMinutes = hours * 60 + minutes;
+            
+            if (totalMinutes > 0) {
+                endTime = new Date(Date.now() + totalMinutes * 60000);
+                localStorage.setItem('maintenanceEndTime', endTime.toISOString());
+                startTimer();
+            }
+            
+            // Сохраняем сообщение
+            const message = document.getElementById('messageInput').value || 'Технические работы';
+            localStorage.setItem('maintenanceMessage', message);
+            
+            addLog(`Заглушка активирована на ${hours}ч ${minutes}мин: "${message}"`, 'success');
+            
+            // Показываем уведомление
+            showNotification('Заглушка активирована!', 'success');
+        }
+        
+        function deactivateMaintenance() {
+            if (!maintenanceActive) {
+                addLog('Заглушка уже выключена', 'warning');
+                return;
+            }
+            
+            maintenanceActive = false;
+            updateUI();
+            
+            // Очищаем состояние
+            localStorage.removeItem('maintenanceActive');
+            localStorage.removeItem('maintenanceEndTime');
+            localStorage.removeItem('maintenanceMessage');
+            
+            // Останавливаем таймер
+            if (maintenanceTimer) {
+                clearInterval(maintenanceTimer);
+                maintenanceTimer = null;
+            }
+            
+            addLog('Заглушка деактивирована', 'success');
+            showNotification('Заглушка выключена!', 'success');
+        }
+        
+        // ==================== ТАЙМЕР ====================
+        function setTimer() {
+            const hours = parseInt(document.getElementById('hoursInput').value) || 0;
+            const minutes = parseInt(document.getElementById('minutesInput').value) || 0;
+            
+            if (hours === 0 && minutes === 0) {
+                showNotification('Установите время!', 'error');
+                return;
+            }
+            
+            document.getElementById('duration').textContent = `${hours}ч ${minutes}мин`;
+            addLog(`Таймер установлен на ${hours}ч ${minutes}мин`, 'info');
+            showNotification('Таймер установлен!', 'success');
+        }
+        
+        function startTimer() {
+            if (!endTime) return;
+            
+            if (maintenanceTimer) {
+                clearInterval(maintenanceTimer);
+            }
+            
+            maintenanceTimer = setInterval(updateTimerDisplay, 1000);
+            updateTimerDisplay();
+        }
+        
+        function updateTimerDisplay() {
+            if (!endTime) {
+                document.getElementById('timerValue').textContent = '00:00:00';
+                return;
+            }
+            
+            const now = new Date();
+            const diff = endTime - now;
+            
+            if (diff <= 0) {
+                // Время вышло - автоматически отключаем
+                deactivateMaintenance();
+                addLog('Таймер завершен, заглушка отключена', 'info');
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('timerValue').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // ==================== UI ====================
+        function updateUI() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const activateCard = document.getElementById('activateCard');
+            const deactivateCard = document.getElementById('deactivateCard');
+            
+            if (maintenanceActive) {
+                // Активна
+                statusIndicator.className = 'status-indicator status-on';
+                statusIndicator.querySelector('.status-dot').className = 'status-dot on';
+                statusText.textContent = 'Заглушка АКТИВНА';
+                
+                activateCard.classList.remove('inactive');
+                activateCard.classList.add('active');
+                deactivateCard.classList.remove('active');
+                deactivateCard.classList.add('inactive');
+            } else {
+                // Неактивна
+                statusIndicator.className = 'status-indicator status-off';
+                statusIndicator.querySelector('.status-dot').className = 'status-dot off';
+                statusText.textContent = 'Заглушка ВЫКЛЮЧЕНА';
+                
+                activateCard.classList.remove('active');
+                activateCard.classList.add('inactive');
+                deactivateCard.classList.remove('inactive');
+                deactivateCard.classList.add('active');
+            }
+        }
+        
+        function showNotification(message, type) {
+            // Создаём уведомление
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'rgba(0,255,0,0.9)' : 'rgba(255,0,0,0.9)'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Автоудаление через 3 секунды
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                    if (style.parentNode) {
+                        style.remove();
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        function openMaintenancePage() {
+            window.open('maintenance.html', '_blank');
+        }
+        
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        function init() {
+            console.log('🔧 Админ-панель загружена');
+            
+            // Загружаем состояние
+            maintenanceActive = localStorage.getItem('maintenanceActive') === 'true';
+            
+            // Загружаем таймер
+            const savedEndTime = localStorage.getItem('maintenanceEndTime');
+            if (savedEndTime) {
+                endTime = new Date(savedEndTime);
+                if (endTime > new Date()) {
+                    startTimer();
+                } else {
+                    // Таймер истёк
+                    localStorage.removeItem('maintenanceEndTime');
+                    localStorage.removeItem('maintenanceActive');
+                    maintenanceActive = false;
+                }
+            }
+            
+            // Загружаем лог
+            const savedLog = localStorage.getItem('maintenanceLog');
+            if (savedLog) {
+                logEntries = JSON.parse(savedLog);
+                logEntries.forEach(log => {
+                    const entry = document.createElement('div');
+                    entry.className = `log-entry ${log.type}`;
+                    entry.textContent = `[${log.time}] ${log.message}`;
+                    document.getElementById('actionLog').appendChild(entry);
+                });
+            }
+            
+            updateUI();
+            addLog('Система инициализирована', 'info');
+        }
+        
+        // Запуск при загрузке
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
