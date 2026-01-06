@@ -477,10 +477,13 @@
         
         /* МОБИЛЬНАЯ ВЕРСИЯ */
         @media (max-width: 768px) {
-            .container {
-                padding: 25px;
-                margin: 20px auto;
-            }
+           .container {
+    max-width: 900px; /* Было 800px */
+    width: 95%;
+    margin: 40px auto;
+    padding: 40px;
+    /* остальное без изменений */
+}
             
             .countdown-number {
                 font-size: 3rem;
