@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СКАЧАТЬ | 2026: ЭПИЦЕНТР БУДУЩЕГО | Гепард Про</title>
+    <style>
+        /* ==================== ТВОЙ СТИЛЬ ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --neon-red: #ff0055;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0514;
+            --glass-bg: rgba(10, 5, 20, 0.7);
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* НЕОНОВЫЙ ФОН */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--neon-pink) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--neon-cyan) 0%, transparent 25%),
+                radial-gradient(circle at 40% 80%, var(--neon-purple) 0%, transparent 20%);
+            opacity: 0.15;
+            z-index: -2;
+        }
+        
+        /* СКАНИРУЮЩИЕ ЛИНИИ */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanlines 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        @keyframes scanlines {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+        
+        /* КОНТЕЙНЕР */
+        .container {
+            max-width: 800px;
+            width: 95%;
+            margin: 40px auto;
+            padding: 40px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple)) 1;
+            position: relative;
+            box-shadow: 
+                0 0 60px rgba(255, 0, 255, 0.4),
+                0 0 120px rgba(0, 255, 255, 0.2);
+        }
+        
+        /* ГЛИТЧ-ЗАГОЛОВОК */
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .glitch-text {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            background: linear-gradient(
+                90deg,
+                var(--neon-red),
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-cyan),
+                var(--neon-green),
+                var(--neon-yellow)
+            );
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbowText 6s linear infinite;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        .artist-name {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: transparent;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            margin: 10px 0;
+            animation: shine 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shine {
+            0% { 
+                filter: brightness(1) drop-shadow(0 0 10px var(--neon-cyan));
+            }
+            100% { 
+                filter: brightness(1.5) drop-shadow(0 0 30px var(--neon-pink));
+            }
+        }
+        
+        /* ПРОГРЕСС-БАР */
+        .progress-section {
+            margin: 40px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+        }
+        
+        .progress-container {
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(
+                90deg,
+                var(--neon-red),
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-cyan),
+                var(--neon-green)
+            );
+            background-size: 400% 100%;
+            animation: gradientShift 4s linear infinite;
+            position: relative;
+            overflow: hidden;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            animation: shineOverlay 2s ease-in-out infinite;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .progress-label {
+            color: #aaa;
+        }
+        
+        .progress-percent {
+            color: var(--neon-yellow);
+            font-weight: bold;
+            font-size: 1.3rem;
+            text-shadow: 0 0 10px currentColor;
+        }
+        
+        /* СТАТУС */
+        .status-box {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px solid var(--neon-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-message {
+            font-size: 1.3rem;
+            color: var(--neon-cyan);
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* ОБРАТНЫЙ ОТСЧЁТ */
+        .countdown-box {
+            text-align: center;
+            margin: 30px 0;
+            animation: pulseGlow 1s infinite;
+        }
+        
+        .countdown-number {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px currentColor;
+        }
+        
+        .countdown-text {
+            color: var(--neon-yellow);
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.5));
+            }
+            50% { 
+                filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.8));
+            }
+        }
+        
+        /* ИНФО БЛОКИ */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-cyan);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2);
+        }
+        
+        .info-label {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            color: var(--neon-yellow);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        /* КНОПКА СКАЧИВАНИЯ */
+        .download-btn-main {
+            display: inline-block;
+            background: linear-gradient(
+                90deg,
+                var(--neon-red),
+                var(--neon-pink),
+                var(--neon-purple),
+                var(--neon-cyan),
+                var(--neon-green)
+            );
+            background-size: 400% 100%;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 20px 50px;
+            border-radius: 60px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            animation: gradientShift 4s linear infinite;
+            box-shadow: 
+                0 10px 40px rgba(255, 0, 255, 0.4),
+                0 0 30px rgba(0, 255, 255, 0.3);
+            margin: 30px 0;
+            transition: all 0.3s;
+        }
+        
+        .download-btn-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shineOverlay 3s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes shineOverlay {
+            0% { left: -100%; }
+            20%, 100% { left: 100%; }
+        }
+        
+        .download-btn-main:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 20px 60px rgba(255, 0, 255, 0.6),
+                0 0 50px rgba(0, 255, 255, 0.5);
+        }
+        
+        /* АВТО-СКАЧИВАНИЕ */
+        .auto-download {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 0, 0.1);
+            border-radius: 15px;
+            border: 2px solid var(--neon-yellow);
+            animation: autoPulse 2s infinite;
+        }
+        
+        @keyframes autoPulse {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 255, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 255, 0, 0.6);
+            }
+        }
+        
+        .auto-count {
+            color: var(--neon-red);
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        /* ЧАСТИЦЫ */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 1s ease-out forwards;
+            z-index: 100;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+        
+        /* ВОЗВРАТ НА ГЛАВНУЮ */
+        .back-home {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .back-link {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 25px;
+            border-radius: 25px;
+            background: rgba(0, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        /* АНИМАЦИЯ УСПЕХА */
+        .success-animation {
+            animation: successPop 0.6s ease-out;
+        }
+        
+        @keyframes successPop {
+            0% { 
+                transform: scale(0.8); 
+                opacity: 0; 
+            }
+            70% { 
+                transform: scale(1.1); 
+            }
+            100% { 
+                transform: scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        /* МОБИЛЬНАЯ ВЕРСИЯ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 20px auto;
+            }
+            
+            .countdown-number {
+                font-size: 3rem;
+            }
+            
+            .download-btn-main {
+                padding: 18px 35px;
+                font-size: 1.3rem;
+            }
+            
+            .progress-section {
+                padding: 20px;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .glitch-text {
+                font-size: 1.8rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-btn-main {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ЗАГОЛОВОК -->
+        <div class="glitch-container">
+            <h1 class="glitch-text">СКАЧИВАНИЕ</h1>
+        </div>
+        
+        <div class="artist-name">2026: ЭПИЦЕНТР БУДУЩЕГО</div>
+        
+        <!-- ПРОГРЕСС СКАЧИВАНИЯ -->
+        <div class="progress-section">
+            <h3 style="color: var(--neon-cyan); margin-bottom: 20px; text-align: center;">
+                <i class="fas fa-rocket"></i> ПОДГОТОВКА ФАЙЛА
+            </h3>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text">
+                    <span class="progress-label" id="progressLabel">Инициализация...</span>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+            </div>
+            
+            <div class="status-box">
+                <div class="status-message" id="statusMessage">
+                    <i class="fas fa-sync-alt fa-spin"></i>
+                    <span id="statusText">Запуск системы скачивания...</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ОБРАТНЫЙ ОТСЧЁТ -->
+        <div class="countdown-box" id="countdownBox" style="display: none;">
+            <div class="countdown-number" id="countdownNumber">5</div>
+            <div class="countdown-text">До начала скачивания</div>
+        </div>
+        
+        <!-- ИНФОРМАЦИЯ О ФАЙЛЕ -->
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">ФАЙЛ</div>
+                <div class="info-value">2026_Epicenter_of_Future_GepardPro.mp3</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">РАЗМЕР</div>
+                <div class="info-value">~8 МБ</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">ФОРМАТ</div>
+                <div class="info-value">MP3</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">КАЧЕСТВО</div>
+                <div class="info-value">320 kbps</div>
+            </div>
+        </div>
+        
+        <!-- КНОПКА СКАЧИВАНИЯ -->
+        <div style="text-align: center;">
+            <a href="https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file" 
+               class="download-btn-main" 
+               id="downloadBtn"
+               style="display: none;"
+               target="_blank">
+               <i class="fas fa-bolt"></i> СКАЧАТЬ СЕЙЧАС
+            </a>
+        </div>
+        
+        <!-- АВТО-СКАЧИВАНИЕ -->
+        <div class="auto-download" id="autoDownload" style="display: none;">
+            <p style="color: var(--neon-yellow); margin-bottom: 10px;">
+                <i class="fas fa-robot"></i> АВТОМАТИЧЕСКОЕ СКАЧИВАНИЕ
+            </p>
+            <p style="font-size: 1.2rem;">
+                Через <span class="auto-count" id="autoCount">3</span> секунд
+            </p>
+        </div>
+        
+        <!-- ВОЗВРАТ НА ГЛАВНУЮ -->
+        <div class="back-home" id="backHome" style="display: none;">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Вернуться на главную
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ==================== ПЕРЕМЕННЫЕ ====================
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = document.getElementById('progressPercent');
+        const progressLabel = document.getElementById('progressLabel');
+        const statusText = document.getElementById('statusText');
+        const statusIcon = document.querySelector('#statusMessage i');
+        const countdownBox = document.getElementById('countdownBox');
+        const countdownNumber = document.getElementById('countdownNumber');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const autoDownload = document.getElementById('autoDownload');
+        const autoCount = document.getElementById('autoCount');
+        const backHome = document.getElementById('backHome');
+        
+        // ==================== СООБЩЕНИЯ ====================
+        const statusMessages = [
+            { text: "Запуск системы скачивания...", icon: "fa-sync-alt fa-spin" },
+            { text: "Подключение к серверу...", icon: "fa-satellite-dish" },
+            { text: "Оптимизация скорости...", icon: "fa-bolt" },
+            { text: "Подготовка файла...", icon: "fa-file-audio" },
+            { text: "Проверка целостности...", icon: "fa-shield-alt" },
+            { text: "ГОТОВО! Запуск скачивания...", icon: "fa-check-circle" }
+        ];
+        
+        // ==================== ЧАСТИЦЫ ====================
+        function createParticles(count = 15, color = 'cyan') {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Центр экрана
+                particle.style.left = '50%';
+                particle.style.top = '50%';
+                
+                // Случайное направление
+                const tx = (Math.random() - 0.5) * 300;
+                const ty = (Math.random() - 0.5) * 300;
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                
+                // Цвета как на главном сайте
+                const colors = ['#ff00ff', '#00ffff', '#ffff00', '#00ff00', '#ff0055'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Размер
+                particle.style.width = (Math.random() * 6 + 3) + 'px';
+                particle.style.height = particle.style.width;
+                
+                document.body.appendChild(particle);
+                
+                // Автоудаление
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.remove();
+                    }
+                }, 1000);
+            }
+        }
+        
+        // ==================== ПРОГРЕСС ====================
+        let currentProgress = 0;
+        let currentMessage = 0;
+        
+        function updateProgress() {
+            // Увеличиваем прогресс
+            currentProgress += Math.random() * 12 + 8; // 8-20% за шаг
+            if (currentProgress > 100) currentProgress = 100;
+            
+            // Обновляем прогресс-бар
+            progressFill.style.width = currentProgress + '%';
+            progressPercent.textContent = Math.round(currentProgress) + '%';
+            
+            // Обновляем сообщение каждые 20%
+            const messageThreshold = Math.floor(currentProgress / 20);
+            if (messageThreshold > currentMessage && currentMessage < statusMessages.length - 1) {
+                currentMessage = messageThreshold;
+                updateStatus();
+                createParticles(10);
+            }
+            
+            // Если прогресс завершён
+            if (currentProgress >= 100) {
+                progressLabel.textContent = "Готово!";
+                startCountdown();
+            } else {
+                // Продолжаем
+                setTimeout(updateProgress, 400 + Math.random() * 200);
+            }
+        }
+        
+        function updateStatus() {
+            const msg = statusMessages[Math.min(currentMessage, statusMessages.length - 1)];
+            statusText.textContent = msg.text;
+            
+            // Обновляем иконку
+            statusIcon.className = 'fas ' + msg.icon;
+            
+            // Если последнее сообщение - меняем цвет
+            if (currentMessage === statusMessages.length - 1) {
+                document.querySelector('.status-box').style.borderColor = 'var(--neon-green)';
+                document.querySelector('.status-box').style.background = 'rgba(0, 255, 0, 0.1)';
+            }
+        }
+        
+        // ==================== ОБРАТНЫЙ ОТСЧЁТ ====================
+        function startCountdown() {
+            countdownBox.style.display = 'block';
+            countdownBox.classList.add('success-animation');
+            
+            let seconds = 5;
+            
+            const countdownInterval = setInterval(() => {
+                countdownNumber.textContent = seconds;
+                
+                // Пульсация
+                countdownBox.style.animation = 'pulseGlow 0.5s ease-in-out';
+                setTimeout(() => {
+                    countdownBox.style.animation = 'pulseGlow 1s infinite';
+                }, 300);
+                
+                if (seconds === 0) {
+                    clearInterval(countdownInterval);
+                    showDownload();
+                }
+                
+                seconds--;
+            }, 1000);
+        }
+        
+        // ==================== СКАЧИВАНИЕ ====================
+        function showDownload() {
+            // Показываем кнопку
+            downloadBtn.style.display = 'inline-block';
+            downloadBtn.classList.add('success-animation');
+            
+            // Показываем авто-скачивание
+            autoDownload.style.display = 'block';
+            autoDownload.classList.add('success-animation');
+            
+            // Запускаем авто-скачивание
+            startAutoDownload();
+            
+            // Создаём эффект успеха
+            createParticles(30);
+            setTimeout(() => createParticles(20, 'pink'), 200);
+            setTimeout(() => createParticles(15, 'yellow'), 400);
+        }
+        
+        function startAutoDownload() {
+            let seconds = 3;
+            
+            const autoInterval = setInterval(() => {
+                autoCount.textContent = seconds;
+                
+                if (seconds === 0) {
+                    clearInterval(autoInterval);
+                    triggerAutoDownload();
+                }
+                
+                seconds--;
+            }, 1000);
+        }
+        
+        function triggerAutoDownload() {
+            // 1. Прямое скачивание через iframe
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = 'https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file';
+            document.body.appendChild(iframe);
+            
+            // 2. Клик по кнопке (визуальный)
+            downloadBtn.style.background = 'linear-gradient(90deg, var(--neon-green), var(--neon-cyan))';
+            downloadBtn.innerHTML = '<i class="fas fa-check"></i> СКАЧИВАНИЕ ЗАПУЩЕНО';
+            
+            // 3. Обновляем сообщение
+            autoDownload.innerHTML = `
+                <p style="color: var(--neon-green); margin-bottom: 10px;">
+                    <i class="fas fa-check-circle"></i> СКАЧИВАНИЕ АКТИВИРОВАНО
+                </p>
+                <p>Файл загружается в вашу папку "Загрузки"</p>
+            `;
+            
+            // 4. Показываем кнопку возврата
+            setTimeout(() => {
+                backHome.style.display = 'block';
+                backHome.classList.add('success-animation');
+                
+                // Автовозврат через 10 секунд
+                setTimeout(() => {
+                    statusText.textContent = 'Возвращаемся на главную...';
+                    statusIcon.className = 'fas fa-home';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                }, 10000);
+            }, 3000);
+            
+            // 5. Большой финальный эффект частиц
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => createParticles(25), i * 300);
+            }
+        }
+        
+        // ==================== ЗАПУСК ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Страница скачивания в стиле Гепард Про запущена!');
+            
+            // Начальные частицы
+            createParticles(10);
+            
+            // Запуск прогресса через 1 секунду
+            setTimeout(updateProgress, 1000);
+            
+            // Фоновая музыка прогресса (опционально)
+            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3');
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Аудио не воспроизведено (пользователь не взаимодействовал с сайтом)'));
+            
+            // Клик по любой части страницы для iOS/мобильных
+            document.body.addEventListener('click', function initAudio() {
+                audio.play();
+                document.body.removeEventListener('click', initAudio);
+            });
+        });
+    </script>
+</body>
+</html>
