@@ -1687,59 +1687,48 @@ en: {
             console.log('✅ Бета-тест успешно загружен!');
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
-            // ==================== ОКОНЧАТЕЛЬНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
-        console.log('🔧 Устанавливаю финалный фикс шестерёнки...');
+         <script>
+    // ==================== ОКОНЧАТЕЛЬНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
+    console.log('🔧 Устанавливаю финальный фикс шестерёнки...');
+    
+    // Ждём полной загрузки страницы
+    setTimeout(function() {
+        const gear = document.getElementById('settingsGear');
+        const panel = document.getElementById('settingsPanel');
         
-        // Ждём полной загрузки страницы
-        setTimeout(function() {
-            const gear = document.getElementById('settingsGear');
-            const panel = document.getElementById('settingsPanel');
-            
-            console.log('🔍 Проверяю элементы:', {
-                gear: gear ? '✅ Найдена' : '❌ Не найдена',
-                panel: panel ? '✅ Найдена' : '❌ Не найдена'
-            });
-            
-            if (gear && panel) {
-                // Удаляем ВСЕ старые обработчики
-                const newGear = gear.cloneNode(true);
-                gear.parentNode.replaceChild(newGear, gear);
-                
-                // Получаем свежие элементы
-                const freshGear = document.getElementById('settingsGear');
-                const freshPanel = document.getElementById('settingsPanel');
-                
-                // СУПЕР-ПРОСТОЙ обработчик
-                freshGear.onclick = function(e) {
-                    console.log('🎯 КЛИК ПО ШЕСТЕРЁНКЕ ЗАФИКСИРОВАН!');
-                    
-                    if (freshPanel.style.display === 'block') {
-                        freshPanel.style.display = 'none';
-                    } else {
-                        freshPanel.style.display = 'block';
-                    }
-                    
-                    // Останавливаем событие
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    return false;
-                };
-                
-                console.log('✅ Шестерёнка ПОЧИНЕНА! Кликай!');
-                
-                // Тест: открываем и закрываем через 1 секунду
-                setTimeout(function() {
-                    freshGear.click();
-                    setTimeout(() => freshGear.click(), 500);
-                }, 1000);
-                
-            } else {
-                console.error('💥 КРИТИЧЕСКАЯ ОШИБКА: Не найдены элементы для фикса');
-            }
-        }, 1000)
+        console.log('🔍 Проверяю элементы:', {
+            gear: gear ? '✅ Найдена' : '❌ Не найдена',
+            panel: panel ? '✅ Найдена' : '❌ Не найдена'
+        });
         
+        if (gear && panel) {
+            // СУПЕР-ПРОСТОЙ обработчик
+            gear.onclick = function(e) {
+                console.log('🎯 КЛИК ПО ШЕСТЕРЁНКЕ ЗАФИКСИРОВАН!');
+                console.log('📊 Текущее состояние панели:', panel.style.display);
+                
+                if (panel.style.display === 'block') {
+                    panel.style.display = 'none';
+                    gear.style.animation = 'rotateGear 10s linear infinite';
+                } else {
+                    panel.style.display = 'block';
+                    gear.style.animation = 'rotateGear 3s linear infinite';
+                }
+                
+                // Останавливаем событие
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                return false;
+            };
+            
+            console.log('✅ Шестерёнка ПОЧИНЕНА! Кликай!');
+            
+        } else {
+            console.error('💥 КРИТИЧЕСКАЯ ОШИБКА: Не найдены элементы для фикса');
+        }
+    }, 500); 
   </script>
 </body>
 </html>
