@@ -1373,9 +1373,25 @@
         }
         
         function toggleSettings() {
-            const panel = document.getElementById('settingsPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
+    const panel = document.getElementById('settingsPanel');
+    const gear = document.getElementById('settingsGear');
+    
+    console.log('🔄 toggleSettings вызвана');
+    console.log('📊 panel:', panel);
+    console.log('📊 panel.display:', panel.style.display);
+    
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+        gear.style.animation = 'rotateGear 10s linear infinite';
+        gear.style.transform = 'scale(1)';
+        console.log('📌 Панель скрыта');
+    } else {
+        panel.style.display = 'block';
+        gear.style.animation = 'rotateGear 3s linear infinite';
+        gear.style.transform = 'scale(1.1)';
+        console.log('📌 Панель показана');
+    }
+}
         
         function copyAdminLink() {
             const link = window.location.origin + window.location.pathname + '?admin=gepard2026';
@@ -1711,5 +1727,23 @@ function closeStatsModal() {
             console.log('🚀 Ультра-дизайн загружен! Админ:', smartCounter.isAdmin);
         });
     </script>
+    // ДЕБАГ ШЕСТЕРЁНКИ - удали потом!
+console.log('🔧 Загружаю обработчик шестерёнки...');
+
+setTimeout(() => {
+    const gear = document.getElementById('settingsGear');
+    const panel = document.getElementById('settingsPanel');
+    
+    console.log('⚙ Найден gear:', !!gear);
+    console.log('📁 Найден panel:', !!panel);
+    
+    if (gear) {
+        gear.addEventListener('click', function(e) {
+            console.log('🎯 Клик по шестерёнке!', e);
+            toggleSettings();
+        });
+        console.log('✅ Обработчик добавлен');
+    }
+}, 100);
 </body>
 </html>
