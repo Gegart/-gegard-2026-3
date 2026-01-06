@@ -1913,6 +1913,10 @@ setTimeout(() => {
 }, 1000); // Задержка 1 секунда для полной загрузки страницы
 
 console.log('⚡ Атомный фикс запущен, ожидайте 1 секунду...'); 
+    // ==================== ПРОСТОЙ ФИКС ШЕСТЕРЁНКИ ====================
+document.getElementById('settingsGear').onclick = function() {
+    document.getElementById('settingsPanel').style.display = 'block';
+};
     </script>
 </body>
 </html>
