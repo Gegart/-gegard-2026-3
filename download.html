@@ -73,7 +73,7 @@
         
         /* КОНТЕЙНЕР */
         .container {
-            max-width: 800px;
+            max-width: 900px; /* УВЕЛИЧИЛ ДЛЯ КОНТУРА */
             width: 95%;
             margin: 40px auto;
             padding: 40px;
@@ -316,6 +316,10 @@
             color: var(--neon-yellow);
             font-weight: bold;
             font-size: 1.1rem;
+            word-break: break-word; /* ФИКС НАЛОЖЕНИЯ */
+            line-height: 1.3;
+            display: block;
+            min-height: 1.5em;
         }
         
         /* КНОПКА СКАЧИВАНИЯ */
@@ -477,13 +481,10 @@
         
         /* МОБИЛЬНАЯ ВЕРСИЯ */
         @media (max-width: 768px) {
-           .container {
-    max-width: 900px; /* Было 800px */
-    width: 95%;
-    margin: 40px auto;
-    padding: 40px;
-    /* остальное без изменений */
-}
+            .container {
+                padding: 25px;
+                margin: 20px auto;
+            }
             
             .countdown-number {
                 font-size: 3rem;
@@ -564,24 +565,19 @@
         </div>
         
         <!-- ИНФОРМАЦИЯ О ФАЙЛЕ -->
-       <div class="info-grid">
-    <div class="info-card">
-        <div class="info-label">ФАЙЛ</div>
-        <div class="info-value" style="word-break: break-word; line-height: 1.3;">2026_Epicenter_of_Future_GepardPro.mp3</div>
-    </div>
-    <div class="info-card">
-        <div class="info-label">РАЗМЕР</div>
-        <div class="info-value">~8 МБ</div>
-    </div>
-    <div class="info-card">
-        <div class="info-label">ФОРМАТ</div>
-        <div class="info-value">MP3</div>
-    </div>
-    <div class="info-card">
-        <div class="info-label">КАЧЕСТВО</div>
-        <div class="info-value">320 kbps</div>
-    </div>
-</div>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-label">ФАЙЛ</div>
+                <div class="info-value">2026_Epicenter_of_Future_GepardPro.mp3</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">РАЗМЕР</div>
+                <div class="info-value">~8 МБ</div>
+            </div>
+            <div class="info-card">
+                <div class="info-label">ФОРМАТ</div>
+                <div class="info-value">MP3</div>
+            </div>
             <div class="info-card">
                 <div class="info-label">КАЧЕСТВО</div>
                 <div class="info-value">320 kbps</div>
@@ -609,6 +605,27 @@
             </p>
         </div>
         
+        <!-- УМНАЯ КНОПКА -->
+        <div style="text-align: center; margin: 20px 0;">
+            <button onclick="smartForceDownload()" 
+                    id="smartDownloadBtn"
+                    style="display: none;
+                           background: linear-gradient(90deg, #00ff00, #00ffff);
+                           color: white;
+                           border: none;
+                           padding: 15px 30px;
+                           border-radius: 25px;
+                           cursor: pointer;
+                           font-size: 1.1rem;
+                           font-weight: bold;
+                           box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);">
+                <i class="fas fa-magic"></i> УМНОЕ СКАЧИВАНИЕ (нажмите!)
+            </button>
+            <p id="downloadHint" style="color: #aaa; font-size: 0.9rem; margin-top: 10px; display: none;">
+                Нажмите эту кнопку если файл не скачался автоматически
+            </p>
+        </div>
+        
         <!-- ВОЗВРАТ НА ГЛАВНУЮ -->
         <div class="back-home" id="backHome" style="display: none;">
             <a href="index.html" class="back-link">
@@ -630,6 +647,8 @@
         const autoDownload = document.getElementById('autoDownload');
         const autoCount = document.getElementById('autoCount');
         const backHome = document.getElementById('backHome');
+        const smartDownloadBtn = document.getElementById('smartDownloadBtn');
+        const downloadHint = document.getElementById('downloadHint');
         
         // ==================== СООБЩЕНИЯ ====================
         const statusMessages = [
@@ -642,7 +661,7 @@
         ];
         
         // ==================== ЧАСТИЦЫ ====================
-        function createParticles(count = 15, color = 'cyan') {
+        function createParticles(count = 15) {
             for (let i = 0; i < count; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
@@ -674,6 +693,53 @@
                     }
                 }, 1000);
             }
+        }
+        
+        // ==================== УМНАЯ ФУНКЦИЯ СКАЧИВАНИЯ ====================
+        function smartForceDownload() {
+            console.log('🎯 Умное скачивание запущено');
+            
+            // Визуальная обратная связь
+            smartDownloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> СКАЧИВАЕМ...';
+            smartDownloadBtn.style.background = 'linear-gradient(90deg, #ff0055, #ff00ff)';
+            
+            // Скачиваем ВСЕМИ способами сразу
+            const link = document.createElement('a');
+            link.href = 'https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file';
+            link.download = '2026_Epicenter_of_Future_GepardPro.mp3';
+            link.target = '_blank';
+            document.body.appendChild(link);
+            
+            // Кликаем 3 раза разными методами
+            link.click(); // Метод 1
+            
+            setTimeout(() => {
+                // Метод 2: dispatchEvent
+                const clickEvent = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                link.dispatchEvent(clickEvent);
+                
+                // Метод 3: window.open
+                window.open(link.href, '_blank');
+                
+                // Восстанавливаем кнопку
+                setTimeout(() => {
+                    smartDownloadBtn.innerHTML = '<i class="fas fa-check"></i> ГОТОВО!';
+                    smartDownloadBtn.style.background = 'linear-gradient(90deg, #00ff00, #00ffff)';
+                    
+                    // Сообщение
+                    downloadHint.textContent = '✅ Файл должен скачиваться! Проверьте загрузки.';
+                    downloadHint.style.color = 'var(--neon-green)';
+                    
+                }, 1000);
+                
+            }, 300);
+            
+            // Удаляем ссылку
+            setTimeout(() => document.body.removeChild(link), 2000);
         }
         
         // ==================== ПРОГРЕСС ====================
@@ -761,8 +827,14 @@
             
             // Создаём эффект успеха
             createParticles(30);
-            setTimeout(() => createParticles(20, 'pink'), 200);
-            setTimeout(() => createParticles(15, 'yellow'), 400);
+            setTimeout(() => createParticles(20), 200);
+            setTimeout(() => createParticles(15), 400);
+            
+            // Показываем умную кнопку через 5 секунд
+            setTimeout(() => {
+                smartDownloadBtn.style.display = 'inline-block';
+                downloadHint.style.display = 'block';
+            }, 5000);
         }
         
         function startAutoDownload() {
@@ -780,45 +852,86 @@
             }, 1000);
         }
         
+        // ==================== АВТОМАТИЧЕСКОЕ СКАЧИВАНИЕ ====================
         function triggerAutoDownload() {
-            // 1. Прямое скачивание через iframe
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = 'https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file';
-            document.body.appendChild(iframe);
+            console.log('🚀 ЗАПУСКАЕМ АВТОСКАЧИВАНИЕ...');
             
-            // 2. Клик по кнопке (визуальный)
-            downloadBtn.style.background = 'linear-gradient(90deg, var(--neon-green), var(--neon-cyan))';
-            downloadBtn.innerHTML = '<i class="fas fa-check"></i> СКАЧИВАНИЕ ЗАПУЩЕНО';
-            
-            // 3. Обновляем сообщение
+            // 1. Меняем сообщение
             autoDownload.innerHTML = `
-                <p style="color: var(--neon-green); margin-bottom: 10px;">
-                    <i class="fas fa-check-circle"></i> СКАЧИВАНИЕ АКТИВИРОВАНО
+                <p style="color: var(--neon-yellow); margin-bottom: 10px;">
+                    <i class="fas fa-spinner fa-spin"></i> ПОДГОТОВКА СКАЧИВАНИЯ...
                 </p>
-                <p>Файл загружается в вашу папку "Загрузки"</p>
+                <p style="font-size: 0.9rem; color: #aaa;">
+                    Если скачивание не началось автоматически - нажмите кнопку ниже
+                </p>
             `;
             
-            // 4. Показываем кнопку возврата
+            // 2. ПОКАЗЫВАЕМ КНОПКУ "ВЕРНУТЬСЯ"
+            backHome.style.display = 'block';
+            backHome.classList.add('success-animation');
+            
+            // 3. Пытаемся автоматически скачать
             setTimeout(() => {
-                backHome.style.display = 'block';
-                backHome.classList.add('success-animation');
+                console.log('🔗 Пробуем автоматическое скачивание...');
                 
-                // Автовозврат через 10 секунд
+                // Способ 1: Прямая ссылка
+                try {
+                    const directLink = document.createElement('a');
+                    directLink.href = 'https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file';
+                    directLink.download = '2026_Epicenter_of_Future_GepardPro.mp3';
+                    directLink.style.display = 'none';
+                    document.body.appendChild(directLink);
+                    directLink.click();
+                    document.body.removeChild(directLink);
+                    console.log('✅ Прямое скачивание попытка 1');
+                } catch (e) {
+                    console.log('❌ Прямое скачивание не сработало');
+                }
+                
+                // Способ 2: Iframe
                 setTimeout(() => {
-                    statusText.textContent = 'Возвращаемся на главную...';
-                    statusIcon.className = 'fas fa-home';
+                    const iframe = document.createElement('iframe');
+                    iframe.style.cssText = 'position:absolute; width:1px; height:1px; border:none; opacity:0;';
+                    iframe.src = 'https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file';
+                    document.body.appendChild(iframe);
+                    console.log('✅ Iframe скачивание попытка 2');
                     
                     setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
-                }, 10000);
-            }, 3000);
-            
-            // 5. Большой финальный эффект частиц
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => createParticles(25), i * 300);
-            }
+                        if (iframe.parentNode) iframe.remove();
+                    }, 10000);
+                }, 500);
+                
+                // Способ 3: Window.open
+                setTimeout(() => {
+                    window.open(
+                        'https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file',
+                        '_blank',
+                        'noopener,noreferrer'
+                    );
+                    console.log('✅ Открыта новая вкладка попытка 3');
+                }, 1000);
+                
+                // 4. Финальное сообщение
+                setTimeout(() => {
+                    autoDownload.innerHTML = `
+                        <p style="color: var(--neon-green); margin-bottom: 10px;">
+                            <i class="fas fa-check-circle"></i> СКАЧИВАНИЕ ЗАПУЩЕНО!
+                        </p>
+                        <p style="font-size: 0.9rem; color: #aaa;">
+                            Проверьте папку "Загрузки" или всплывающее окно
+                        </p>
+                    `;
+                    
+                    // Меняем кнопку на "Повторить скачивание"
+                    downloadBtn.innerHTML = '<i class="fas fa-redo"></i> ПОВТОРИТЬ СКАЧИВАНИЕ';
+                    downloadBtn.style.background = 'linear-gradient(90deg, var(--neon-pink), var(--neon-purple))';
+                    
+                    // Эффекты
+                    createParticles(20);
+                    
+                }, 1500);
+                
+            }, 500);
         }
         
         // ==================== ЗАПУСК ====================
@@ -831,10 +944,10 @@
             // Запуск прогресса через 1 секунду
             setTimeout(updateProgress, 1000);
             
-            // Фоновая музыка прогресса (опционально)
+            // Фоновая музыка прогресса
             const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3');
             audio.volume = 0.3;
-            audio.play().catch(e => console.log('Аудио не воспроизведено (пользователь не взаимодействовал с сайтом)'));
+            audio.play().catch(e => console.log('Аудио не воспроизведено'));
             
             // Клик по любой части страницы для iOS/мобильных
             document.body.addEventListener('click', function initAudio() {
