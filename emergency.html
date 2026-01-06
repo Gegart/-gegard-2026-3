@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Экстренный доступ | Гепард Про</title>
+    <style>
+        body { 
+            background: #0a0514; 
+            color: white; 
+            font-family: sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .box { 
+            text-align: center; 
+            padding: 40px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 20px; 
+            border: 2px solid #00ffff; 
+        }
+        button { 
+            background: linear-gradient(90deg, #ff00ff, #00ffff); 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            margin: 10px; 
+            font-size: 1.1rem; 
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🚨 ЭКСТРЕННЫЙ ДОСТУП</h1>
+        <p>Сайт заблокирован тех. работами</p>
+        
+        <button onclick="unlockSite()">🔓 РАЗБЛОКИРОВАТЬ САЙТ</button>
+        <br>
+        <button onclick="openAdmin()">⚙ ОТКРЫТЬ АДМИН-ПАНЕЛЬ</button>
+        <br>
+        <button onclick="viewMaintenance()">👁 ПОСМОТРЕТЬ ЗАГЛУШКУ</button>
+        
+        <p style="margin-top: 30px; color: #aaa; font-size: 0.9rem;">
+            Только для администратора
+        </p>
+    </div>
+
+    <script>
+        function unlockSite() {
+            localStorage.removeItem('maintenanceActive');
+            localStorage.removeItem('maintenanceEndTime');
+            localStorage.removeItem('maintenanceMessage');
+            alert('✅ Сайт разблокирован!');
+            window.location.href = 'index.html';
+        }
+        
+        function openAdmin() {
+            window.open('admin-maintenance.html', '_blank');
+        }
+        
+        function viewMaintenance() {
+            window.open('maintenance.html', '_blank');
+        }
+        
+        // Авторазблокировка по секретному коду
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'G') {
+                unlockSite();
+            }
+        });
+    </script>
+</body>
+</html>
