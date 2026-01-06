@@ -1,3 +1,15 @@
+// Проверяем если это админ - пропускаем заглушку
+const urlParams = new URLSearchParams(window.location.search);
+const isAdmin = urlParams.get('admin') === 'gepard2026' || 
+               localStorage.getItem('gepard_admin_2026') === 'true';
+
+if (isAdmin) {
+    console.log('👑 Админ обнаружен, пропускаю заглушку');
+    // Не перенаправляем админа на заглушку
+} else {
+    // Обычная проверка техработ
+    // ... существующий код проверки техработ
+}
 // maintenance-check.js
 (function() {
     'use strict';
