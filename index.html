@@ -1,6 +1,3 @@
-Вот **ИСПРАВЛЕННЫЙ КОД** с работающей шестерёнкой:
-
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -886,23 +883,23 @@
     </style>
 
     <!-- ШЕСТЕРЁНКА -->
-    <div class="settings-gear" id="settingsGear">⚙</div>
+    <div class="settings-gear" id="settingsGear" onclick="toggleSettings()">⚙</div>
     
     <!-- ПАНЕЛЬ НАСТРОЕК -->
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
             <h4 id="settingsTitle">⚙ НАСТРОЙКИ</h4>
-            <button class="close-settings" id="closeSettingsBtn">×</button>
+            <button class="close-settings" onclick="toggleSettings()">×</button>
         </div>
         
         <div class="settings-content">
             <div class="settings-section">
                 <h5 id="langTitle">🌍 Язык</h5>
                 <div class="settings-buttons">
-                    <button class="settings-btn active" id="btnRu">
+                    <button class="settings-btn active" onclick="switchLanguage('ru')" id="btnRu">
                         🇷🇺 Русский
                     </button>
-                    <button class="settings-btn" id="btnEn">
+                    <button class="settings-btn" onclick="switchLanguage('en')" id="btnEn">
                         🇺🇸 English
                     </button>
                 </div>
@@ -911,10 +908,10 @@
             <div class="settings-section">
                 <h5 id="modeTitle">⚡ Режим</h5>
                 <div class="settings-buttons">
-                    <button class="settings-btn active" id="btnFull">
+                    <button class="settings-btn active" onclick="setMode('full')" id="btnFull">
                         💻 Полная версия
                     </button>
-                    <button class="settings-btn" id="btnLight">
+                    <button class="settings-btn" onclick="setMode('light')" id="btnLight">
                         📱 Лёгкая версия
                     </button>
                 </div>
@@ -937,13 +934,13 @@
             <div class="settings-section admin-section" id="adminSection" style="display: none;">
                 <h5 id="adminTitle">🔐 Админ-доступ</h5>
                 <div class="admin-links">
-                    <button class="admin-btn" id="btnCopyLink">
+                    <button class="admin-btn" onclick="copyAdminLink()" id="btnCopyLink">
                         🔗 Копировать ссылку
                     </button>
-                    <button class="admin-btn" id="btnAdminPanel">
+                    <button class="admin-btn" onclick="toggleAdminPanel()" id="btnAdminPanel">
                         👑 Панель администратора
                     </button>
-                    <button class="admin-btn" id="btnStats">
+                    <button class="admin-btn" onclick="showDetailedStats()" id="btnStats">
                         📈 Детальная статистика
                     </button>
                 </div>
@@ -988,6 +985,7 @@
         <div style="text-align: center;">
          <a href="download.html" 
    class="download-btn" 
+   onclick="trackDownload(event)"
    id="downloadLink">
                <i class="fas fa-bolt"></i> <span id="downloadBtnText">СКАЧАТЬ ТРЕК</span>
             </a>
@@ -998,4 +996,750 @@
                     <span id="howToDownload">Нажмите кнопку → Скачивание начнётся мгновенно</span>
                 </p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
-                    <div><strong id="filenameLabel">
+                    <div><strong id="filenameLabel">Файл:</strong> <span id="filenameText">2026_Epicenter_of_Future_GepardPro.mp3</span></div>
+                    <div><strong id="filesizeLabel">Размер:</strong> <span id="filesizeText">~8 МБ</span></div>
+                    <div><strong id="formatLabel">Формат:</strong> <span id="formatText">MP3 320 кбит/с</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3><i class="fas fa-music"></i> <span id="aboutTrack">О ТРЕКЕ</span></h3>
+                <p id="aboutText" style="line-height: 1.6;">
+                    Футуристичный новогодний гипнотик, создающий атмосферу эпицентра будущего. 
+                    Идеально для видеоконтента, стримов, заставок и встречи 2026 года.
+                </p>
+                <div style="margin-top: 20px;">
+                    <h4><i class="fas fa-microchip"></i> <span id="specs">ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ</span></h4>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li><strong>Формат:</strong> <span id="formatValue">MP3 (320 kbps)</span></li>
+                        <li><strong>Жанр:</strong> <span id="genreValue">Electronic / Futuristic</span></li>
+                        <li><strong>Темп:</strong> <span id="tempoValue">128 BPM</span></li>
+                        <li><strong>Ключ:</strong> <span id="keyValue">C# Minor</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-rocket"></i> <span id="forCreators">ДЛЯ КОНТЕНТ-МЕЙКЕРОВ</span></h3>
+                <p id="forCreatorsText" style="margin-bottom: 15px;">
+                    Этот трек идеально подходит для:
+                </p>
+                <ul style="padding-left: 20px;">
+                    <li id="creatorItem1">YouTube-видео и обзоров</li>
+                    <li id="creatorItem2">TikTok и Instagram Reels</li>
+                    <li id="creatorItem3">Стримов на Twitch/YouTube</li>
+                    <li id="creatorItem4">Подкастов и презентаций</li>
+                    <li id="creatorItem5">Футуристичных проектов</li>
+                </ul>
+                
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,0,0.1); border-radius: 10px;">
+                    <p style="color: var(--neon-yellow); margin: 0;">
+                        <i class="fas fa-exclamation-circle"></i> 
+                        <strong id="importantLabel">ВАЖНО:</strong> 
+                        <span id="importantText">При использовании укажите автора: </span>
+                        <span style="color:var(--neon-pink); font-weight: bold;" id="authorName">Гепард Про</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="info-card">
+                <h3><i class="fas fa-heart"></i> <span id="support">ПОДДЕРЖАТЬ АВТОРА</span></h3>
+                <p id="supportText" style="margin-bottom: 15px;">
+                    Если трек вам понравился:
+                </p>
+                <ul style="padding-left: 20px;">
+                    <li id="supportItem1">Подпишитесь на YouTube-канал</li>
+                    <li id="supportItem2">Поставьте лайк и напишите комментарий</li>
+                    <li id="supportItem3">Поделитесь треком с друзьями</li>
+                    <li id="supportItem4">Используйте в своих видео с указанием автора</li>
+                </ul>
+                
+                <div style="margin-top: 25px; text-align: center;">
+                    <a href="https://youtube.com/channel/UCdUPvyLSlBt1EkFMQsGSAJQ?si=5gddUteDxzHmuXBi" 
+                       class="admin-btn" 
+                       target="_blank"
+                       style="text-decoration: none; display: inline-block; width: auto; padding: 12px 25px;">
+                       <i class="fab fa-youtube"></i> <span id="youtubeBtn">YouTube Канал</span>
+                    </a>
+                </div>
+                
+                <p style="margin-top: 25px; text-align: center; color: var(--neon-green);">
+                    <i class="fas fa-star"></i> 
+                    <span id="inspirationText">Ваша поддержка вдохновляет на создание новой музыки!</span> 
+                    <i class="fas fa-star"></i>
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="copyright">
+            <p id="copyright">
+                © 2026 <span style="color:var(--neon-cyan); font-weight: bold;">ГЕПАРД ПРО</span>. 
+                Все права на композицию защищены.
+            </p>
+            <p id="licenseText" style="margin-top: 10px;">
+                Трек предоставляется бесплатно для некоммерческого использования.
+            </p>
+            <p id="contactText">
+                При использовании в коммерческих проектах — свяжитесь с автором.
+            </p>
+        </div>
+        
+        <div class="new-year" id="newYearText">
+            <i class="fas fa-fire"></i> С новым 2026 годом! <i class="fas fa-fire"></i>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== УМНЫЙ СЧЁТЧИК ====================
+        class SmartCounter {
+            constructor() {
+                this.adminKey = 'gepard_beta_admin_2026';
+                this.isAdmin = false;
+                this.version = '1.2-beta';
+            }
+            
+            init() {
+                console.log(`🚀 Бета-версия ${this.version} запущена`);
+                this.checkIfAdmin();
+                if (!this.isAdmin) {
+                    this.countVisitor();
+                }
+                this.updateDisplay();
+                this.updateSettingsPanel();
+                
+                if (this.isAdmin) {
+                    showNotification('🔧 Бета-тест активен | Версия ' + this.version);
+                }
+            }
+            
+            checkIfAdmin() {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('admin') === 'gepard2026') {
+                    this.isAdmin = true;
+                    localStorage.setItem(this.adminKey, 'true');
+                    return true;
+                }
+                
+                if (localStorage.getItem(this.adminKey) === 'true') {
+                    this.isAdmin = true;
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            countVisitor() {
+                const today = new Date().toDateString();
+                const todayKey = 'beta_visitors_' + today;
+                const sessionKey = 'beta_session_' + today;
+                
+                if (sessionStorage.getItem(sessionKey)) {
+                    return;
+                }
+                
+                sessionStorage.setItem(sessionKey, 'true');
+                
+                let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || [];
+                const visitorId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
+                if (todayVisitors.length < 1000) {
+                    todayVisitors.push(visitorId);
+                    localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
+                    
+                    let totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                    totalVisitors++;
+                    localStorage.setItem('beta_totalVisitors', totalVisitors.toString());
+                }
+            }
+            
+            updateDisplay() {
+                const visitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                const downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                
+                document.getElementById('visitorCount').textContent = visitors;
+                document.getElementById('downloadCount').textContent = downloads;
+                document.getElementById('statsVisitors').textContent = visitors;
+                document.getElementById('statsDownloads').textContent = downloads;
+            }
+            
+            updateSettingsPanel() {
+                const statsSection = document.getElementById('statsSection');
+                const adminSection = document.getElementById('adminSection');
+                
+                if (this.isAdmin) {
+                    statsSection.style.display = 'block';
+                    adminSection.style.display = 'block';
+                }
+            }
+            
+            trackDownload() {
+                console.log('📥 Скачивание в бета-версии');
+                
+                const downloadKey = 'beta_last_download_' + new Date().toDateString();
+                const lastDownload = localStorage.getItem(downloadKey);
+                const now = Date.now();
+                
+                if (lastDownload && (now - parseInt(lastDownload)) < 10000) {
+                    showNotification('⏳ Подождите 10 секунд');
+                    return false;
+                }
+                
+                localStorage.setItem(downloadKey, now.toString());
+                
+                if (!this.isAdmin) {
+                    let downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                    downloads++;
+                    localStorage.setItem('beta_totalDownloads', downloads.toString());
+                }
+                
+                this.updateDisplay();
+                return true;
+            }
+        }
+        
+        // ==================== ПЕРЕВОДЫ ====================
+        const translations = {
+            ru: {
+                title: "2026: ЭПИЦЕНТР БУДУЩЕГО",
+                artist: "ГЕПАРД ПРО",
+                tagline: "Футуристичный новогодний гипнотик",
+                badge: "ПРЕМЬЕРА 2026",
+                downloadBtnText: "СКАЧАТЬ ТРЕК",
+                howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",
+                filenameLabel: "Файл:",
+                filesizeLabel: "Размер:",
+                formatLabel: "Формат:",
+                aboutTrack: "О ТРЕКЕ",
+                aboutText: "Футуристичный новогодний гипнотик, создающий атмосферу эпицентра будущего. Идеально для видеоконтента, стримов, заставок и встречи 2026 года.",
+                specs: "ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ",
+                forCreators: "ДЛЯ КОНТЕНТ-МЕЙКЕРОВ",
+                forCreatorsText: "Этот трек идеально подходит для:",
+                support: "ПОДДЕРЖАТЬ АВТОРА",
+                supportText: "Если трек вам понравился:",
+                importantLabel: "ВАЖНО:",
+                importantText: "При использовании укажите автора: ",
+                authorName: "Гепард Про",
+                inspirationText: "Ваша поддержка вдохновляет на создание новой музыки!",
+                copyright: "© 2026 ГЕПАРД ПРО. Все права на композицию защищены.",
+                licenseText: "Трек предоставляется бесплатно для некоммерческого использования.",
+                contactText: "При использовании в коммерческих проектах — свяжитесь с автором.",
+                newYearText: "С новым 2026 годом!",
+                youtubeBtn: "YouTube Канал",
+                settingsTitle: "⚙ НАСТРОЙКИ",
+                langTitle: "🌍 Язык",
+                modeTitle: "⚡ Режим",
+                statsTitle: "📊 Статистика",
+                adminTitle: "🔐 Админ-доступ",
+                btnRu: "🇷🇺 Русский",
+                btnEn: "🇺🇸 English",
+                btnFull: "💻 Полная версия",
+                btnLight: "📱 Лёгкая версия",
+                btnCopyLink: "🔗 Копировать ссылку",
+                btnAdminPanel: "👑 Панель администратора",
+                statVisitorsLabel: "Посетители:",
+                statDownloadsLabel: "Скачивания:",
+                settingsFooterText: "Настройки сохраняются автоматически",
+                filenameText: '2026_Epicenter_of_Future_GepardPro.mp3',
+                filesizeText: '~8 МБ',
+                formatText: 'MP3 320 кбит/с',
+                formatValue: 'MP3 (320 kbps)',
+                genreValue: 'Electronic / Futuristic',
+                tempoValue: '128 BPM',
+                keyValue: 'C# Minor',
+                creatorItem1: 'YouTube-видео и обзоров',
+                creatorItem2: 'TikTok и Instagram Reels',
+                creatorItem3: 'Стримов на Twitch/YouTube',
+                creatorItem4: 'Подкастов и презентаций',
+                creatorItem5: 'Футуристичных проектов',
+                supportItem1: 'Подпишитесь на YouTube-канал',
+                supportItem2: 'Поставьте лайк и напишите комментарий',
+                supportItem3: 'Поделитесь треком с друзьями',
+                supportItem4: 'Используйте в своих видео с указанием автора'
+            },
+            en: {
+                title: "2026: EPICENTER OF THE FUTURE",
+                artist: "GEPARD PRO",
+                tagline: "Futuristic New Year Hypnotic",
+                badge: "PREMIERE 2026",
+                downloadBtnText: "DOWNLOAD TRACK",
+              ru: {
+    // ... другие переводы ...
+    howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",  // ← ЭТО
+    // ... 
+},
+en: {
+    // ... другие переводы ...
+    howToDownload: "Click the button → Download will start instantly",  // ← И ЭТО
+    // ...
+}
+                filenameLabel: "File:",
+                filesizeLabel: "Size:",
+                formatLabel: "Format:",
+                aboutTrack: "ABOUT THE TRACK",
+                aboutText: "Futuristic New Year hypnotic, creating the atmosphere of the epicenter of the future. Perfect for video content, streams, screensavers and meeting 2026.",
+                specs: "TECHNICAL SPECIFICATIONS",
+                forCreators: "FOR CONTENT CREATORS",
+                forCreatorsText: "This track is perfect for:",
+                support: "SUPPORT THE AUTHOR",
+                supportText: "If you liked the track:",
+                importantLabel: "IMPORTANT:",
+                importantText: "When using, please credit the author: ",
+                authorName: "Gepard Pro",
+                inspirationText: "Your support inspires the creation of new music!",
+                copyright: "© 2026 GEPARD PRO. All composition rights reserved.",
+                licenseText: "The track is provided free of charge for non-commercial use.",
+                contactText: "For commercial projects — contact the author.",
+                newYearText: "Happy New Year 2026!",
+                youtubeBtn: "YouTube Channel",
+                settingsTitle: "⚙ SETTINGS",
+                langTitle: "🌍 Language",
+                modeTitle: "⚡ Mode",
+                statsTitle: "📊 Statistics",
+                adminTitle: "🔐 Admin Access",
+                btnRu: "🇷🇺 Russian",
+                btnEn: "🇺🇸 English",
+                btnFull: "💻 Full Version",
+                btnLight: "📱 Light Version",
+                btnCopyLink: "🔗 Copy Link",
+                btnAdminPanel: "👑 Admin Panel",
+                statVisitorsLabel: "Visitors:",
+                statDownloadsLabel: "Downloads:",
+                settingsFooterText: "Settings are saved automatically",
+                filenameText: '2026_Epicenter_of_Future_GepardPro.mp3',
+                filesizeText: '~8 MB',
+                formatText: 'MP3 320 kbps',
+                formatValue: 'MP3 (320 kbps)',
+                genreValue: 'Electronic / Futuristic',
+                tempoValue: '128 BPM',
+                keyValue: 'C# Minor',
+                creatorItem1: 'YouTube videos and reviews',
+                creatorItem2: 'TikTok and Instagram Reels',
+                creatorItem3: 'Twitch/YouTube streams',
+                creatorItem4: 'Podcasts and presentations',
+                creatorItem5: 'Futuristic projects',
+                supportItem1: 'Subscribe to YouTube channel',
+                supportItem2: 'Like and comment',
+                supportItem3: 'Share the track with friends',
+                supportItem4: 'Use in your videos with author mention'
+            }
+        };
+        
+        // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
+        const smartCounter = new SmartCounter();
+        
+        // ==================== ОСНОВНЫЕ ФУНКЦИИ ====================
+        function switchLanguage(lang) {
+            const t = translations[lang];
+            
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key === 'downloadBtnText') {
+                        element.innerHTML = `<i class="fas fa-bolt"></i> ${t[key]}`;
+                    } else if (key === 'youtubeBtn') {
+                        element.innerHTML = `<i class="fab fa-youtube"></i> ${t[key]}`;
+                    } else if (key === 'title') {
+                        element.textContent = t[key];
+                        element.setAttribute('data-text', t[key]);
+                    } else {
+                        element.textContent = t[key];
+                    }
+                }
+            });
+            
+            updateButtonStates(lang);
+            localStorage.setItem('siteLanguage', lang);
+            showNotification(lang === 'ru' ? 'Язык изменён' : 'Language changed');
+        }
+        
+        function updateButtonStates(lang) {
+            document.querySelectorAll('.settings-btn').forEach(btn => btn.classList.remove('active'));
+            if (lang === 'ru') {
+                document.getElementById('btnRu').classList.add('active');
+            } else {
+                document.getElementById('btnEn').classList.add('active');
+            }
+        }
+        
+        function setMode(mode) {
+            if (mode === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('btnLight').classList.add('active');
+                document.getElementById('btnFull').classList.remove('active');
+                showNotification('Лёгкая версия');
+            } else {
+                document.body.classList.remove('light-mode');
+                document.getElementById('btnFull').classList.add('active');
+                document.getElementById('btnLight').classList.remove('active');
+                showNotification('Полная версия');
+            }
+            localStorage.setItem('siteMode', mode);
+        }
+        
+     function toggleSettings(event) {
+    // Останавливаем всплытие если есть event
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    const panel = document.getElementById('settingsPanel');
+    const gear = document.getElementById('settingsGear');
+    
+    // Проверяем что элементы существуют
+    if (!panel || !gear) {
+        console.error('❌ Не найдены элементы:', {panel: !!panel, gear: !!gear});
+        return;
+    }
+    
+    console.log('⚙ toggleSettings вызвана!');
+    console.log('📊 Текущее состояние:', panel.style.display);
+    
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+        gear.style.animation = 'rotateGear 10s linear infinite';
+        console.log('📌 Панель СКРЫТА');
+    } else {
+        panel.style.display = 'block';
+        gear.style.animation = 'rotateGear 3s linear infinite';
+        console.log('📌 Панель ПОКАЗАНА');
+        panel.scrollTop = 0;
+    }
+}
+        
+        function copyAdminLink() {
+            const link = window.location.origin + window.location.pathname + '?admin=gepard2026';
+            navigator.clipboard.writeText(link)
+                .then(() => showNotification('✅ Ссылка скопирована'))
+                .catch(() => prompt('📋 Скопируйте ссылку:', link));
+        }
+        
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminCounter');
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+                showNotification('📌 Панель скрыта');
+            } else {
+                panel.style.display = 'block';
+                makeDraggable(panel);
+                showNotification('📌 Панель показана');
+            }
+        }
+        
+        function makeDraggable(element) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            let isDragging = false;
+            
+            element.addEventListener('mousedown', startDrag);
+            element.addEventListener('touchstart', startDragTouch, { passive: false });
+            
+            function startDrag(e) {
+                e.preventDefault();
+                isDragging = true;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.addEventListener('mousemove', elementDrag);
+                document.addEventListener('mouseup', stopDrag);
+            }
+            
+            function startDragTouch(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                isDragging = true;
+                pos3 = touch.clientX;
+                pos4 = touch.clientY;
+                document.addEventListener('touchmove', elementDragTouch, { passive: false });
+                document.addEventListener('touchend', stopDrag);
+            }
+            
+            function elementDrag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                
+                const newLeft = element.offsetLeft - pos1;
+                const newTop = element.offsetTop - pos2;
+                
+                element.style.left = Math.max(10, Math.min(window.innerWidth - element.offsetWidth - 10, newLeft)) + "px";
+                element.style.top = Math.max(10, Math.min(window.innerHeight - element.offsetHeight - 10, newTop)) + "px";
+            }
+            
+            function elementDragTouch(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                pos1 = pos3 - touch.clientX;
+                pos2 = pos4 - touch.clientY;
+                pos3 = touch.clientX;
+                pos4 = touch.clientY;
+                
+                const newLeft = element.offsetLeft - pos1;
+                const newTop = element.offsetTop - pos2;
+                
+                element.style.left = Math.max(10, Math.min(window.innerWidth - element.offsetWidth - 10, newLeft)) + "px";
+                element.style.top = Math.max(10, Math.min(window.innerHeight - element.offsetHeight - 10, newTop)) + "px";
+            }
+            
+            function stopDrag() {
+                isDragging = false;
+                document.removeEventListener('mousemove', elementDrag);
+                document.removeEventListener('mouseup', stopDrag);
+                document.removeEventListener('touchmove', elementDragTouch);
+                document.removeEventListener('touchend', stopDrag);
+            }
+        }
+        
+        function trackDownload() {
+            if (!smartCounter.trackDownload()) return false;
+            
+            createParticles(event);
+            
+            const lang = localStorage.getItem('siteLanguage') || 'ru';
+            showNotification(lang === 'ru' ? '🎵 Скачивание началось' : '🎵 Download started');
+            
+            setTimeout(() => {
+                window.open('https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file', '_blank');
+            }, 500);
+            
+            return true;
+        }
+        
+        function createParticles(event) {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'particles';
+            particlesContainer.style.cssText = 'position:fixed; top:0; left:0; pointer-events:none; z-index:99999;';
+            document.body.appendChild(particlesContainer);
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    pointer-events: none;
+                    left: ${event.clientX - 2}px;
+                    top: ${event.clientY - 2}px;
+                    --tx: ${(Math.random() - 0.5) * 150}px;
+                    --ty: ${(Math.random() - 0.5) * 150}px;
+                    background: ${i % 3 === 0 ? 'var(--neon-pink)' : 
+                                 i % 3 === 1 ? 'var(--neon-cyan)' : 
+                                              'var(--neon-yellow)'};
+                    animation: particleFloat 1s ease-out forwards;
+                `;
+                particlesContainer.appendChild(particle);
+            }
+            
+            setTimeout(() => particlesContainer.remove(), 1000);
+        }
+        
+        function showDetailedStats() {
+            if (document.getElementById('statsModal')) return;
+            
+            const stats = {
+                visitors: parseInt(localStorage.getItem('beta_totalVisitors')) || 0,
+                downloads: parseInt(localStorage.getItem('beta_totalDownloads')) || 0,
+                today: new Date().toDateString(),
+                version: '1.2-beta'
+            };
+            
+            const lang = localStorage.getItem('siteLanguage') || 'ru';
+            
+            const modal = document.createElement('div');
+            modal.id = 'statsModal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.95);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 100000;
+                backdrop-filter: blur(20px);
+                animation: fadeIn 0.3s ease-out;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: rgba(10,5,20,0.95); 
+                           padding: 30px; 
+                           border-radius: 20px; 
+                           max-width: 400px; 
+                           width: 90%; 
+                           border: 2px solid var(--neon-cyan); 
+                           box-shadow: 0 0 60px rgba(0,255,255,0.4);">
+                    <button onclick="document.getElementById('statsModal').remove()" 
+                            style="position: absolute; top: 15px; right: 15px; 
+                                   background: none; border: none; color: var(--neon-pink); 
+                                   font-size: 28px; cursor: pointer; padding: 5px 10px;
+                                   border-radius: 50%; transition: all 0.3s;"
+                            onmouseover="this.style.background='rgba(255,0,255,0.2)'"
+                            onmouseout="this.style.background='none'">
+                        ×
+                    </button>
+                    
+                    <h3 style="color: var(--neon-cyan); margin-bottom: 20px; text-align: center;">
+                        📊 ${lang === 'ru' ? 'СТАТИСТИКА БЕТА-ТЕСТА' : 'BETA STATISTICS'}
+                    </h3>
+                    
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="color: #aaa; font-size: 0.9rem;">${lang === 'ru' ? '👥 Посетители бета-теста' : '👥 Beta Visitors'}</div>
+                        <div style="color: var(--neon-green); font-size: 2rem; font-weight: bold;">${stats.visitors}</div>
+                    </div>
+                    
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="color: #aaa; font-size: 0.9rem;">💾 ${lang === 'ru' ? 'Скачивания в бета-версии' : 'Beta Downloads'}</div>
+                        <div style="color: var(--neon-yellow); font-size: 2rem; font-weight: bold;">${stats.downloads}</div>
+                    </div>
+                    
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 25px;">
+                        <div style="color: #aaa; font-size: 0.9rem;">📅 ${lang === 'ru' ? 'Дата' : 'Date'}</div>
+                        <div style="color: var(--neon-pink);">${stats.today}</div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button onclick="document.getElementById('statsModal').remove()" 
+                                style="background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan)); 
+                                       color: white; border: none; padding: 12px 40px; 
+                                       border-radius: 10px; cursor: pointer; font-weight: bold;">
+                            ${lang === 'ru' ? 'Закрыть' : 'Close'}
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'quick-notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 2000);
+        }
+        
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Бета-тест v1.2 запускается...');
+            
+            smartCounter.init();
+            
+            const savedLang = localStorage.getItem('siteLanguage') || 'ru';
+            const savedMode = localStorage.getItem('siteMode') || 'full';
+            
+            switchLanguage(savedLang);
+            setMode(savedMode);
+            
+            // Прямой обработчик для шестерёнки
+            const gear = document.getElementById('settingsGear');
+            if (gear) {
+                gear.addEventListener('click', toggleSettings);
+                console.log('✅ Обработчик шестерёнки добавлен');
+            }
+            
+            // Закрытие панели при клике вне её
+            document.addEventListener('click', function(e) {
+                const panel = document.getElementById('settingsPanel');
+                const gear = document.getElementById('settingsGear');
+                
+                if (panel && panel.style.display === 'block' && 
+                    !panel.contains(e.target) && 
+                    gear && !gear.contains(e.target)) {
+                    panel.style.display = 'none';
+                }
+            });
+            
+            // Админ-панель при загрузке
+            if (smartCounter.isAdmin) {
+                setTimeout(() => {
+                    const adminPanel = document.getElementById('adminCounter');
+                    if (adminPanel) {
+                        adminPanel.style.display = 'block';
+                        makeDraggable(adminPanel);
+                        showNotification('🔧 Админ-панель активирована');
+                    }
+                }, 1000);
+            }
+            
+            // Эффекты частиц
+            document.querySelectorAll('.download-btn, .settings-btn, .admin-btn').forEach(btn => {
+                btn.addEventListener('click', createParticles);
+            });
+            
+            console.log('✅ Бета-тест успешно загружен!');
+            console.log('📊 Админ доступ:', smartCounter.isAdmin);
+        });
+            // ==================== ОКОНЧАТЕЛЬНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
+        console.log('🔧 Устанавливаю финалный фикс шестерёнки...');
+        
+        // Ждём полной загрузки страницы
+        setTimeout(function() {
+            const gear = document.getElementById('settingsGear');
+            const panel = document.getElementById('settingsPanel');
+            
+            console.log('🔍 Проверяю элементы:', {
+                gear: gear ? '✅ Найдена' : '❌ Не найдена',
+                panel: panel ? '✅ Найдена' : '❌ Не найдена'
+            });
+            
+            if (gear && panel) {
+                // Удаляем ВСЕ старые обработчики
+                const newGear = gear.cloneNode(true);
+                gear.parentNode.replaceChild(newGear, gear);
+                
+                // Получаем свежие элементы
+                const freshGear = document.getElementById('settingsGear');
+                const freshPanel = document.getElementById('settingsPanel');
+                
+                // СУПЕР-ПРОСТОЙ обработчик
+                freshGear.onclick = function(e) {
+                    console.log('🎯 КЛИК ПО ШЕСТЕРЁНКЕ ЗАФИКСИРОВАН!');
+                    
+                    if (freshPanel.style.display === 'block') {
+                        freshPanel.style.display = 'none';
+                    } else {
+                        freshPanel.style.display = 'block';
+                    }
+                    
+                    // Останавливаем событие
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    return false;
+                };
+                
+                console.log('✅ Шестерёнка ПОЧИНЕНА! Кликай!');
+                
+                // Тест: открываем и закрываем через 1 секунду
+                setTimeout(function() {
+                    freshGear.click();
+                    setTimeout(() => freshGear.click(), 500);
+                }, 1000);
+                
+            } else {
+                console.error('💥 КРИТИЧЕСКАЯ ОШИБКА: Не найдены элементы для фикса');
+            }
+        }, 1000)
+        
+  </script>
+</body>
+</html>
