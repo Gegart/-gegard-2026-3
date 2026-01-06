@@ -1744,6 +1744,113 @@ setTimeout(() => {
         console.log('✅ Обработчик добавлен');
     }
 }, 100);
+        // ==================== ЭКСТРЕННЫЙ ФИКС ШЕСТЕРЁНКИ ====================
+console.log('🔧 Запускаем экстренный фикс шестерёнки...');
+
+// 1. Проверяем существуют ли элементы
+const gear = document.getElementById('settingsGear');
+const panel = document.getElementById('settingsPanel');
+
+console.log('Найдены элементы:', {
+    'Шестерёнка (settingsGear)': gear ? '✅ Да' : '❌ Нет',
+    'Панель (settingsPanel)': panel ? '✅ Да' : '❌ Нет'
+});
+
+if (!gear) {
+    console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: Не найдена шестерёнка с id="settingsGear"');
+    // Создаём заново если нет
+    const newGear = document.createElement('div');
+    newGear.id = 'settingsGear';
+    newGear.className = 'settings-gear';
+    newGear.innerHTML = '⚙';
+    newGear.style.cssText = `
+        position: fixed;
+        top: 25px;
+        right: 25px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #ff00ff, #00ffff);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        cursor: pointer;
+        z-index: 10000;
+        box-shadow: 0 0 25px rgba(255, 0, 255, 0.6);
+        animation: rotateGear 10s linear infinite;
+        border: 3px solid white;
+    `;
+    document.body.appendChild(newGear);
+    console.log('✅ Создал новую шестерёнку');
+}
+
+if (!panel) {
+    console.error('❌ КРИТИЧЕСКАЯ ОШИБКА: Не найдена панель с id="settingsPanel"');
+}
+
+// 2. Добавляем обработчик клика
+function fixGearClick() {
+    const currentGear = document.getElementById('settingsGear');
+    const currentPanel = document.getElementById('settingsPanel');
+    
+    if (currentGear && currentPanel) {
+        // Удаляем старые обработчики
+        currentGear.replaceWith(currentGear.cloneNode(true));
+        const freshGear = document.getElementById('settingsGear');
+        
+        // Добавляем новый обработчик
+        freshGear.addEventListener('click', function(e) {
+            console.log('⚙ КЛИК! Текущее состояние панели:', currentPanel.style.display);
+            e.stopPropagation();
+            
+            if (currentPanel.style.display === 'block') {
+                currentPanel.style.display = 'none';
+                console.log('📌 Скрыл панель');
+            } else {
+                currentPanel.style.display = 'block';
+                console.log('📌 Показал панель');
+                // Прокрутка в начало
+                currentPanel.scrollTop = 0;
+            }
+        });
+        
+        freshGear.style.cursor = 'pointer';
+        console.log('✅ Обработчик клика добавлен');
+        
+        // Добавляем стиль для анимации если нет
+        if (!document.querySelector('#gearAnimation')) {
+            const style = document.createElement('style');
+            style.id = 'gearAnimation';
+            style.textContent = `
+                @keyframes rotateGear {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+}
+
+// 3. Запускаем фикс с задержкой
+setTimeout(fixGearClick, 500);
+
+// 4. Также добавляем глобальный обработчик
+document.addEventListener('click', function(e) {
+    const panel = document.getElementById('settingsPanel');
+    const gear = document.getElementById('settingsGear');
+    
+    if (panel && panel.style.display === 'block' && 
+        !panel.contains(e.target) && 
+        gear && !gear.contains(e.target)) {
+        console.log('👆 Клик вне панели - закрываю');
+        panel.style.display = 'none';
+    }
+});
+
+console.log('🔧 Фикс шестерёнки запущен, проверяй через 0.5 секунды...');
     </script>
 </body>
 </html>
