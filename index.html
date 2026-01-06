@@ -883,13 +883,15 @@
     </style>
 
     <!-- ШЕСТЕРЁНКА -->
-    <div class="settings-gear" id="settingsGear" onclick="toggleSettings()">⚙</div>
+    <div class="settings-gear" id="settingsGear">⚙</div>
     
     <!-- ПАНЕЛЬ НАСТРОЕК -->
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
             <h4 id="settingsTitle">⚙ НАСТРОЙКИ</h4>
             <button class="close-settings" onclick="closeSettingsPanel()">×</button>
+        </div>
+        
         <div class="settings-content">
             <div class="settings-section">
                 <h5 id="langTitle">🌍 Язык</h5>
@@ -981,11 +983,11 @@
         </div>
         
         <div style="text-align: center;">
-         <a href="download.html" 
-   class="download-btn" 
-   onclick="trackDownload(event)"
-   id="downloadLink">
-               <i class="fas fa-bolt"></i> <span id="downloadBtnText">СКАЧАТЬ ТРЕК</span>
+            <a href="download.html" 
+               class="download-btn" 
+               onclick="trackDownload(event)"
+               id="downloadLink">
+                <i class="fas fa-bolt"></i> <span id="downloadBtnText">СКАЧАТЬ ТРЕК</span>
             </a>
             
             <div style="margin-top: 30px; padding: 20px; background: rgba(0,255,255,0.1); border-radius: 15px;">
@@ -1264,16 +1266,7 @@
                 tagline: "Futuristic New Year Hypnotic",
                 badge: "PREMIERE 2026",
                 downloadBtnText: "DOWNLOAD TRACK",
-              ru: {
-    // ... другие переводы ...
-    howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",  // ← ЭТО
-    // ... 
-},
-en: {
-    // ... другие переводы ...
-    howToDownload: "Click the button → Download will start instantly",  // ← И ЭТО
-    // ...
-}
+                howToDownload: "Click the button → Download will start instantly",
                 filenameLabel: "File:",
                 filesizeLabel: "Size:",
                 formatLabel: "Format:",
@@ -1378,36 +1371,39 @@ en: {
             localStorage.setItem('siteMode', mode);
         }
         
-     function toggleSettings(event) {
-    // Останавливаем всплытие если есть event
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    
-    const panel = document.getElementById('settingsPanel');
-    const gear = document.getElementById('settingsGear');
-    
-    // Проверяем что элементы существуют
-    if (!panel || !gear) {
-        console.error('❌ Не найдены элементы:', {panel: !!panel, gear: !!gear});
-        return;
-    }
-    
-    console.log('⚙ toggleSettings вызвана!');
-    console.log('📊 Текущее состояние:', panel.style.display);
-    
-    if (panel.style.display === 'block') {
-        panel.style.display = 'none';
-        gear.style.animation = 'rotateGear 10s linear infinite';
-        console.log('📌 Панель СКРЫТА');
-    } else {
-        panel.style.display = 'block';
-        gear.style.animation = 'rotateGear 3s linear infinite';
-        console.log('📌 Панель ПОКАЗАНА');
-        panel.scrollTop = 0;
-    }
-}
+        function toggleSettings(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            const panel = document.getElementById('settingsPanel');
+            const gear = document.getElementById('settingsGear');
+            
+            if (!panel || !gear) {
+                console.error('❌ Не найдены элементы:', {panel: !!panel, gear: !!gear});
+                return;
+            }
+            
+            console.log('⚙ toggleSettings вызвана!');
+            
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+                gear.style.animation = 'rotateGear 10s linear infinite';
+            } else {
+                panel.style.display = 'block';
+                gear.style.animation = 'rotateGear 3s linear infinite';
+                panel.scrollTop = 0;
+            }
+        }
+        
+        function closeSettingsPanel() {
+            const panel = document.getElementById('settingsPanel');
+            const gear = document.getElementById('settingsGear');
+            
+            if (panel) panel.style.display = 'none';
+            if (gear) gear.style.animation = 'rotateGear 10s linear infinite';
+        }
         
         function copyAdminLink() {
             const link = window.location.origin + window.location.pathname + '?admin=gepard2026';
@@ -1662,6 +1658,9 @@ en: {
                     !panel.contains(e.target) && 
                     gear && !gear.contains(e.target)) {
                     panel.style.display = 'none';
+                    if (gear) {
+                        gear.style.animation = 'rotateGear 10s linear infinite';
+                    }
                 }
             });
             
@@ -1685,96 +1684,6 @@ en: {
             console.log('✅ Бета-тест успешно загружен!');
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
-         <script>
-   <script>
-    // ==================== ИСПРАВЛЕННАЯ ШЕСТЕРЁНКА ====================
-    console.log('🔧 Инициализация шестерёнки...');
-    
-    // Переопределяем функцию toggleSettings правильно
-    window.toggleSettings = function(event) {
-        const panel = document.getElementById('settingsPanel');
-        const gear = document.getElementById('settingsGear');
-        
-        if (!panel || !gear) {
-            console.error('❌ Элементы не найдены');
-            return;
-        }
-        
-        console.log('⚙ toggleSettings вызвана');
-        
-        if (panel.style.display === 'block') {
-            panel.style.display = 'none';
-            gear.style.animation = 'rotateGear 10s linear infinite';
-        } else {
-            panel.style.display = 'block';
-            gear.style.animation = 'rotateGear 3s linear infinite';
-        }
-        
-        if (event) {
-            event.stopPropagation();
-        }
-    };
-    
-    // Инициализация при загрузке
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 Страница загружена');
-        
-        // Инициализация счетчика
-        smartCounter.init();
-        
-        // Загрузка сохраненных настроек
-        const savedLang = localStorage.getItem('siteLanguage') || 'ru';
-        const savedMode = localStorage.getItem('siteMode') || 'full';
-        
-        switchLanguage(savedLang);
-        setMode(savedMode);
-        
-        // Назначаем обработчик на шестерёнку
-        const gear = document.getElementById('settingsGear');
-        if (gear) {
-            gear.addEventListener('click', toggleSettings);
-            console.log('✅ Обработчик на шестерёнку назначен');
-        }
-        
-        // Закрытие панели при клике вне её
-        document.addEventListener('click', function(e) {
-            const panel = document.getElementById('settingsPanel');
-            const gear = document.getElementById('settingsGear');
-            
-            if (panel && panel.style.display === 'block' && 
-                !panel.contains(e.target) && 
-                gear && !gear.contains(e.target)) {
-                panel.style.display = 'none';
-                if (gear) {
-                    gear.style.animation = 'rotateGear 10s linear infinite';
-                }
-            }
-        });
-        
-        // Админ-панель
-        if (smartCounter && smartCounter.isAdmin) {
-            setTimeout(() => {
-                const adminPanel = document.getElementById('adminCounter');
-                if (adminPanel) {
-                    adminPanel.style.display = 'block';
-                    makeDraggable(adminPanel);
-                    showNotification('🔧 Админ-панель активирована');
-                }
-            }, 1000);
-        }
-        
-        console.log('✅ Инициализация завершена');
-    });
-    
-    // Функция для кнопки закрытия в панели
-    function closeSettingsPanel() {
-        const panel = document.getElementById('settingsPanel');
-        const gear = document.getElementById('settingsGear');
-        
-        if (panel) panel.style.display = 'none';
-        if (gear) gear.style.animation = 'rotateGear 10s linear infinite';
-    }
-</script>
-  </script>
+    </script>
 </body>
 </html>
