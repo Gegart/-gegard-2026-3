@@ -1399,78 +1399,168 @@
             setTimeout(() => particlesContainer.remove(), 1000);
         }
         
-        function showDetailedStats() {
-            const stats = {
-                visitors: parseInt(localStorage.getItem('totalVisitors')) || 0,
-                downloads: parseInt(localStorage.getItem('totalDownloads')) || 0,
-                today: new Date().toDateString()
-            };
-            
-            const lang = localStorage.getItem('siteLanguage') || 'ru';
-            
-            const statsHTML = `
-                <div style="text-align: left; padding: 20px;">
-                    <h3 style="color: var(--neon-cyan); margin-bottom: 20px;">📊 ${lang === 'ru' ? 'ДЕТАЛЬНАЯ СТАТИСТИКА' : 'DETAILED STATISTICS'}</h3>
-                    
-                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="color: #aaa;">${lang === 'ru' ? '👥 Всего посетителей' : '👥 Total Visitors'}</div>
-                        <div style="color: var(--neon-green); font-size: 2rem; font-weight: bold;">${stats.visitors}</div>
-                    </div>
-                    
-                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="color: #aaa;">💾 ${lang === 'ru' ? 'Скачиваний трека' : 'Track Downloads'}</div>
-                        <div style="color: var(--neon-yellow); font-size: 2rem; font-weight: bold;">${stats.downloads}</div>
-                    </div>
-                    
-                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
-                        <div style="color: #aaa;">📅 ${lang === 'ru' ? 'Дата' : 'Date'}</div>
-                        <div style="color: var(--neon-pink);">${stats.today}</div>
-                    </div>
-                </div>
-            `;
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.9);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 100000;
-                backdrop-filter: blur(20px);
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: rgba(10,5,20,0.95); 
-                           padding: 30px; 
-                           border-radius: 20px; 
-                           max-width: 400px; 
-                           width: 90%; 
-                           border: 2px solid var(--neon-cyan); 
-                           box-shadow: 0 0 60px rgba(0,255,255,0.4);">
-                    ${statsHTML}
-                    <div style="text-align: center; margin-top: 25px;">
-                        <button onclick="this.parentElement.parentElement.remove()" 
-                                style="background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan)); 
-                                       color: white; 
-                                       border: none; 
-                                       padding: 12px 40px; 
-                                       border-radius: 10px; 
-                                       cursor: pointer; 
-                                       font-weight: bold;">
-                            ${lang === 'ru' ? 'Закрыть' : 'Close'}
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
+       // ==================== ИСПРАВЛЕННАЯ ФУНКЦИЯ showDetailedStats() ====================
+function showDetailedStats() {
+    // Проверяем, не открыто ли уже окно статистики
+    if (document.getElementById('statsModal')) {
+        return;
+    }
+    
+    const stats = {
+        visitors: parseInt(localStorage.getItem('totalVisitors')) || 0,
+        downloads: parseInt(localStorage.getItem('totalDownloads')) || 0,
+        today: new Date().toDateString()
+    };
+    
+    const lang = localStorage.getItem('siteLanguage') || 'ru';
+    
+    // 1. Создаём ЧЁРНЫЙ ФОН (оверлей)
+    const modalOverlay = document.createElement('div');
+    modalOverlay.id = 'statsModal';
+    modalOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100000;
+        backdrop-filter: blur(20px);
+        animation: fadeIn 0.3s ease-out;
+    `;
+    
+    // 2. Создаём КОНТЕНТ окна
+    const modalContent = document.createElement('div');
+    modalContent.style.cssText = `
+        background: rgba(10,5,20,0.95);
+        padding: 30px;
+        border-radius: 20px;
+        max-width: 400px;
+        width: 90%;
+        border: 2px solid var(--neon-cyan);
+        box-shadow: 0 0 60px rgba(0,255,255,0.4);
+        position: relative;
+        animation: slideUp 0.3s ease-out;
+    `;
+    
+    // 3. Заполняем контент
+    modalContent.innerHTML = `
+        <!-- Кнопка закрытия (крестик) -->
+        <button id="closeStatsBtn" 
+                style="position: absolute; top: 15px; right: 15px; 
+                       background: none; border: none; color: var(--neon-pink); 
+                       font-size: 28px; cursor: pointer; width: 30px; height: 30px;
+                       display: flex; align-items: center; justify-content: center;
+                       border-radius: 50%; transition: all 0.3s;"
+                onmouseover="this.style.background='rgba(255,0,255,0.2)'; this.style.transform='rotate(90deg)'"
+                onmouseout="this.style.background='none'; this.style.transform='rotate(0deg)'">
+            ×
+        </button>
+        
+        <h3 style="color: var(--neon-cyan); margin-bottom: 20px; text-align: center;">
+            📊 ${lang === 'ru' ? 'ДЕТАЛЬНАЯ СТАТИСТИКА' : 'DETAILED STATISTICS'}
+        </h3>
+        
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+            <div style="color: #aaa; font-size: 0.9rem;">${lang === 'ru' ? '👥 Всего посетителей' : '👥 Total Visitors'}</div>
+            <div style="color: var(--neon-green); font-size: 2rem; font-weight: bold;">${stats.visitors}</div>
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+            <div style="color: #aaa; font-size: 0.9rem;">💾 ${lang === 'ru' ? 'Скачиваний трека' : 'Track Downloads'}</div>
+            <div style="color: var(--neon-yellow); font-size: 2rem; font-weight: bold;">${stats.downloads}</div>
+        </div>
+        
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 25px;">
+            <div style="color: #aaa; font-size: 0.9rem;">📅 ${lang === 'ru' ? 'Дата' : 'Date'}</div>
+            <div style="color: var(--neon-pink);">${stats.today}</div>
+        </div>
+        
+        <div style="text-align: center;">
+            <button id="closeStatsBtnBottom" 
+                    style="background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan)); 
+                           color: white; border: none; padding: 12px 40px; 
+                           border-radius: 10px; cursor: pointer; font-weight: bold;
+                           transition: transform 0.3s;">
+                ${lang === 'ru' ? 'Закрыть' : 'Close'}
+            </button>
+        </div>
+    `;
+    
+    // 4. Собираем всё вместе
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+    
+    // 5. Добавляем анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // 6. Функция закрытия
+    function closeStatsModal() {
+        modalOverlay.style.animation = 'fadeOut 0.3s ease-out';
+        
+        setTimeout(() => {
+            if (modalOverlay.parentNode) {
+                modalOverlay.remove();
+            }
+            if (style.parentNode) {
+                style.remove();
+            }
+        }, 300);
+    }
+    
+    // 7. Вешаем обработчики закрытия
+    document.getElementById('closeStatsBtn').addEventListener('click', closeStatsModal);
+    document.getElementById('closeStatsBtnBottom').addEventListener('click', closeStatsModal);
+    
+    // 8. Закрытие по клику на чёрный фон
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) {
+            closeStatsModal();
+        }
+    });
+    
+    // 9. Закрытие по клавише ESC
+    document.addEventListener('keydown', function statsKeyHandler(e) {
+        if (e.key === 'Escape') {
+            closeStatsModal();
+            document.removeEventListener('keydown', statsKeyHandler);
+        }
+    });
+    
+    // 10. Эффект частиц при открытии
+    setTimeout(() => {
+        createParticles({ 
+            clientX: window.innerWidth / 2, 
+            clientY: window.innerHeight / 2 
+        });
+    }, 100);
+}        
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'quick-notification';
@@ -1483,7 +1573,18 @@
                 }
             }, 2000);
         }
-        
+        // ==================== ГЛОБАЛЬНАЯ ФУНКЦИЯ ДЛЯ ЗАКРЫТИЯ ====================
+function closeStatsModal() {
+    const modal = document.getElementById('statsModal');
+    if (modal) {
+        modal.style.animation = 'fadeOut 0.3s ease-out';
+        setTimeout(() => {
+            if (modal.parentNode) {
+                modal.remove();
+            }
+        }, 300);
+    }
+}
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         document.addEventListener('DOMContentLoaded', function() {
             // Инициализация счётчика
