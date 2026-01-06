@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Технические работы | Гепард Про</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --neon-red: #ff0055;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0514;
+        }
+        
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        
+        /* НЕОНОВЫЙ ФОН */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--neon-pink) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--neon-cyan) 0%, transparent 25%);
+            opacity: 0.15;
+            z-index: -2;
+        }
+        
+        /* СКАНИРУЮЩИЕ ЛИНИИ */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            animation: scan 20s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+        
+        /* КОНТЕЙНЕР */
+        .maintenance-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+        }
+        
+        /* ГЛИТЧ-ТЕКСТ */
+        .glitch-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .glitch-text {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-pink), var(--neon-purple), var(--neon-cyan));
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 6s linear infinite;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .glitch-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-pink), var(--neon-purple), var(--neon-cyan));
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 6s linear infinite, glitch 3s infinite;
+            opacity: 0.7;
+            z-index: -1;
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes glitch {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            10% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            30% { clip-path: inset(40% 0 20% 0); transform: translate(-2px, -2px); }
+        }
+        
+        /* СООБЩЕНИЕ */
+        .message-box {
+            background: rgba(10, 5, 20, 0.7);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan), var(--neon-purple)) 1;
+            margin: 40px 0;
+            box-shadow: 0 0 60px rgba(255, 0, 255, 0.4);
+        }
+        
+        .status-text {
+            font-size: 1.8rem;
+            color: var(--neon-cyan);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .main-message {
+            font-size: 1.3rem;
+            color: var(--neon-yellow);
+            line-height: 1.6;
+            padding: 20px;
+            background: rgba(255, 255, 0, 0.1);
+            border-radius: 15px;
+            border: 2px solid var(--neon-yellow);
+            margin: 20px 0;
+        }
+        
+        /* ПРОГРЕСС-БАР */
+        .progress-section {
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .progress-bar-container {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-pink), var(--neon-cyan));
+            border-radius: 6px;
+            animation: progressPulse 2s infinite;
+        }
+        
+        @keyframes progressPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* АНИМАЦИЯ ЗАГРУЗКИ */
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+        
+        .dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        
+        .dot:nth-child(1) { background: var(--neon-red); }
+        .dot:nth-child(2) { background: var(--neon-cyan); animation-delay: 0.2s; }
+        .dot:nth-child(3) { background: var(--neon-yellow); animation-delay: 0.4s; }
+        .dot:nth-child(4) { background: var(--neon-green); animation-delay: 0.6s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        /* ТАЙМЕР */
+        .timer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .timer-value {
+            color: var(--neon-cyan);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* АДМИН-КНОПКА (скрытая) */
+        .admin-access {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        .admin-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon-pink);
+            border: 1px solid var(--neon-pink);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .admin-btn:hover {
+            background: rgba(255, 0, 255, 0.2);
+        }
+        
+        /* ШЕСТЕРЁНКА */
+        .maintenance-gear {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            animation: rotate 10s linear infinite;
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.6);
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ШЕСТЕРЁНКА -->
+    <div class="maintenance-gear">⚙</div>
+    
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="maintenance-container">
+        <!-- ГЛИТЧ-ЗАГОЛОВОК -->
+        <div class="glitch-title">
+            <h1 class="glitch-text">ГЕПАРД ПРО</h1>
+            <div class="glitch-effect">ГЕПАРД ПРО</div>
+        </div>
+        
+        <!-- СООБЩЕНИЕ -->
+        <div class="message-box">
+            <div class="status-text">
+                <div style="animation: rotate 3s linear infinite">⚙️</div>
+                ТЕХНИЧЕСКИЕ РАБОТЫ
+                <div style="animation: rotate 3s linear infinite reverse">🔧</div>
+            </div>
+            
+            <div class="main-message" id="customMessage">
+                Извините за неудобства!<br>
+                Исправляем баги, скоро всё заработает ещё лучше!
+            </div>
+            
+            <!-- ПРОГРЕСС-БАР -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>Исправление багов:</span>
+                    <span id="progressPercent">65%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <!-- АНИМАЦИЯ ЗАГРУЗКИ -->
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            
+            <!-- ТАЙМЕР -->
+            <div class="timer">
+                Вернёмся через: <span class="timer-value" id="gepardTimer">14:35</span><br>
+                <small>Следите за обновлениями в нашем YouTube</small>
+            </div>
+        </div>
+    </div>
+    
+    <!-- СКРЫТАЯ АДМИН-КНОПКА -->
+    <div class="admin-access">
+        <button class="admin-btn" onclick="checkAdminAccess()">
+            <i class="fas fa-user-shield"></i>
+        </button>
+    </div>
+
+    <script>
+        // ==================== ПЕРЕМЕННЫЕ ====================
+        let progress = 65;
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const timerElement = document.getElementById('gepardTimer');
+        const messageElement = document.getElementById('customMessage');
+        
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Страница техработ загружена');
+            
+            // Загружаем настройки из localStorage
+            loadMaintenanceSettings();
+            
+            // Запускаем анимации
+            startProgressAnimation();
+            startTimer();
+            
+            // Блокируем сайт
+            blockSite();
+        });
+        
+        // ==================== ЗАГРУЗКА НАСТРОЕК ====================
+        function loadMaintenanceSettings() {
+            // Загружаем сообщение
+            const savedMessage = localStorage.getItem('maintenanceMessage');
+            if (savedMessage) {
+                messageElement.innerHTML = savedMessage.replace(/\n/g, '<br>');
+            }
+            
+            // Загружаем время окончания
+            const endTime = localStorage.getItem('maintenanceEndTime');
+            if (endTime) {
+                updateCountdown(new Date(endTime));
+            }
+        }
+        
+        // ==================== АНИМАЦИЯ ПРОГРЕССА ====================
+        function startProgressAnimation() {
+            setInterval(() => {
+                if (progress < 95) {
+                    progress += Math.random() * 5;
+                    if (progress > 95) progress = 95;
+                    
+                    progressBar.style.width = progress + '%';
+                    progressPercent.textContent = Math.round(progress) + '%';
+                }
+            }, 3000);
+        }
+        
+        // ==================== ТАЙМЕР ====================
+        function startTimer() {
+            setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+        
+        function updateTimer() {
+            const endTime = localStorage.getItem('maintenanceEndTime');
+            if (!endTime) {
+                timerElement.textContent = 'скоро';
+                return;
+            }
+            
+            const now = new Date();
+            const target = new Date(endTime);
+            const diff = target - now;
+            
+            if (diff <= 0) {
+                // Время вышло - проверяем нужно ли отключить
+                checkAutoDisable();
+                timerElement.textContent = 'скоро';
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function updateCountdown(endTime) {
+            const now = new Date();
+            const diff = endTime - now;
+            
+            if (diff <= 0) {
+                timerElement.textContent = 'скоро';
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            timerElement.textContent = `${hours}ч ${minutes}мин`;
+        }
+        
+        // ==================== АВТООТКЛЮЧЕНИЕ ====================
+        function checkAutoDisable() {
+            const isActive = localStorage.getItem('maintenanceActive') === 'true';
+            const endTime = localStorage.getItem('maintenanceEndTime');
+            
+            if (isActive && endTime) {
+                const now = new Date();
+                const target = new Date(endTime);
+                
+                if (now >= target) {
+                    // Время вышло - отключаем
+                    localStorage.removeItem('maintenanceActive');
+                    localStorage.removeItem('maintenanceEndTime');
+                    
+                    // Показываем сообщение
+                    messageElement.innerHTML = 'Технические работы завершены!<br>Сайт скоро станет доступен.';
+                    
+                    // Автоперезагрузка через 10 секунд
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 10000);
+                }
+            }
+        }
+        
+        // ==================== БЛОКИРОВКА САЙТА ====================
+        function blockSite() {
+            // Блокируем прокрутку
+            document.body.style.overflow = 'hidden';
+            
+            // Блокируем правый клик
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+            
+            // Блокируем клавиши
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+                    e.preventDefault();
+                }
+            });
+        }
+        
+        // ==================== АДМИН-ДОСТУП ====================
+        function checkAdminAccess() {
+            const password = prompt('Введите админ-пароль:');
+            
+            if (password === 'gepard2026') {
+                // Открываем админ-панель
+                window.open('admin-maintenance.html', '_blank');
+            } else if (password) {
+                alert('Неверный пароль!');
+            }
+        }
+        
+        // ==================== СЕКРЕТНЫЙ ДОСТУП ====================
+        let secretCode = '';
+        document.addEventListener('keydown', function(e) {
+            secretCode += e.key;
+            if (secretCode.length > 10) secretCode = secretCode.slice(-10);
+            
+            // Код для временного отключения: gepard2026
+            if (secretCode.includes('gepard2026')) {
+                if (confirm('Отключить технические работы?')) {
+                    localStorage.removeItem('maintenanceActive');
+                    localStorage.removeItem('maintenanceEndTime');
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
