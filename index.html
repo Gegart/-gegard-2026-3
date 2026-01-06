@@ -1662,6 +1662,110 @@
             console.log('✅ Бета-тест успешно загружен!');
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
+        // ==================== АБСОЛЮТНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
+console.log('🛠️ АБСОЛЮТНЫЙ ФИКС ШЕСТЕРЁНКИ АКТИВИРОВАН');
+
+// 1. Удаляем ВСЕ старые обработчики
+function removeAllHandlers() {
+    const gear = document.getElementById('settingsGear');
+    if (gear) {
+        const newGear = gear.cloneNode(true);
+        gear.parentNode.replaceChild(newGear, gear);
+        console.log('✅ Старые обработчики удалены');
+    }
+}
+
+// 2. Добавляем ПРОСТОЙ и РАБОЧИЙ обработчик
+function addSimpleHandler() {
+    const gear = document.getElementById('settingsGear');
+    const panel = document.getElementById('settingsPanel');
+    
+    if (!gear || !panel) {
+        console.error('❌ Не найдены элементы:', {
+            gear: !!gear,
+            panel: !!panel
+        });
+        return;
+    }
+    
+    console.log('⚙ Найден gear, panel.display:', panel.style.display);
+    
+    // ПРОСТОЙ обработчик который 100% работает
+    gear.onclick = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        console.log('🎯 ПРОСТОЙ ОБРАБОТЧИК СРАБОТАЛ!');
+        console.log('📊 Текущее состояние panel:', panel.style.display);
+        
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+            console.log('📌 Панель СКРЫТА');
+        } else {
+            panel.style.display = 'block';
+            console.log('📌 Панель ПОКАЗАНА');
+        }
+        
+        // Не даём событию всплывать
+        return false;
+    };
+    
+    gear.style.cursor = 'pointer';
+    console.log('✅ ПРОСТОЙ обработчик добавлен');
+}
+
+// 3. Запускаем фикс
+setTimeout(function() {
+    removeAllHandlers();
+    addSimpleHandler();
+    
+    // Тестовая кнопка для отладки
+    const testBtn = document.createElement('button');
+    testBtn.textContent = '🔧 Тест панели';
+    testBtn.style.cssText = `
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        background: #ff0055;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        z-index: 99999;
+        font-size: 12px;
+    `;
+    testBtn.onclick = function() {
+        const panel = document.getElementById('settingsPanel');
+        if (panel) {
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            console.log('🔧 Тестовая кнопка: panel.display =', panel.style.display);
+        }
+    };
+    document.body.appendChild(testBtn);
+    console.log('🔧 Тестовая кнопка добавлена');
+    
+    console.log('✅ Фикс шестерёнки выполнен. Кликай!');
+}, 1000);
+
+// 4. ДЕБАГ - выводим в консоль при каждом клике на странице
+document.addEventListener('click', function(e) {
+    console.log('👆 Клик на:', e.target.tagName, e.target.id || e.target.className);
+    
+    const gear = document.getElementById('settingsGear');
+    const panel = document.getElementById('settingsPanel');
+    
+    if (gear && e.target === gear) {
+        console.log('🎯 ЭТО ШЕСТЕРЁНКА!');
+    }
+    
+    if (panel && panel.style.display === 'block' && 
+        !panel.contains(e.target) && 
+        gear && !gear.contains(e.target)) {
+        console.log('👆 Клик вне панели - закрываю');
+        panel.style.display = 'none';
+    }
+});
     </script>
 </body>
 </html>
