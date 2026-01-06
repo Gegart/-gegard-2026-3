@@ -983,11 +983,10 @@
         </div>
         
         <div style="text-align: center;">
-            <a href="https://www.mediafire.com/file/bw88qtxuhc83v8c/cfe750a3-1961-4c82-a02b-89f2bd6d5787.mp3/file" 
-               class="download-btn" 
-               download="2026_Epicenter_of_Future_GepardPro.mp3"
-               onclick="trackDownload()"
-               id="downloadLink">
+         <a href="download.html" 
+   class="download-btn" 
+   onclick="trackDownload(event)"
+   id="downloadLink">
                <i class="fas fa-bolt"></i> <span id="downloadBtnText">СКАЧАТЬ ТРЕК</span>
             </a>
             
@@ -1267,7 +1266,16 @@
                 tagline: "Futuristic New Year Hypnotic",
                 badge: "PREMIERE 2026",
                 downloadBtnText: "DOWNLOAD TRACK",
-                howToDownload: "Click the button → Download will start instantly",
+              ru: {
+    // ... другие переводы ...
+    howToDownload: "Нажмите кнопку → Скачивание начнётся мгновенно",  // ← ЭТО
+    // ... 
+},
+en: {
+    // ... другие переводы ...
+    howToDownload: "Click the button → Download will start instantly",  // ← И ЭТО
+    // ...
+}
                 filenameLabel: "File:",
                 filesizeLabel: "Size:",
                 formatLabel: "Format:",
