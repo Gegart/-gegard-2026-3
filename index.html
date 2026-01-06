@@ -889,8 +889,7 @@
     <div class="settings-panel" id="settingsPanel">
         <div class="settings-header">
             <h4 id="settingsTitle">⚙ НАСТРОЙКИ</h4>
-            <button class="close-settings" onclick="toggleSettings()">×</button>
-        </div>
+            <button class="close-settings" onclick="closeSettingsPanel()">×</button>
         
         <div class="settings-content">
             <div class="settings-section">
@@ -1688,47 +1687,95 @@ en: {
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
          <script>
-    // ==================== ОКОНЧАТЕЛЬНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
-    console.log('🔧 Устанавливаю финальный фикс шестерёнки...');
+   <script>
+    // ==================== ИСПРАВЛЕННАЯ ШЕСТЕРЁНКА ====================
+    console.log('🔧 Инициализация шестерёнки...');
     
-    // Ждём полной загрузки страницы
-    setTimeout(function() {
-        const gear = document.getElementById('settingsGear');
+    // Переопределяем функцию toggleSettings правильно
+    window.toggleSettings = function(event) {
         const panel = document.getElementById('settingsPanel');
+        const gear = document.getElementById('settingsGear');
         
-        console.log('🔍 Проверяю элементы:', {
-            gear: gear ? '✅ Найдена' : '❌ Не найдена',
-            panel: panel ? '✅ Найдена' : '❌ Не найдена'
+        if (!panel || !gear) {
+            console.error('❌ Элементы не найдены');
+            return;
+        }
+        
+        console.log('⚙ toggleSettings вызвана');
+        
+        if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+            gear.style.animation = 'rotateGear 10s linear infinite';
+        } else {
+            panel.style.display = 'block';
+            gear.style.animation = 'rotateGear 3s linear infinite';
+        }
+        
+        if (event) {
+            event.stopPropagation();
+        }
+    };
+    
+    // Инициализация при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Страница загружена');
+        
+        // Инициализация счетчика
+        smartCounter.init();
+        
+        // Загрузка сохраненных настроек
+        const savedLang = localStorage.getItem('siteLanguage') || 'ru';
+        const savedMode = localStorage.getItem('siteMode') || 'full';
+        
+        switchLanguage(savedLang);
+        setMode(savedMode);
+        
+        // Назначаем обработчик на шестерёнку
+        const gear = document.getElementById('settingsGear');
+        if (gear) {
+            gear.addEventListener('click', toggleSettings);
+            console.log('✅ Обработчик на шестерёнку назначен');
+        }
+        
+        // Закрытие панели при клике вне её
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('settingsPanel');
+            const gear = document.getElementById('settingsGear');
+            
+            if (panel && panel.style.display === 'block' && 
+                !panel.contains(e.target) && 
+                gear && !gear.contains(e.target)) {
+                panel.style.display = 'none';
+                if (gear) {
+                    gear.style.animation = 'rotateGear 10s linear infinite';
+                }
+            }
         });
         
-        if (gear && panel) {
-            // СУПЕР-ПРОСТОЙ обработчик
-            gear.onclick = function(e) {
-                console.log('🎯 КЛИК ПО ШЕСТЕРЁНКЕ ЗАФИКСИРОВАН!');
-                console.log('📊 Текущее состояние панели:', panel.style.display);
-                
-                if (panel.style.display === 'block') {
-                    panel.style.display = 'none';
-                    gear.style.animation = 'rotateGear 10s linear infinite';
-                } else {
-                    panel.style.display = 'block';
-                    gear.style.animation = 'rotateGear 3s linear infinite';
+        // Админ-панель
+        if (smartCounter && smartCounter.isAdmin) {
+            setTimeout(() => {
+                const adminPanel = document.getElementById('adminCounter');
+                if (adminPanel) {
+                    adminPanel.style.display = 'block';
+                    makeDraggable(adminPanel);
+                    showNotification('🔧 Админ-панель активирована');
                 }
-                
-                // Останавливаем событие
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                return false;
-            };
-            
-            console.log('✅ Шестерёнка ПОЧИНЕНА! Кликай!');
-            
-        } else {
-            console.error('💥 КРИТИЧЕСКАЯ ОШИБКА: Не найдены элементы для фикса');
+            }, 1000);
         }
-    }, 500); 
+        
+        console.log('✅ Инициализация завершена');
+    });
+    
+    // Функция для кнопки закрытия в панели
+    function closeSettingsPanel() {
+        const panel = document.getElementById('settingsPanel');
+        const gear = document.getElementById('settingsGear');
+        
+        if (panel) panel.style.display = 'none';
+        if (gear) gear.style.animation = 'rotateGear 10s linear infinite';
+    }
+</script>
   </script>
 </body>
 </html>
