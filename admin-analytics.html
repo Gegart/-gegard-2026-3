@@ -3,16 +3,1092 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аналитика | Гепард Про</title>
+    <title>📊 РЕАЛЬНАЯ АНАЛИТИКА ПОСЕТИТЕЛЕЙ</title>
     <style>
-        /* ==================== ТВОЙ СТИЛЬ ==================== */
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+            --neon-yellow: #ffff00;
+            --neon-green: #00ff00;
+            --dark-bg: #0a0a1a;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
-        :root {
-            --neon-pink: #ff00ff;
-            --neon-cyan: #00ffff;
-            --ne
+        body {
+            background: var(--dark-bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--neon-pink) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, var(--neon-cyan) 0%, transparent 40%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .subtitle {
+            color: var(--neon-yellow);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+        
+        .stat-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: var(--neon-yellow);
+            text-shadow: 0 0 20px currentColor;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #aaa;
+            font-size: 1rem;
+        }
+        
+        .visitors-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            color: var(--neon-cyan);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .visitors-table {
+            overflow-x: auto;
+        }
+        
+        .table-header {
+            display: grid;
+            grid-template-columns: 50px 200px 200px 150px 150px 100px;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--neon-cyan);
+        }
+        
+        .visitor-row {
+            display: grid;
+            grid-template-columns: 50px 200px 200px 150px 150px 100px;
+            gap: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            align-items: center;
+            transition: all 0.3s;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .visitor-row:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .visitor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .visitor-ip {
+            font-family: 'Courier New', monospace;
+            color: var(--neon-green);
+            font-size: 1rem;
+        }
+        
+        .visitor-location {
+            color: var(--neon-yellow);
+        }
+        
+        .visitor-device {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .visitor-time {
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+        
+        .status-online {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-offline {
+            background: #666;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 25px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-cyan));
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+        }
+        
+        .btn-warning {
+            background: linear-gradient(90deg, var(--neon-yellow), #ff6600);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(10, 10, 26, 0.95);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border-left: 4px solid var(--neon-cyan);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            max-width: 400px;
+            animation: slideIn 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .chat-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            display: none;
+        }
+        
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 25px;
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .chat-input button {
+            padding: 12px 30px;
+            background: var(--neon-cyan);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .server-info {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid var(--neon-green);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--neon-cyan);
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--neon-cyan);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .title { font-size: 2.5rem; }
+            .table-header, .visitor-row { 
+                grid-template-columns: 40px 1fr; 
+                font-size: 0.9rem;
+            }
+            .controls { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="notifications"></div>
+    
+    <div class="container">
+        <!-- ЗАГОЛОВОК -->
+        <div class="header">
+            <h1 class="title">
+                <i class="fas fa-satellite"></i> РЕАЛЬНАЯ АНАЛИТИКА ПОСЕТИТЕЛЕЙ
+            </h1>
+            <div class="subtitle">
+                <i class="fas fa-globe"></i> Мониторинг реальных IP-адресов в реальном времени
+            </div>
+            <div style="color: var(--neon-green); margin-top: 10px; font-size: 1.1rem;">
+                <i class="fas fa-server"></i> Сервер: <span id="serverStatus">Подключение...</span>
+            </div>
+        </div>
+        
+        <!-- СТАТИСТИКА -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalVisitors">0</div>
+                <div class="stat-label">Всего посетителей</div>
+                <div style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">
+                    <i class="fas fa-database"></i> Все время
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="onlineNow">0</div>
+                <div class="stat-label">Онлайн сейчас</div>
+                <div style="color: var(--neon-green); font-size: 0.9rem; margin-top: 5px;">
+                    <i class="fas fa-wifi"></i> Активные
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="todayVisitors">0</div>
+                <div class="stat-label">Сегодня</div>
+                <div style="color: var(--neon-yellow); font-size: 0.9rem; margin-top: 5px;">
+                    <i class="fas fa-calendar-day"></i> За 24 часа
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-value" id="countriesCount">0</div>
+                <div class="stat-label">Стран</div>
+                <div style="color: var(--neon-cyan); font-size: 0.9rem; margin-top: 5px;">
+                    <i class="fas fa-globe-americas"></i> География
+                </div>
+            </div>
+        </div>
+        
+        <!-- УПРАВЛЕНИЕ -->
+        <div class="controls">
+            <button class="btn btn-primary" onclick="trackVisitor()">
+                <i class="fas fa-user-plus"></i> Отследить себя
+            </button>
+            <button class="btn btn-primary" onclick="loadRealData()">
+                <i class="fas fa-sync-alt"></i> Обновить данные
+            </button>
+            <button class="btn btn-success" onclick="toggleAutoRefresh()">
+                <i class="fas fa-play-circle"></i> Автообновление
+            </button>
+            <button class="btn" onclick="showChatSection()" style="background: var(--neon-pink);">
+                <i class="fas fa-comments"></i> Чат посетителей
+            </button>
+            <button class="btn btn-warning" onclick="showMyInfo()">
+                <i class="fas fa-info-circle"></i> Мои данные
+            </button>
+            <button class="btn" onclick="exportData()" style="background: #9d00ff;">
+                <i class="fas fa-download"></i> Экспорт данных
+            </button>
+        </div>
+        
+        <!-- ТАБЛИЦА ПОСЕТИТЕЛЕЙ -->
+        <div class="visitors-section">
+            <div class="section-title">
+                <i class="fas fa-users"></i> Реальные посетители онлайн
+                <span style="margin-left: auto; font-size: 1rem; color: var(--neon-green);">
+                    <i class="fas fa-circle"></i> <span id="onlineCount">0</span> онлайн
+                </span>
+            </div>
+            
+            <div class="visitors-table">
+                <div class="table-header">
+                    <div>Аватар</div>
+                    <div>IP адрес</div>
+                    <div>Локация</div>
+                    <div>Устройство</div>
+                    <div>Время</div>
+                    <div>Статус</div>
+                </div>
+                
+                <div id="visitorsList">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <div>Загрузка данных о посетителях...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ЧАТ -->
+        <div class="chat-section" id="chatSection">
+            <div class="section-title">
+                <i class="fas fa-comment-dots"></i> Чат между посетителями
+                <span style="margin-left: auto; font-size: 1rem; color: #aaa;">
+                    <i class="fas fa-user-friends"></i> <span id="chatUsers">0</span> в чате
+                </span>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div style="text-align: center; color: #aaa; padding: 20px;">
+                    Загрузка сообщений...
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Напишите сообщение...">
+                <button onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i> Отправить
+                </button>
+            </div>
+        </div>
+        
+        <!-- ИНФОРМАЦИЯ О СЕРВЕРЕ -->
+        <div class="server-info">
+            <div class="section-title">
+                <i class="fas fa-server"></i> Информация о системе
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div>
+                    <div style="color: var(--neon-cyan);"><i class="fas fa-network-wired"></i> API сервер</div>
+                    <div style="color: #aaa;">http://localhost:3000</div>
+                </div>
+                <div>
+                    <div style="color: var(--neon-green);"><i class="fas fa-bolt"></i> WebSocket</div>
+                    <div style="color: #aaa;">ws://localhost:8080</div>
+                </div>
+                <div>
+                    <div style="color: var(--neon-yellow);"><i class="fas fa-database"></i> Хранилище</div>
+                    <div style="color: #aaa;">Память сервера</div>
+                </div>
+                <div>
+                    <div style="color: var(--neon-pink);"><i class="fas fa-shield-alt"></i> Безопасность</div>
+                    <div style="color: #aaa;">Только локальная сеть</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== КОНФИГУРАЦИЯ ====================
+        const API_URL = 'http://localhost:3000';
+        const WS_URL = 'ws://localhost:8080';
+        
+        let ws = null;
+        let autoRefreshInterval = null;
+        let myVisitorData = null;
+        let isAutoRefresh = false;
+        
+        // Имена для посетителей
+        const NAMES = [
+            "Александр", "Мария", "Дмитрий", "Анна", "Сергей", "Елена", 
+            "Иван", "Ольга", "Андрей", "Татьяна", "Михаил", "Наталья"
+        ];
+        
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Инициализация системы аналитики...');
+            
+            // Подключаемся к WebSocket
+            connectWebSocket();
+            
+            // Загружаем начальные данные
+            loadRealData();
+            
+            // Отслеживаем себя
+            setTimeout(trackVisitor, 1000);
+            
+            // Загружаем чат
+            loadChatMessages();
+            
+            showNotification('✅ Система аналитики загружена!', 'success');
+        });
+        
+        // ==================== WEB SOCKET ====================
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket(WS_URL);
+                
+                ws.onopen = () => {
+                    console.log('🔗 WebSocket подключен');
+                    updateServerStatus('✅ Подключен (WebSocket активен)');
+                };
+                
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    
+                    switch(data.type) {
+                        case 'VISITOR_UPDATE':
+                            console.log('🔄 Обновление посетителя:', data.data);
+                            loadRealData(); // Перезагружаем список
+                            break;
+                            
+                        case 'NEW_MESSAGE':
+                            console.log('💬 Новое сообщение:', data.data);
+                            addMessageToChat(data.data);
+                            break;
+                    }
+                };
+                
+                ws.onerror = (error) => {
+                    console.error('WebSocket ошибка:', error);
+                    updateServerStatus('⚠️ WebSocket ошибка');
+                };
+                
+                ws.onclose = () => {
+                    console.log('WebSocket отключен');
+                    updateServerStatus('❌ WebSocket отключен');
+                    setTimeout(connectWebSocket, 3000); // Переподключение через 3 сек
+                };
+                
+            } catch (error) {
+                console.error('Ошибка подключения WebSocket:', error);
+            }
+        }
+        
+        // ==================== ОТСЛЕЖИВАНИЕ ПОСЕТИТЕЛЕЙ ====================
+        async function trackVisitor() {
+            try {
+                // Получаем реальный IP через внешний сервис
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const userIP = ipData.ip;
+                
+                // Случайное имя
+                const randomName = NAMES[Math.floor(Math.random() * NAMES.length)];
+                
+                // Определяем устройство
+                const userAgent = navigator.userAgent;
+                let deviceType = 'Компьютер';
+                if (/mobile/i.test(userAgent)) deviceType = 'Мобильный';
+                if (/tablet/i.test(userAgent)) deviceType = 'Планшет';
+                
+                // Отправляем данные на сервер
+                const response = await fetch(`${API_URL}/api/track`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'User-Agent': userAgent
+                    },
+                    body: JSON.stringify({
+                        ip: userIP,
+                        name: randomName,
+                        page: window.location.pathname,
+                        device: deviceType
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    myVisitorData = data.visitor;
+                    
+                    // Обновляем интерфейс
+                    loadRealData();
+                    
+                    showNotification(`👤 Вы отслежены как: ${randomName}`, 'success');
+                    showNotification(`🌍 Ваш IP: ${userIP}`, 'info');
+                    
+                    return data.visitor;
+                }
+                
+            } catch (error) {
+                console.error('Ошибка трекинга:', error);
+                
+                // Демо режим
+                const demoIP = `192.168.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+                myVisitorData = {
+                    ip: demoIP,
+                    name: 'Демо пользователь',
+                    city: 'Москва',
+                    country: 'Россия',
+                    timestamp: Date.now()
+                };
+                
+                showNotification('⚠️ Демо режим (сервер недоступен)', 'warning');
+                
+                return myVisitorData;
+            }
+        }
+        
+        // ==================== ЗАГРУЗКА ДАННЫХ ====================
+        async function loadRealData() {
+            try {
+                // Загружаем статистику
+                const statsResponse = await fetch(`${API_URL}/api/stats`);
+                const statsData = await statsResponse.json();
+                
+                if (statsData.success) {
+                    updateStats(statsData.stats);
+                }
+                
+                // Загружаем посетителей
+                const visitorsResponse = await fetch(`${API_URL}/api/visitors`);
+                const visitorsData = await visitorsResponse.json();
+                
+                if (visitorsData.success) {
+                    updateVisitorsList(visitorsData.visitors);
+                    document.getElementById('onlineCount').textContent = visitorsData.online;
+                    
+                    // Обновляем статус сервера
+                    updateServerStatus(`✅ Активен (${visitorsData.online} онлайн)`);
+                }
+                
+            } catch (error) {
+                console.error('Ошибка загрузки данных:', error);
+                
+                // Показываем демо-данные
+                showDemoData();
+                updateServerStatus('⚠️ Демо режим');
+            }
+        }
+        
+        // ==================== ОБНОВЛЕНИЕ ИНТЕРФЕЙСА ====================
+        function updateStats(stats) {
+            document.getElementById('totalVisitors').textContent = stats.total || 0;
+            document.getElementById('onlineNow').textContent = stats.online || 0;
+            document.getElementById('todayVisitors').textContent = stats.today || 0;
+            document.getElementById('countriesCount').textContent = stats.countries || 0;
+        }
+        
+        function updateVisitorsList(visitors) {
+            const container = document.getElementById('visitorsList');
+            
+            if (!visitors || visitors.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #aaa;">
+                        <i class="fas fa-users" style="font-size: 3rem; opacity: 0.3; margin-bottom: 20px;"></i>
+                        <div>Нет активных посетителей</div>
+                        <button onclick="trackVisitor()" style="margin-top: 20px; padding: 10px 20px; 
+                               background: var(--neon-cyan); color: white; border: none; border-radius: 20px; cursor: pointer;">
+                            <i class="fas fa-user-plus"></i> Стать первым посетителем
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            
+            visitors.forEach(visitor => {
+                const time = new Date(visitor.timestamp);
+                const now = new Date();
+                const diff = Math.floor((now - time) / 60000);
+                
+                // Форматируем время
+                let timeText;
+                if (diff < 1) timeText = 'Только что';
+                else if (diff < 60) timeText = `${diff} мин назад`;
+                else timeText = time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                // Аватар (первая буква имени)
+                const avatarLetter = visitor.name ? visitor.name.charAt(0).toUpperCase() : 'A';
+                
+                // Определяем устройство
+                let deviceIcon = 'fas fa-desktop';
+                let deviceText = 'Компьютер';
+                
+                if (visitor.userAgent) {
+                    if (/mobile/i.test(visitor.userAgent)) {
+                        deviceIcon = 'fas fa-mobile-alt';
+                        deviceText = 'Мобильный';
+                    } else if (/tablet/i.test(visitor.userAgent)) {
+                        deviceIcon = 'fas fa-tablet-alt';
+                        deviceText = 'Планшет';
+                    }
+                }
+                
+                // Определяем браузер
+                let browser = '';
+                if (visitor.userAgent) {
+                    if (/chrome/i.test(visitor.userAgent)) browser = 'Chrome';
+                    else if (/firefox/i.test(visitor.userAgent)) browser = 'Firefox';
+                    else if (/safari/i.test(visitor.userAgent)) browser = 'Safari';
+                    else if (/edge/i.test(visitor.userAgent)) browser = 'Edge';
+                    else browser = 'Браузер';
+                }
+                
+                html += `
+                    <div class="visitor-row">
+                        <div class="visitor-avatar">${avatarLetter}</div>
+                        <div class="visitor-ip">
+                            <i class="fas fa-network-wired"></i> ${visitor.ip}
+                            ${myVisitorData && myVisitorData.ip === visitor.ip ? 
+                              '<span style="color: var(--neon-cyan); font-size: 0.8rem;"> (Вы)</span>' : ''}
+                        </div>
+                        <div class="visitor-location">
+                            <i class="fas fa-map-marker-alt"></i> ${visitor.city}, ${visitor.country}
+                        </div>
+                        <div class="visitor-device">
+                            <i class="${deviceIcon}"></i> ${deviceText} (${browser})
+                        </div>
+                        <div class="visitor-time">
+                            <i class="fas fa-clock"></i> ${timeText}
+                        </div>
+                        <div class="status-dot ${visitor.online ? 'status-online' : 'status-offline'}"></div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // ==================== ДЕМО РЕЖИМ ====================
+        function showDemoData() {
+            const demoVisitors = [
+                {
+                    ip: '95.165.128.123',
+                    name: 'Александр',
+                    city: 'Москва',
+                    country: 'Россия',
+                    userAgent: 'Chrome/Windows',
+                    timestamp: Date.now() - 120000,
+                    online: true
+                },
+                {
+                    ip: '178.176.68.45',
+                    name: 'Мария',
+                    city: 'Санкт-Петербург',
+                    country: 'Россия',
+                    userAgent: 'Safari/Mac',
+                    timestamp: Date.now() - 180000,
+                    online: true
+                },
+                {
+                    ip: '31.148.22.167',
+                    name: 'Дмитрий',
+                    city: 'Киев',
+                    country: 'Украина',
+                    userAgent: 'Firefox/Windows',
+                    timestamp: Date.now() - 300000,
+                    online: false
+                },
+                {
+                    ip: '87.245.192.33',
+                    name: 'Анна',
+                    city: 'Минск',
+                    country: 'Беларусь',
+                    userAgent: 'Mobile Safari',
+                    timestamp: Date.now() - 240000,
+                    online: true
+                }
+            ];
+            
+            updateStats({
+                total: 15,
+                online: 3,
+                today: 8,
+                countries: 4
+            });
+            
+            updateVisitorsList(demoVisitors);
+            
+            showNotification('⚠️ Используются демо-данные. Запустите сервер для реальных IP!', 'warning');
+        }
+        
+        // ==================== ЧАТ ====================
+        function showChatSection() {
+            const chatSection = document.getElementById('chatSection');
+            chatSection.style.display = chatSection.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        async function loadChatMessages() {
+            try {
+                const response = await fetch(`${API_URL}/api/chat/messages`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateChat(data.messages);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки чата:', error);
+                // Демо сообщения
+                const demoMessages = [
+                    {
+                        name: 'Александр',
+                        city: 'Москва',
+                        message: 'Привет всем! Кто здесь?',
+                        timestamp: Date.now() - 300000
+                    },
+                    {
+                        name: 'Мария',
+                        city: 'Санкт-Петербург',
+                        message: 'Я слушаю трек прямо сейчас!',
+                        timestamp: Date.now() - 240000
+                    },
+                    {
+                        name: 'Дмитрий',
+                        city: 'Киев',
+                        message: 'Крутая аналитика, кстати',
+                        timestamp: Date.now() - 180000
+                    }
+                ];
+                updateChat(demoMessages);
+            }
+        }
+        
+        function updateChat(messages) {
+            const container = document.getElementById('chatMessages');
+            const users = [...new Set(messages.map(m => m.name))];
+            
+            document.getElementById('chatUsers').textContent = users.length;
+            
+            let html = '';
+            
+            messages.forEach(msg => {
+                const time = new Date(msg.timestamp);
+                const timeStr = time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                html += `
+                    <div style="margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <div>
+                                <strong style="color: var(--neon-cyan);">${msg.name}</strong>
+                                <span style="color: #aaa; margin-left: 10px;">
+                                    <i class="fas fa-map-marker-alt"></i> ${msg.city}
+                                </span>
+                            </div>
+                            <div style="color: #aaa; font-size: 0.9rem;">${timeStr}</div>
+                        </div>
+                        <div>${msg.message}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function addMessageToChat(message) {
+            const container = document.getElementById('chatMessages');
+            
+            const time = new Date(message.timestamp);
+            const timeStr = time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const html = `
+                <div style="margin-bottom: 15px; padding: 10px; background: rgba(0,255,255,0.1); border-radius: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <div>
+                            <strong style="color: var(--neon-green);">${message.name}</strong>
+                            <span style="color: #aaa; margin-left: 10px;">
+                                <i class="fas fa-map-marker-alt"></i> ${message.city}
+                            </span>
+                        </div>
+                        <div style="color: #aaa; font-size: 0.9rem;">${timeStr}</div>
+                    </div>
+                    <div>${message.message}</div>
+                </div>
+            `;
+            
+            container.innerHTML += html;
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message || !myVisitorData) {
+                showNotification('Сначала отследите себя!', 'warning');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/api/chat/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        visitorId: myVisitorData.id,
+                        name: myVisitorData.name,
+                        city: myVisitorData.city,
+                        message: message,
+                        ip: myVisitorData.ip
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    input.value = '';
+                    addMessageToChat(data.message);
+                }
+            } catch (error) {
+                console.error('Ошибка отправки сообщения:', error);
+                showNotification('Ошибка отправки', 'error');
+            }
+        }
+        
+        // ==================== УПРАВЛЕНИЕ ====================
+        function toggleAutoRefresh() {
+            if (isAutoRefresh) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+                isAutoRefresh = false;
+                showNotification('⏹️ Автообновление остановлено', 'warning');
+            } else {
+                autoRefreshInterval = setInterval(() => {
+                    loadRealData();
+                }, 5000); // Каждые 5 секунд
+                isAutoRefresh = true;
+                showNotification('🔄 Автообновление включено (5 сек)', 'success');
+            }
+        }
+        
+        function showMyInfo() {
+            if (myVisitorData) {
+                const info = `
+Ваши данные:
+├─ IP: ${myVisitorData.ip}
+├─ Имя: ${myVisitorData.name}
+├─ Город: ${myVisitorData.city}
+├─ Страна: ${myVisitorData.country}
+├─ Устройство: ${navigator.userAgent.substring(0, 50)}...
+└─ Время: ${new Date(myVisitorData.timestamp).toLocaleString()}
+                `;
+                alert(info);
+            } else {
+                showNotification('Сначала отследите себя!', 'warning');
+                trackVisitor();
+            }
+        }
+        
+        function exportData() {
+            const data = {
+                exportedAt: new Date().toISOString(),
+                myData: myVisitorData,
+                page: window.location.href
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `analytics-${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            
+            showNotification('📥 Данные экспортированы', 'success');
+        }
+        
+        // ==================== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+        function updateServerStatus(status) {
+            document.getElementById('serverStatus').innerHTML = status;
+        }
+        
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notifications');
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            let icon = 'ℹ️';
+            let color = 'var(--neon-cyan)';
+            
+            if (type === 'success') {
+                icon = '✅';
+                color = 'var(--neon-green)';
+            } else if (type === 'warning') {
+                icon = '⚠️';
+                color = 'var(--neon-yellow)';
+            } else if (type === 'error') {
+                icon = '❌';
+                color = 'var(--neon-red)';
+            }
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="color: ${color}; font-size: 1.2rem;">${icon}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100px)';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
+        // Горячие клавиши
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                loadRealData();
+            }
+            if (e.key === 'F5') {
+                e.preventDefault();
+                trackVisitor();
+            }
+            if (e.ctrlKey && e.enter) {
+                sendMessage();
+            }
+        });
+        
+        // Экспорт функций
+        window.trackVisitor = trackVisitor;
+        window.loadRealData = loadRealData;
+        window.toggleAutoRefresh = toggleAutoRefresh;
+        window.showChatSection = showChatSection;
+        window.showMyInfo = showMyInfo;
+        window.exportData = exportData;
+        window.sendMessage = sendMessage;
+        
+        console.log('✅ Система аналитики готова к работе!');
+    </script>
+</body>
+</html>
