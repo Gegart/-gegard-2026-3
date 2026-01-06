@@ -1380,19 +1380,36 @@ en: {
             localStorage.setItem('siteMode', mode);
         }
         
-        function toggleSettings() {
-            const panel = document.getElementById('settingsPanel');
-            console.log('⚙ toggleSettings вызвана, panel:', panel);
-            
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none';
-                console.log('📌 Панель скрыта');
-            } else {
-                panel.style.display = 'block';
-                console.log('📌 Панель показана');
-                panel.scrollTop = 0;
-            }
-        }
+     function toggleSettings(event) {
+    // Останавливаем всплытие если есть event
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    const panel = document.getElementById('settingsPanel');
+    const gear = document.getElementById('settingsGear');
+    
+    // Проверяем что элементы существуют
+    if (!panel || !gear) {
+        console.error('❌ Не найдены элементы:', {panel: !!panel, gear: !!gear});
+        return;
+    }
+    
+    console.log('⚙ toggleSettings вызвана!');
+    console.log('📊 Текущее состояние:', panel.style.display);
+    
+    if (panel.style.display === 'block') {
+        panel.style.display = 'none';
+        gear.style.animation = 'rotateGear 10s linear infinite';
+        console.log('📌 Панель СКРЫТА');
+    } else {
+        panel.style.display = 'block';
+        gear.style.animation = 'rotateGear 3s linear infinite';
+        console.log('📌 Панель ПОКАЗАНА');
+        panel.scrollTop = 0;
+    }
+}
         
         function copyAdminLink() {
             const link = window.location.origin + window.location.pathname + '?admin=gepard2026';
@@ -1670,27 +1687,59 @@ en: {
             console.log('✅ Бета-тест успешно загружен!');
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
-      // ==================== ПРАВИЛЬНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
-console.log('⚙ ОДИН правильный фикс шестерёнки');
-
-// Ждём полной загрузки страницы
-window.addEventListener('load', function() {
-    const gear = document.getElementById('settingsGear');
-    const panel = document.getElementById('settingsPanel');
-    
-    if (gear && panel) {
-        // ОДИН ПРОСТОЙ обработчик
-        gear.onclick = function() {
-            if (panel.style.display === 'block') {
-                panel.style.display = 'none';
-            } else {
-                panel.style.display = 'block';
-            }
-        };
+            // ==================== ОКОНЧАТЕЛЬНЫЙ ФИКС ШЕСТЕРЁНКИ ====================
+        console.log('🔧 Устанавливаю финалный фикс шестерёнки...');
         
-        console.log('✅ Шестерёнка починена!');
-    }
-}); 
+        // Ждём полной загрузки страницы
+        setTimeout(function() {
+            const gear = document.getElementById('settingsGear');
+            const panel = document.getElementById('settingsPanel');
+            
+            console.log('🔍 Проверяю элементы:', {
+                gear: gear ? '✅ Найдена' : '❌ Не найдена',
+                panel: panel ? '✅ Найдена' : '❌ Не найдена'
+            });
+            
+            if (gear && panel) {
+                // Удаляем ВСЕ старые обработчики
+                const newGear = gear.cloneNode(true);
+                gear.parentNode.replaceChild(newGear, gear);
+                
+                // Получаем свежие элементы
+                const freshGear = document.getElementById('settingsGear');
+                const freshPanel = document.getElementById('settingsPanel');
+                
+                // СУПЕР-ПРОСТОЙ обработчик
+                freshGear.onclick = function(e) {
+                    console.log('🎯 КЛИК ПО ШЕСТЕРЁНКЕ ЗАФИКСИРОВАН!');
+                    
+                    if (freshPanel.style.display === 'block') {
+                        freshPanel.style.display = 'none';
+                    } else {
+                        freshPanel.style.display = 'block';
+                    }
+                    
+                    // Останавливаем событие
+                    if (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    return false;
+                };
+                
+                console.log('✅ Шестерёнка ПОЧИНЕНА! Кликай!');
+                
+                // Тест: открываем и закрываем через 1 секунду
+                setTimeout(function() {
+                    freshGear.click();
+                    setTimeout(() => freshGear.click(), 500);
+                }, 1000);
+                
+            } else {
+                console.error('💥 КРИТИЧЕСКАЯ ОШИБКА: Не найдены элементы для фикса');
+            }
+        }, 1000)
+        
   </script>
 </body>
 </html>
