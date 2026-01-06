@@ -1117,37 +1117,6 @@ window.addEventListener('load', function() {
     setInterval(loadMiniAnalytics, 30000);
 });
 </script>
-<!-- Кнопка для открытия -->
-<button onclick="openAdminPanel()" style="
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: linear-gradient(45deg, #ff0000, #ff8800);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    z-index: 9998;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-">
-    <span>📊</span> Админ-панель
-</button>
-
-<script>
-// Функции управления панелью
-function openAdminPanel() {
-    document.getElementById('admin-panel').style.display = 'block';
-}
-
-function closeAdminPanel() {
-    document.getElementById('admin-panel').style.display = 'none';
-}
-
 // Закрытие по Esc
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeAdminPanel();
