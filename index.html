@@ -1238,22 +1238,22 @@
         </div>
     </footer>
 
-    <script>
-        // ==================== УМНЫЙ СЧЁТЧИК ====================
+  <script>
+        // ==================== УМНЫЙ СЧЁТЧИК (ИСПРАВЛЕННЫЙ) ====================
         class SmartCounter {
             constructor() {
                 this.adminKey = 'gepard_beta_admin_2026';
                 this.isAdmin = false;
-                this.version = '1.2-beta';
-                this.userId = null;
+                this.version = '1.3-beta';
+                this.visitorId = null;
             }
             
             init() {
                 console.log(`🚀 Бета-версия ${this.version} запущена`);
-                this.generateUserId();
+                this.createVisitorId();
                 this.checkIfAdmin();
                 if (!this.isAdmin) {
-                    this.countRealVisitor();
+                    this.countUniqueVisitor();
                 }
                 this.updateDisplay();
                 this.updateSettingsPanel();
@@ -1263,29 +1263,26 @@
                 }
             }
             
-            generateUserId() {
-                const browserData = [
-                    navigator.userAgent,
-                    navigator.language,
-                    screen.width + 'x' + screen.height,
-                    navigator.platform,
-                    new Date().getTimezoneOffset()
-                ].join('|');
+            createVisitorId() {
+                // Генерируем уникальный ID при каждом заходе
+                const timestamp = Date.now();
+                const random = Math.random().toString(36).substring(2, 15);
                 
-                let hash = 0;
-                for (let i = 0; i < browserData.length; i++) {
-                    const char = browserData.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash;
-                }
-                
-                this.userId = 'user_' + Math.abs(hash).toString(36).substring(0, 8);
-                
-                if (!localStorage.getItem('user_unique_id')) {
-                    localStorage.setItem('user_unique_id', this.userId);
+                // Используем sessionStorage для инкогнито режима
+                if (typeof sessionStorage !== 'undefined') {
+                    if (!sessionStorage.getItem('session_visitor_id')) {
+                        const sessionId = 'visitor_' + timestamp + '_' + random;
+                        sessionStorage.setItem('session_visitor_id', sessionId);
+                        this.visitorId = sessionId;
+                    } else {
+                        this.visitorId = sessionStorage.getItem('session_visitor_id');
+                    }
                 } else {
-                    this.userId = localStorage.getItem('user_unique_id');
+                    // Fallback для старых браузеров
+                    this.visitorId = 'visitor_' + timestamp + '_' + random;
                 }
+                
+                console.log('👤 ID посетителя:', this.visitorId);
             }
             
             checkIfAdmin() {
@@ -1304,42 +1301,47 @@
                 return false;
             }
             
-            countRealVisitor() {
+            countUniqueVisitor() {
                 const today = new Date().toDateString();
-                const todayKey = 'real_visitors_' + today;
+                const todayKey = 'unique_visitors_' + today;
                 
+                // Получаем список сегодняшних уникальных сессий
                 let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || {};
                 
-                if (todayVisitors[this.userId]) {
-                    todayVisitors[this.userId].lastVisit = Date.now();
-                    localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
+                // Если эта сессия уже была засчитана сегодня
+                if (todayVisitors[this.visitorId]) {
+                    console.log('⏭ Сессия уже засчитана сегодня');
                     return;
                 }
                 
-                todayVisitors[this.userId] = {
-                    firstVisit: Date.now(),
-                    lastVisit: Date.now(),
-                    userAgent: navigator.userAgent.substring(0, 50)
+                // Новая уникальная сессия
+                todayVisitors[this.visitorId] = {
+                    timestamp: Date.now(),
+                    date: today,
+                    referrer: document.referrer || 'direct'
                 };
                 
+                // Сохраняем
                 localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
                 
-                let uniqueVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
-                uniqueVisitors++;
-                localStorage.setItem('beta_totalVisitors', uniqueVisitors.toString());
+                // Увеличиваем общий счётчик уникальных сессий
+                let totalSessions = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                totalSessions++;
+                localStorage.setItem('beta_totalVisitors', totalSessions.toString());
                 
-                let totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
-                localStorage.setItem('beta_totalVisitors', totalVisitors.toString());
+                console.log('✅ Новая уникальная сессия засчитана');
+                console.log('📊 Всего сессий:', totalSessions);
+                console.log('📊 Сегодня сессий:', Object.keys(todayVisitors).length);
             }
             
             updateDisplay() {
-                const uniqueVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
-                const downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                const totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                const totalDownloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
                 
-                document.getElementById('visitorCount').textContent = uniqueVisitors;
-                document.getElementById('downloadCount').textContent = downloads;
-                document.getElementById('statsVisitors').textContent = uniqueVisitors;
-                document.getElementById('statsDownloads').textContent = downloads;
+                document.getElementById('visitorCount').textContent = totalVisitors;
+                document.getElementById('downloadCount').textContent = totalDownloads;
+                document.getElementById('statsVisitors').textContent = totalVisitors;
+                document.getElementById('statsDownloads').textContent = totalDownloads;
             }
             
             updateSettingsPanel() {
@@ -1350,41 +1352,52 @@
                     statsSection.style.display = 'block';
                     adminSection.style.display = 'block';
                     
+                    // Детальная статистика для админа
                     const today = new Date().toDateString();
-                    const todayKey = 'real_visitors_' + today;
+                    const todayKey = 'unique_visitors_' + today;
                     const todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || {};
                     const todayCount = Object.keys(todayVisitors).length;
                     
-                    console.log('📊 Статистика для админа:');
-                    console.log('- Уникальных посетителей всего:', localStorage.getItem('beta_totalVisitors'));
-                    console.log('- Уникальных посетителей сегодня:', todayCount);
-                    console.log('- ID текущего пользователя:', this.userId);
+                    console.log('📊 === АДМИН СТАТИСТИКА ===');
+                    console.log('👥 Всего уникальных сессий:', localStorage.getItem('beta_totalVisitors'));
+                    console.log('📅 Уникальных сессий сегодня:', todayCount);
+                    console.log('🆔 ID текущей сессии:', this.visitorId);
+                    console.log('🔗 Источник:', document.referrer || 'прямой заход');
+                    console.log('📱 User Agent:', navigator.userAgent.substring(0, 80));
                 }
             }
             
             trackDownload() {
-                console.log('📥 Скачивание в бета-версии');
+                console.log('📥 Попытка скачивания...');
                 
-                const downloadKey = 'beta_last_download_' + new Date().toDateString();
-                const lastDownload = localStorage.getItem(downloadKey);
+                // Проверка на частые клики
+                const downloadKey = 'last_download_click';
+                const lastClick = localStorage.getItem(downloadKey);
                 const now = Date.now();
                 
-                if (lastDownload && (now - parseInt(lastDownload)) < 10000) {
-                    showNotification('⏳ Подождите 10 секунд');
+                if (lastClick && (now - parseInt(lastClick)) < 3000) {
+                    showNotification('⏳ Слишком часто! Подождите 3 секунды');
                     return false;
                 }
                 
                 localStorage.setItem(downloadKey, now.toString());
                 
                 if (!this.isAdmin) {
-                    const userDownloadKey = 'user_download_' + this.userId + '_' + new Date().toDateString();
+                    // Уникальное скачивание для этой сессии
+                    const sessionDownloadKey = 'session_download_' + this.visitorId;
                     
-                    if (!localStorage.getItem(userDownloadKey)) {
-                        localStorage.setItem(userDownloadKey, 'true');
+                    if (!localStorage.getItem(sessionDownloadKey)) {
+                        localStorage.setItem(sessionDownloadKey, 'true');
                         
-                        let downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
-                        downloads++;
-                        localStorage.setItem('beta_totalDownloads', downloads.toString());
+                        // Увеличиваем счётчик скачиваний
+                        let totalDownloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                        totalDownloads++;
+                        localStorage.setItem('beta_totalDownloads', totalDownloads.toString());
+                        
+                        console.log('✅ Уникальное скачивание засчитано');
+                        console.log('💾 Всего скачиваний:', totalDownloads);
+                    } else {
+                        console.log('⚠️ Это скачивание уже было засчитано для этой сессии');
                     }
                 }
                 
@@ -1734,7 +1747,7 @@
                 visitors: parseInt(localStorage.getItem('beta_totalVisitors')) || 0,
                 downloads: parseInt(localStorage.getItem('beta_totalDownloads')) || 0,
                 today: new Date().toDateString(),
-                version: '1.2-beta'
+                version: '1.3-beta'
             };
             
             const lang = localStorage.getItem('siteLanguage') || 'ru';
@@ -1779,12 +1792,12 @@
                     </h3>
                     
                     <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="color: #aaa; font-size: 0.9rem;">${lang === 'ru' ? '👥 Посетители бета-теста' : '👥 Beta Visitors'}</div>
+                        <div style="color: #aaa; font-size: 0.9rem;">${lang === 'ru' ? '👥 Уникальные сессии' : '👥 Unique Sessions'}</div>
                         <div style="color: var(--neon-green); font-size: 2rem; font-weight: bold;">${stats.visitors}</div>
                     </div>
                     
                     <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="color: #aaa; font-size: 0.9rem;">💾 ${lang === 'ru' ? 'Скачивания в бета-версии' : 'Beta Downloads'}</div>
+                        <div style="color: #aaa; font-size: 0.9rem;">💾 ${lang === 'ru' ? 'Уникальные скачивания' : 'Unique Downloads'}</div>
                         <div style="color: var(--neon-yellow); font-size: 2rem; font-weight: bold;">${stats.downloads}</div>
                     </div>
                     
@@ -1824,7 +1837,7 @@
         
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Бета-тест v1.2 запускается...');
+            console.log('🚀 Бета-тест v1.3 запускается...');
             
             smartCounter.init();
             
