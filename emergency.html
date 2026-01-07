@@ -1,76 +1,421 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Экстренный доступ | Гепард Про</title>
     <style>
-        body { 
-            background: #0a0514; 
-            color: white; 
-            font-family: sans-serif; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            margin: 0; 
+        /* Стили в вашем неоновом стиле */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .box { 
-            text-align: center; 
-            padding: 40px; 
-            background: rgba(255,255,255,0.1); 
-            border-radius: 20px; 
-            border: 2px solid #00ffff; 
+        
+        body {
+            background: #0a0514;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        button { 
-            background: linear-gradient(90deg, #ff00ff, #00ffff); 
-            color: white; 
-            border: none; 
-            padding: 15px 30px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            margin: 10px; 
-            font-size: 1.1rem; 
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, #ff00ff 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, #00ffff 0%, transparent 25%);
+            opacity: 0.15;
+            z-index: -2;
+        }
+        
+        .container {
+            background: rgba(10, 5, 20, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 50px;
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, #ff00ff, #00ffff) 1;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 
+                0 0 60px rgba(255, 0, 255, 0.4),
+                0 0 120px rgba(0, 255, 255, 0.2);
+            position: relative;
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 60px rgba(255, 0, 255, 0.4),
+                    0 0 120px rgba(0, 255, 255, 0.2);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 80px rgba(255, 0, 255, 0.6),
+                    0 0 140px rgba(0, 255, 255, 0.4);
+            }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ff0055;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .warning {
+            background: rgba(255, 0, 85, 0.2);
+            border: 2px solid #ff0055;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .warning h3 {
+            color: #ff0055;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .password-section {
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, #ff0055, #ff00ff);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5);
+        }
+        
+        .btn.cyan {
+            background: linear-gradient(90deg, #00ffff, #9d00ff);
+        }
+        
+        .btn.yellow {
+            background: linear-gradient(90deg, #ffff00, #ff0055);
+        }
+        
+        .status {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .status.active {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0055;
+            color: #ff0055;
+        }
+        
+        .status.inactive {
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+        
+        .secret-code {
+            margin-top: 25px;
+            color: #888;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px;
+            }
+            
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="box">
-        <h1>🚨 ЭКСТРЕННЫЙ ДОСТУП</h1>
-        <p>Сайт заблокирован тех. работами</p>
+    <div class="container">
+        <div style="position: absolute; top: 20px; right: 20px; 
+                   background: linear-gradient(135deg, #ff00ff, #00ffff); 
+                   color: white; width: 50px; height: 50px; 
+                   border-radius: 50%; display: flex; align-items: center; 
+                   justify-content: center; font-size: 24px;">
+            ⚙
+        </div>
         
-        <button onclick="unlockSite()">🔓 РАЗБЛОКИРОВАТЬ САЙТ</button>
-        <br>
-        <button onclick="openAdmin()">⚙ ОТКРЫТЬ АДМИН-ПАНЕЛЬ</button>
-        <br>
-        <button onclick="viewMaintenance()">👁 ПОСМОТРЕТЬ ЗАГЛУШКУ</button>
+        <h1><i class="fas fa-unlock-alt"></i> ЭКСТРЕННЫЙ ДОСТУП</h1>
         
-        <p style="margin-top: 30px; color: #aaa; font-size: 0.9rem;">
-            Только для администратора
-        </p>
+        <div class="warning">
+            <h3><i class="fas fa-exclamation-triangle"></i> ВНИМАНИЕ!</h3>
+            <p>Этот инструмент предназначен только для администратора сайта. Использование без соответствующих прав запрещено.</p>
+        </div>
+        
+        <!-- Поле для пароля -->
+        <div class="password-section">
+            <label style="color: #00ffff; margin-bottom: 10px; display: block;">
+                <i class="fas fa-key"></i> Введите пароль администратора:
+            </label>
+            <input type="password" id="adminPassword" class="password-input" 
+                   placeholder="Введите пароль" autocomplete="off">
+            <div id="passwordError" style="color: #ff0055; margin-top: 10px; display: none;">
+                <i class="fas fa-times-circle"></i> Неверный пароль!
+            </div>
+        </div>
+        
+        <!-- Кнопки действий (изначально скрыты) -->
+        <div class="buttons" id="actionButtons" style="display: none;">
+            <button class="btn" onclick="unlockSite()">
+                <i class="fas fa-check-circle"></i> РАЗБЛОКИРОВАТЬ САЙТ
+            </button>
+            
+            <button class="btn cyan" onclick="openAdmin()">
+                <i class="fas fa-cogs"></i> ОТКРЫТЬ АДМИН-ПАНЕЛЬ
+            </button>
+            
+            <button class="btn yellow" onclick="viewMaintenance()">
+                <i class="fas fa-eye"></i> ПОСМОТРЕТЬ ЗАГЛУШКУ
+            </button>
+        </div>
+        
+        <!-- Статус -->
+        <div id="statusDisplay" class="status active">
+            <i class="fas fa-ban"></i> Сайт заблокирован тех. работами
+        </div>
+        
+        <!-- Секретные коды -->
+        <div class="secret-code">
+            <p><i class="fas fa-info-circle"></i> Пароли для доступа:</p>
+            <p style="font-family: monospace; color: #00ffff; margin-top: 5px;">
+                • gepard20262009 (основной)<br>
+                • gepard2026<br>
+                • admin2026
+            </p>
+        </div>
     </div>
 
     <script>
+        // ==================== ПАРОЛИ ====================
+        const validPasswords = [
+            'gepard20262009',  // ОСНОВНОЙ ПАРОЛЬ
+            'gepard2026',
+            'admin2026', 
+            'emergency_access',
+            'gepard_pro_2026'
+        ];
+        
+        // ==================== ФУНКЦИИ ====================
+        function checkPassword() {
+            const password = document.getElementById('adminPassword').value.trim();
+            const errorElement = document.getElementById('passwordError');
+            const actionButtons = document.getElementById('actionButtons');
+            
+            if (validPasswords.includes(password)) {
+                // Пароль верный
+                errorElement.style.display = 'none';
+                actionButtons.style.display = 'grid';
+                
+                // Показываем успешный статус
+                document.getElementById('statusDisplay').className = 'status inactive';
+                document.getElementById('statusDisplay').innerHTML = 
+                    '<i class="fas fa-check-circle"></i> Доступ разрешён';
+                    
+                console.log('✅ Пароль принят, доступ разрешён');
+                return true;
+            } else {
+                // Пароль неверный
+                errorElement.style.display = 'block';
+                actionButtons.style.display = 'none';
+                console.log('❌ Неверный пароль');
+                return false;
+            }
+        }
+        
         function unlockSite() {
+            if (!checkPassword()) {
+                alert('Сначала введите правильный пароль!');
+                return;
+            }
+            
+            // Очищаем все записи о техработках
             localStorage.removeItem('maintenanceActive');
             localStorage.removeItem('maintenanceEndTime');
             localStorage.removeItem('maintenanceMessage');
-            alert('✅ Сайт разблокирован!');
-            window.location.href = 'index.html';
+            localStorage.removeItem('maintenanceLog');
+            
+            // Добавляем метку что админ
+            localStorage.setItem('gepard_beta_admin_2026', 'true');
+            
+            // Показываем сообщение
+            const status = document.getElementById('statusDisplay');
+            status.className = 'status inactive';
+            status.innerHTML = '<i class="fas fa-check-double"></i> Сайт успешно разблокирован!';
+            
+            // Обновляем статус
+            setTimeout(() => {
+                status.innerHTML = '<i class="fas fa-check-double"></i> Перенаправление на главную...';
+                setTimeout(() => {
+                    window.location.href = 'index.html?admin=gepard2026';
+                }, 1000);
+            }, 1000);
+            
+            console.log('✅ Сайт разблокирован администратором');
         }
         
         function openAdmin() {
-            window.open('admin-maintenance.html', '_blank');
+            if (!checkPassword()) {
+                alert('Сначала введите правильный пароль!');
+                return;
+            }
+            
+            // Отмечаем как админа
+            localStorage.setItem('gepard_beta_admin_2026', 'true');
+            
+            // Открываем админ-панель
+            window.open('admin-maintenance.html?admin=gepard2026', '_blank');
+            console.log('🔧 Открыта админ-панель');
         }
         
         function viewMaintenance() {
+            if (!checkPassword()) {
+                alert('Сначала введите правильный пароль!');
+                return;
+            }
+            
+            // Включаем заглушку на 5 минут для просмотра
+            const endTime = new Date(Date.now() + 5 * 60000);
+            localStorage.setItem('maintenanceActive', 'true');
+            localStorage.setItem('maintenanceEndTime', endTime.toISOString());
+            localStorage.setItem('maintenanceMessage', 'Просмотр заглушки администратором');
+            
+            // Открываем заглушку
             window.open('maintenance.html', '_blank');
+            console.log('👁️ Открыта страница заглушки для просмотра');
         }
         
-        // Авторазблокировка по секретному коду
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.shiftKey && e.key === 'G') {
-                unlockSite();
+        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
+        function init() {
+            console.log('🚨 Экстренный доступ загружен');
+            
+            // Автопроверка пароля при вводе
+            document.getElementById('adminPassword').addEventListener('input', checkPassword);
+            
+            // Проверяем текущий статус
+            const isBlocked = localStorage.getItem('maintenanceActive') === 'true';
+            const statusDisplay = document.getElementById('statusDisplay');
+            
+            if (isBlocked) {
+                statusDisplay.className = 'status active';
+                statusDisplay.innerHTML = '<i class="fas fa-ban"></i> Сайт заблокирован тех. работами';
+            } else {
+                statusDisplay.className = 'status inactive';
+                statusDisplay.innerHTML = '<i class="fas fa-check-circle"></i> Сайт разблокирован';
+                document.getElementById('actionButtons').style.display = 'grid';
             }
-        });
+            
+            // Секретные кнопки быстрого доступа
+            document.addEventListener('keydown', function(e) {
+                // Ввод пароля при нажатии Enter
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    checkPassword();
+                }
+                
+                // Ctrl+Shift+G - быстрая разблокировка с основным паролем
+                if (e.ctrlKey && e.shiftKey && e.key === 'G') {
+                    e.preventDefault();
+                    localStorage.setItem('gepard_beta_admin_2026', 'true');
+                    localStorage.removeItem('maintenanceActive');
+                    localStorage.removeItem('maintenanceEndTime');
+                    alert('✅ Быстрая разблокировка выполнена!');
+                    window.location.href = 'index.html?admin=gepard2026';
+                }
+                
+                // Ctrl+Shift+A - открыть админку
+                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                    e.preventDefault();
+                    localStorage.setItem('gepard_beta_admin_2026', 'true');
+                    window.open('admin-maintenance.html?admin=gepard2026', '_blank');
+                }
+            });
+        }
+        
+        // Запускаем при загрузке
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Функция для консоли
+        window.emergencyUnlock = function(password = 'gepard20262009') {
+            if (validPasswords.includes(password)) {
+                localStorage.removeItem('maintenanceActive');
+                localStorage.removeItem('maintenanceEndTime');
+                localStorage.setItem('gepard_beta_admin_2026', 'true');
+                console.log('✅ Экстренная разблокировка через консоль');
+                window.location.href = 'index.html?admin=gepard2026';
+                return true;
+            } else {
+                console.log('❌ Неверный пароль для экстренной разблокировки');
+                return false;
+            }
+        };
     </script>
 </body>
 </html>
