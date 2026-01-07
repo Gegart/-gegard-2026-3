@@ -365,7 +365,7 @@
                 </div>
                 <button class="control-btn green" onclick="deactivateMaintenance()">
                     <i class="fas fa-stop"></i> ДЕАКТИВИРОВАТЬ
-                </div>
+                </button>
             </div>
         </div>
         
@@ -664,6 +664,18 @@
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         function init() {
             console.log('🔧 Админ-панель загружена');
+            
+            // ============ ПРОВЕРКА АДМИНА (ДОБАВИЛ ЭТО) ============
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.get('admin') === 'gepard2026' || 
+                           localStorage.getItem('gepard_beta_admin_2026') === 'true';
+            
+            if (!isAdmin) {
+                console.log('⚠️ Не админ, перенаправляю на главную');
+                window.location.href = 'index.html';
+                return;
+            }
+            // ============ КОНЕЦ ПРОВЕРКИ АДМИНА ============
             
             // Загружаем состояние
             maintenanceActive = localStorage.getItem('maintenanceActive') === 'true';
