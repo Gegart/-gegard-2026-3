@@ -1875,5 +1875,54 @@
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
     </script>
+<!-- Подключаем скрипт проверки -->
+<script src="maintenance-check.js"></script>
+<script>
+    // Проверяем техработы при загрузке
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🏠 Главная страница загружена');
+        
+        // Проверяем и перенаправляем если нужно
+        if (window.MAINTENANCE && MAINTENANCE.checkRedirect()) {
+            return;
+        }
+        
+        // Если мы здесь - сайт доступен
+        console.log('✅ Сайт доступен');
+        
+        // Показываем админскую панель если админ
+        if (MAINTENANCE && MAINTENANCE.isAdmin()) {
+            const adminNote = document.createElement('div');
+            adminNote.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    background: rgba(0,255,255,0.1);
+                    color: #00ffff;
+                    padding: 10px 15px;
+                    border-radius: 10px;
+                    border: 1px solid #00ffff;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                ">
+                    <i class="fas fa-user-shield"></i> АДМИН РЕЖИМ
+                    <a href="admin-maintenance.html" style="
+                        background: #ff00ff;
+                        color: white;
+                        padding: 5px 10px;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        margin-left: 10px;
+                    ">Панель</a>
+                </div>
+            `;
+            document.body.appendChild(adminNote);
+        }
+    });
+</script>
 </body>
 </html>
