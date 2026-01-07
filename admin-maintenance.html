@@ -462,24 +462,45 @@
         })();
         
         // ==================== ФУНКЦИИ УПРАВЛЕНИЯ ====================
-        function activateMaintenance() {
-            const hours = parseInt(document.getElementById('hoursInput').value) || 1;
-            const minutes = parseInt(document.getElementById('minutesInput').value) || 30;
-            const message = document.getElementById('messageInput').value || 'Технические работы';
-            
-            // Активируем через общую систему
-            MAINTENANCE.activate(hours, minutes, message);
-            
-            // Обновляем UI
-            updateUI();
-            
-            // Логируем
-            addLog(`Активированы техработы на ${hours}ч ${minutes}мин: "${message}"`, 'success');
-            
-            // Уведомление
-            showNotification('Техработы активированы!', 'success');
-        }
-        
+      function activateMaintenance() {
+    console.log('🔄 АДМИНКА: Активирую техработы...');
+    
+    // Получаем настройки
+    const hours = parseInt(document.getElementById('hoursInput').value) || 1;
+    const minutes = parseInt(document.getElementById('minutesInput').value) || 30;
+    const message = document.getElementById('messageInput').value || 'Технические работы';
+    
+    // УСТАНАВЛИВАЕМ В localStorage ПРАВИЛЬНО
+    const totalMinutes = (hours * 60) + minutes;
+    const endTime = new Date(Date.now() + totalMinutes * 60000);
+    
+    // КЛЮЧ 1: Старый простой ключ (для check-maintenance.js)
+    localStorage.setItem('maintenanceActive', 'true');
+    
+    // КЛЮЧ 2: Время окончания
+    localStorage.setItem('maintenanceEndTime', endTime.toISOString());
+    
+    // КЛЮЧ 3: Сообщение
+    localStorage.setItem('maintenanceMessage', message);
+    
+    console.log('✅ АДМИНКА: Установлены ключи:');
+    console.log('- maintenanceActive: true');
+    console.log('- maintenanceEndTime:', endTime.toISOString());
+    console.log('- maintenanceMessage:', message);
+    
+    // Обновляем переменные
+    maintenanceActive = true;
+    updateUI();
+    
+    // Логируем
+    addLog(`Активированы техработы на ${hours}ч ${minutes}мин: "${message}"`, 'success');
+    showNotification('Техработы активированы!', 'success');
+    
+    // Сразу проверяем что записалось
+    console.log('🔍 АДМИНКА: Проверка после установки:');
+    console.log('maintenanceActive:', localStorage.getItem('maintenanceActive'));
+    console.log('maintenanceEndTime:', localStorage.getItem('maintenanceEndTime'));
+}
         function deactivateMaintenance() {
             // Деактивируем через общую систему
             MAINTENANCE.deactivate();
