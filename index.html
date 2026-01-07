@@ -1238,22 +1238,20 @@
         </div>
     </footer>
 
-  <script>
-        // ==================== УМНЫЙ СЧЁТЧИК (ИСПРАВЛЕННЫЙ) ====================
+    <script>
+        // ==================== УМНЫЙ СЧЁТЧИК ====================
         class SmartCounter {
             constructor() {
                 this.adminKey = 'gepard_beta_admin_2026';
                 this.isAdmin = false;
-                this.version = '1.3-beta';
-                this.visitorId = null;
+                this.version = '1.2-beta';
             }
             
             init() {
                 console.log(`🚀 Бета-версия ${this.version} запущена`);
-                this.createVisitorId();
                 this.checkIfAdmin();
                 if (!this.isAdmin) {
-                    this.countUniqueVisitor();
+                    this.countVisitor();
                 }
                 this.updateDisplay();
                 this.updateSettingsPanel();
@@ -1261,28 +1259,6 @@
                 if (this.isAdmin) {
                     showNotification('🔧 Бета-тест активен | Версия ' + this.version);
                 }
-            }
-            
-            createVisitorId() {
-                // Генерируем уникальный ID при каждом заходе
-                const timestamp = Date.now();
-                const random = Math.random().toString(36).substring(2, 15);
-                
-                // Используем sessionStorage для инкогнито режима
-                if (typeof sessionStorage !== 'undefined') {
-                    if (!sessionStorage.getItem('session_visitor_id')) {
-                        const sessionId = 'visitor_' + timestamp + '_' + random;
-                        sessionStorage.setItem('session_visitor_id', sessionId);
-                        this.visitorId = sessionId;
-                    } else {
-                        this.visitorId = sessionStorage.getItem('session_visitor_id');
-                    }
-                } else {
-                    // Fallback для старых браузеров
-                    this.visitorId = 'visitor_' + timestamp + '_' + random;
-                }
-                
-                console.log('👤 ID посетителя:', this.visitorId);
             }
             
             checkIfAdmin() {
@@ -1301,47 +1277,38 @@
                 return false;
             }
             
-            countUniqueVisitor() {
+            countVisitor() {
                 const today = new Date().toDateString();
-                const todayKey = 'unique_visitors_' + today;
+                const todayKey = 'beta_visitors_' + today;
+                const sessionKey = 'beta_session_' + today;
                 
-                // Получаем список сегодняшних уникальных сессий
-                let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || {};
-                
-                // Если эта сессия уже была засчитана сегодня
-                if (todayVisitors[this.visitorId]) {
-                    console.log('⏭ Сессия уже засчитана сегодня');
+                if (sessionStorage.getItem(sessionKey)) {
                     return;
                 }
                 
-                // Новая уникальная сессия
-                todayVisitors[this.visitorId] = {
-                    timestamp: Date.now(),
-                    date: today,
-                    referrer: document.referrer || 'direct'
-                };
+                sessionStorage.setItem(sessionKey, 'true');
                 
-                // Сохраняем
-                localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
+                let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || [];
+                const visitorId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                 
-                // Увеличиваем общий счётчик уникальных сессий
-                let totalSessions = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
-                totalSessions++;
-                localStorage.setItem('beta_totalVisitors', totalSessions.toString());
-                
-                console.log('✅ Новая уникальная сессия засчитана');
-                console.log('📊 Всего сессий:', totalSessions);
-                console.log('📊 Сегодня сессий:', Object.keys(todayVisitors).length);
+                if (todayVisitors.length < 1000) {
+                    todayVisitors.push(visitorId);
+                    localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
+                    
+                    let totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                    totalVisitors++;
+                    localStorage.setItem('beta_totalVisitors', totalVisitors.toString());
+                }
             }
             
             updateDisplay() {
-                const totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
-                const totalDownloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                const visitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                const downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
                 
-                document.getElementById('visitorCount').textContent = totalVisitors;
-                document.getElementById('downloadCount').textContent = totalDownloads;
-                document.getElementById('statsVisitors').textContent = totalVisitors;
-                document.getElementById('statsDownloads').textContent = totalDownloads;
+                document.getElementById('visitorCount').textContent = visitors;
+                document.getElementById('downloadCount').textContent = downloads;
+                document.getElementById('statsVisitors').textContent = visitors;
+                document.getElementById('statsDownloads').textContent = downloads;
             }
             
             updateSettingsPanel() {
@@ -1351,54 +1318,27 @@
                 if (this.isAdmin) {
                     statsSection.style.display = 'block';
                     adminSection.style.display = 'block';
-                    
-                    // Детальная статистика для админа
-                    const today = new Date().toDateString();
-                    const todayKey = 'unique_visitors_' + today;
-                    const todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || {};
-                    const todayCount = Object.keys(todayVisitors).length;
-                    
-                    console.log('📊 === АДМИН СТАТИСТИКА ===');
-                    console.log('👥 Всего уникальных сессий:', localStorage.getItem('beta_totalVisitors'));
-                    console.log('📅 Уникальных сессий сегодня:', todayCount);
-                    console.log('🆔 ID текущей сессии:', this.visitorId);
-                    console.log('🔗 Источник:', document.referrer || 'прямой заход');
-                    console.log('📱 User Agent:', navigator.userAgent.substring(0, 80));
                 }
             }
             
             trackDownload() {
-                console.log('📥 Попытка скачивания...');
+                console.log('📥 Скачивание в бета-версии');
                 
-                // Проверка на частые клики
-                const downloadKey = 'last_download_click';
-                const lastClick = localStorage.getItem(downloadKey);
+                const downloadKey = 'beta_last_download_' + new Date().toDateString();
+                const lastDownload = localStorage.getItem(downloadKey);
                 const now = Date.now();
                 
-                if (lastClick && (now - parseInt(lastClick)) < 3000) {
-                    showNotification('⏳ Слишком часто! Подождите 3 секунды');
+                if (lastDownload && (now - parseInt(lastDownload)) < 10000) {
+                    showNotification('⏳ Подождите 10 секунд');
                     return false;
                 }
                 
                 localStorage.setItem(downloadKey, now.toString());
                 
                 if (!this.isAdmin) {
-                    // Уникальное скачивание для этой сессии
-                    const sessionDownloadKey = 'session_download_' + this.visitorId;
-                    
-                    if (!localStorage.getItem(sessionDownloadKey)) {
-                        localStorage.setItem(sessionDownloadKey, 'true');
-                        
-                        // Увеличиваем счётчик скачиваний
-                        let totalDownloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
-                        totalDownloads++;
-                        localStorage.setItem('beta_totalDownloads', totalDownloads.toString());
-                        
-                        console.log('✅ Уникальное скачивание засчитано');
-                        console.log('💾 Всего скачиваний:', totalDownloads);
-                    } else {
-                        console.log('⚠️ Это скачивание уже было засчитано для этой сессии');
-                    }
+                    let downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                    downloads++;
+                    localStorage.setItem('beta_totalDownloads', downloads.toString());
                 }
                 
                 this.updateDisplay();
@@ -1747,7 +1687,7 @@
                 visitors: parseInt(localStorage.getItem('beta_totalVisitors')) || 0,
                 downloads: parseInt(localStorage.getItem('beta_totalDownloads')) || 0,
                 today: new Date().toDateString(),
-                version: '1.3-beta'
+                version: '1.2-beta'
             };
             
             const lang = localStorage.getItem('siteLanguage') || 'ru';
@@ -1792,12 +1732,12 @@
                     </h3>
                     
                     <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="color: #aaa; font-size: 0.9rem;">${lang === 'ru' ? '👥 Уникальные сессии' : '👥 Unique Sessions'}</div>
+                        <div style="color: #aaa; font-size: 0.9rem;">${lang === 'ru' ? '👥 Посетители бета-теста' : '👥 Beta Visitors'}</div>
                         <div style="color: var(--neon-green); font-size: 2rem; font-weight: bold;">${stats.visitors}</div>
                     </div>
                     
                     <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
-                        <div style="color: #aaa; font-size: 0.9rem;">💾 ${lang === 'ru' ? 'Уникальные скачивания' : 'Unique Downloads'}</div>
+                        <div style="color: #aaa; font-size: 0.9rem;">💾 ${lang === 'ru' ? 'Скачивания в бета-версии' : 'Beta Downloads'}</div>
                         <div style="color: var(--neon-yellow); font-size: 2rem; font-weight: bold;">${stats.downloads}</div>
                     </div>
                     
@@ -1837,7 +1777,37 @@
         
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 Бета-тест v1.3 запускается...');
+            console.log('🚀 Бета-тест v1.2 запускается...');
+            
+            // ============ ПРОВЕРКА ТЕХРАБОТ ============
+            const urlParams = new URLSearchParams(window.location.search);
+            const isAdmin = urlParams.get('admin') === 'gepard2026' || 
+                           localStorage.getItem('gepard_beta_admin_2026') === 'true';
+            
+            if (!isAdmin) {
+                const isMaintenanceActive = localStorage.getItem('maintenanceActive') === 'true';
+                const endTime = localStorage.getItem('maintenanceEndTime');
+                
+                if (isMaintenanceActive && endTime) {
+                    const now = new Date();
+                    const target = new Date(endTime);
+                    
+                    if (now >= target) {
+                        localStorage.removeItem('maintenanceActive');
+                        localStorage.removeItem('maintenanceEndTime');
+                        console.log('⏰ Время техработ истекло');
+                    } else {
+                        console.log('🚧 Техработы активны, перенаправляю на заглушку');
+                        window.location.href = 'maintenance.html';
+                        return;
+                    }
+                } else if (isMaintenanceActive && !endTime) {
+                    console.log('🚧 Техработы активны (без таймера), перенаправляю');
+                    window.location.href = 'maintenance.html';
+                    return;
+                }
+            }
+            // ============ КОНЕЦ ПРОВЕРКИ ТЕХРАБОТ ============
             
             smartCounter.init();
             
@@ -1850,7 +1820,22 @@
             // Прямой обработчик для шестерёнки
             const gear = document.getElementById('settingsGear');
             if (gear) {
-                gear.addEventListener('click', toggleSettings);
+                gear.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const panel = document.getElementById('settingsPanel');
+                    if (!panel || !gear) return;
+                    
+                    if (panel.style.display === 'block') {
+                        panel.style.display = 'none';
+                        gear.style.animation = 'rotateGear 10s linear infinite';
+                    } else {
+                        panel.style.display = 'block';
+                        gear.style.animation = 'rotateGear 3s linear infinite';
+                        panel.scrollTop = 0;
+                    }
+                });
                 console.log('✅ Обработчик шестерёнки добавлен');
             }
             
@@ -1889,74 +1874,6 @@
             console.log('✅ Бета-тест успешно загружен!');
             console.log('📊 Админ доступ:', smartCounter.isAdmin);
         });
-<!-- ПРОВЕРКА ТЕХРАБОТ (Добавить в конец index.html) -->
-<script>
-(function() {
-    'use strict';
-    
-    console.log('🔧 Проверка техработ...');
-    
-    // Проверяем если это админ - пропускаем заглушку
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdmin = urlParams.get('admin') === 'gepard2026' || 
-                   localStorage.getItem('gepard_beta_admin_2026') === 'true';
-    
-    if (isAdmin) {
-        console.log('👑 Админ обнаружен, пропускаю заглушку');
-        return; // Не перенаправляем админа
-    }
-    
-    // Проверяем активны ли техработы
-    const isMaintenanceActive = localStorage.getItem('maintenanceActive') === 'true';
-    const endTime = localStorage.getItem('maintenanceEndTime');
-    
-    if (isMaintenanceActive && endTime) {
-        // Проверяем не истекло ли время
-        const now = new Date();
-        const target = new Date(endTime);
-        
-        if (now >= target) {
-            // Время вышло - очищаем
-            localStorage.removeItem('maintenanceActive');
-            localStorage.removeItem('maintenanceEndTime');
-            console.log('⏰ Время техработ истекло, очищаем...');
-        } else {
-            // Техработы активны - перенаправляем
-            console.log('🚧 Техработы активны, перенаправляю...');
-            window.location.href = 'maintenance.html';
-            return;
-        }
-    } else if (isMaintenanceActive && !endTime) {
-        // Техработы без таймера
-        console.log('🚧 Техработы активны (без таймера), перенаправляю...');
-        window.location.href = 'maintenance.html';
-        return;
-    }
-    
-    console.log('✅ Техработы не активны, сайт доступен');
-    
-    // Функция для быстрого включения/выключения (для консоли)
-    window.toggleMaintenance = function(minutes = 60) {
-        const isActive = localStorage.getItem('maintenanceActive') === 'true';
-        
-        if (isActive) {
-            localStorage.removeItem('maintenanceActive');
-            localStorage.removeItem('maintenanceEndTime');
-            localStorage.removeItem('maintenanceMessage');
-            console.log('✅ Техработы отключены');
-            alert('Техработы отключены!');
-            location.reload();
-        } else {
-            const endTime = new Date(Date.now() + minutes * 60000);
-            localStorage.setItem('maintenanceActive', 'true');
-            localStorage.setItem('maintenanceEndTime', endTime.toISOString());
-            localStorage.setItem('maintenanceMessage', 'Плановые технические работы');
-            console.log(`🚧 Техработы включены на ${minutes} минут`);
-            alert(`Техработы включены на ${minutes} минут!`);
-            window.location.href = 'maintenance.html';
-        }
-    };
-})();
-</script>
+    </script>
 </body>
 </html>
