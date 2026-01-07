@@ -1245,19 +1245,46 @@
                 this.adminKey = 'gepard_beta_admin_2026';
                 this.isAdmin = false;
                 this.version = '1.2-beta';
+                this.userId = null;
             }
             
             init() {
                 console.log(`🚀 Бета-версия ${this.version} запущена`);
+                this.generateUserId();
                 this.checkIfAdmin();
                 if (!this.isAdmin) {
-                    this.countVisitor();
+                    this.countRealVisitor();
                 }
                 this.updateDisplay();
                 this.updateSettingsPanel();
                 
                 if (this.isAdmin) {
                     showNotification('🔧 Бета-тест активен | Версия ' + this.version);
+                }
+            }
+            
+            generateUserId() {
+                const browserData = [
+                    navigator.userAgent,
+                    navigator.language,
+                    screen.width + 'x' + screen.height,
+                    navigator.platform,
+                    new Date().getTimezoneOffset()
+                ].join('|');
+                
+                let hash = 0;
+                for (let i = 0; i < browserData.length; i++) {
+                    const char = browserData.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash;
+                }
+                
+                this.userId = 'user_' + Math.abs(hash).toString(36).substring(0, 8);
+                
+                if (!localStorage.getItem('user_unique_id')) {
+                    localStorage.setItem('user_unique_id', this.userId);
+                } else {
+                    this.userId = localStorage.getItem('user_unique_id');
                 }
             }
             
@@ -1277,37 +1304,41 @@
                 return false;
             }
             
-            countVisitor() {
+            countRealVisitor() {
                 const today = new Date().toDateString();
-                const todayKey = 'beta_visitors_' + today;
-                const sessionKey = 'beta_session_' + today;
+                const todayKey = 'real_visitors_' + today;
                 
-                if (sessionStorage.getItem(sessionKey)) {
+                let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || {};
+                
+                if (todayVisitors[this.userId]) {
+                    todayVisitors[this.userId].lastVisit = Date.now();
+                    localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
                     return;
                 }
                 
-                sessionStorage.setItem(sessionKey, 'true');
+                todayVisitors[this.userId] = {
+                    firstVisit: Date.now(),
+                    lastVisit: Date.now(),
+                    userAgent: navigator.userAgent.substring(0, 50)
+                };
                 
-                let todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || [];
-                const visitorId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
                 
-                if (todayVisitors.length < 1000) {
-                    todayVisitors.push(visitorId);
-                    localStorage.setItem(todayKey, JSON.stringify(todayVisitors));
-                    
-                    let totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
-                    totalVisitors++;
-                    localStorage.setItem('beta_totalVisitors', totalVisitors.toString());
-                }
+                let uniqueVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                uniqueVisitors++;
+                localStorage.setItem('beta_totalVisitors', uniqueVisitors.toString());
+                
+                let totalVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                localStorage.setItem('beta_totalVisitors', totalVisitors.toString());
             }
             
             updateDisplay() {
-                const visitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
+                const uniqueVisitors = parseInt(localStorage.getItem('beta_totalVisitors')) || 0;
                 const downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
                 
-                document.getElementById('visitorCount').textContent = visitors;
+                document.getElementById('visitorCount').textContent = uniqueVisitors;
                 document.getElementById('downloadCount').textContent = downloads;
-                document.getElementById('statsVisitors').textContent = visitors;
+                document.getElementById('statsVisitors').textContent = uniqueVisitors;
                 document.getElementById('statsDownloads').textContent = downloads;
             }
             
@@ -1318,6 +1349,16 @@
                 if (this.isAdmin) {
                     statsSection.style.display = 'block';
                     adminSection.style.display = 'block';
+                    
+                    const today = new Date().toDateString();
+                    const todayKey = 'real_visitors_' + today;
+                    const todayVisitors = JSON.parse(localStorage.getItem(todayKey)) || {};
+                    const todayCount = Object.keys(todayVisitors).length;
+                    
+                    console.log('📊 Статистика для админа:');
+                    console.log('- Уникальных посетителей всего:', localStorage.getItem('beta_totalVisitors'));
+                    console.log('- Уникальных посетителей сегодня:', todayCount);
+                    console.log('- ID текущего пользователя:', this.userId);
                 }
             }
             
@@ -1336,9 +1377,15 @@
                 localStorage.setItem(downloadKey, now.toString());
                 
                 if (!this.isAdmin) {
-                    let downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
-                    downloads++;
-                    localStorage.setItem('beta_totalDownloads', downloads.toString());
+                    const userDownloadKey = 'user_download_' + this.userId + '_' + new Date().toDateString();
+                    
+                    if (!localStorage.getItem(userDownloadKey)) {
+                        localStorage.setItem(userDownloadKey, 'true');
+                        
+                        let downloads = parseInt(localStorage.getItem('beta_totalDownloads')) || 0;
+                        downloads++;
+                        localStorage.setItem('beta_totalDownloads', downloads.toString());
+                    }
                 }
                 
                 this.updateDisplay();
