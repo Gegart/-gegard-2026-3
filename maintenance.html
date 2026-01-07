@@ -1,92 +1,122 @@
-<!-- НЕОНОВАЯ ЗАГЛУШКА В СТИЛЕ ТВОЕГО САЙТА -->
-<div id="gepardMaintenance" style="
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #0a0514;
-    z-index: 9999999;
-    overflow: hidden;
-">
-    <!-- Неоновый фон -->
-    <div style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            radial-gradient(circle at 20% 30%, #ff00ff 0%, transparent 25%),
-            radial-gradient(circle at 80% 70%, #00ffff 0%, transparent 25%);
-        opacity: 0.15;
-    "></div>
-    
-    <!-- Сканирующие линии -->
-    <div style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-            to bottom,
-            transparent 50%,
-            rgba(0, 255, 255, 0.03) 50%
-        );
-        background-size: 100% 4px;
-        animation: scan 20s linear infinite;
-    "></div>
-    
-    <!-- Основной контент -->
-    <div style="
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        width: 90%;
-        max-width: 800px;
-    ">
-        <!-- Глитч1 текст -->
-        <div style="position: relative; display: inline-block; margin-bottom: 30px;">
-            <h1 style="
-                font-size: clamp(2.5rem, 8vw, 4.5rem);
-                font-weight: 900;
-                text-transform: uppercase;
-                letter-spacing: 3px;
-                color: transparent;
-                background: linear-gradient(90deg, #ff0055, #ff00ff, #9d00ff, #00ffff);
-                background-size: 400% 100%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                animation: rainbow 6s linear infinite;
-                text-shadow: 0 0 20px currentColor;
-                position: relative;
-            ">
-                ГЕПАРД ПРО
-            </h1>
-            
-            <!-- Глитч эффект -->
-            <div style="
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, #ff0055, #ff00ff, #9d00ff, #00ffff);
-                background-size: 400% 100%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-                animation: rainbow 6s linear infinite, glitch 3s infinite;
-                opacity: 0.7;
-                z-index: -1;
-            ">ГЕПАРД ПРО</div>
-        </div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Технические работы | Гепард Про</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        <!-- Сообщение -->
-        <div style="
+        body {
+            background: #0a0514;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        /* НЕОНОВАЯ ЗАГЛУШКА */
+        #gepardMaintenance {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0514;
+            z-index: 9999999;
+            overflow: hidden;
+        }
+        
+        /* Неоновый фон */
+        #gepardMaintenance::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, #ff00ff 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, #00ffff 0%, transparent 25%);
+            opacity: 0.15;
+        }
+        
+        /* Сканирующие линии */
+        #gepardMaintenance::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 255, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            animation: scan 20s linear infinite;
+        }
+        
+        /* Основной контент */
+        .maintenance-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            z-index: 10;
+        }
+        
+        /* Глитч текст */
+        .glitch-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+        
+        .glitch-main {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: transparent;
+            background: linear-gradient(90deg, #ff0055, #ff00ff, #9d00ff, #00ffff);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: rainbow 6s linear infinite;
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        .glitch-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0055, #ff00ff, #9d00ff, #00ffff);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 6s linear infinite, glitch 3s infinite;
+            opacity: 0.7;
+            z-index: -1;
+        }
+        
+        /* Сообщение */
+        .message-box {
             background: rgba(10, 5, 20, 0.7);
             backdrop-filter: blur(15px);
             border-radius: 30px;
@@ -96,117 +126,88 @@
             margin: 40px 0;
             box-shadow: 0 0 60px rgba(255, 0, 255, 0.4);
             position: relative;
-        ">
-            <div style="
-                font-size: 1.8rem;
-                color: #00ffff;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 15px;
-            ">
-                <div style="animation: spin 3s linear infinite">⚙️</div>
-                ТЕХНИЧЕСКИЕ РАБОТЫ
-                <div style="animation: spin 3s linear infinite reverse">🔧</div>
-            </div>
-            
-            <div style="
-                font-size: 1.3rem;
-                color: #ffff00;
-                line-height: 1.6;
-                padding: 20px;
-                background: rgba(255, 255, 0, 0.1);
-                border-radius: 15px;
-                border: 2px solid #ffff00;
-                margin: 20px 0;
-            ">
-                Извините за неудобства!<br>
-                Исправляем баги, скоро всё заработает ещё лучше!
-            </div>
-            
-            <!-- Прогресс бар -->
-            <div style="
-                margin: 30px 0;
-                text-align: left;
-            ">
-                <div style="
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 10px;
-                    color: #aaa;
-                ">
-                    <span>Исправление багов:</span>
-                    <span id="progressPercent">65%</span>
-                </div>
-                <div style="
-                    height: 12px;
-                    background: rgba(255, 255, 255, 0.1);
-                    border-radius: 6px;
-                    overflow: hidden;
-                ">
-                    <div id="progressBar" style="
-                        height: 100%;
-                        width: 65%;
-                        background: linear-gradient(90deg, #ff0055, #ff00ff, #00ffff);
-                        border-radius: 6px;
-                        animation: progressPulse 2s infinite;
-                    "></div>
-                </div>
-            </div>
-            
-            <!-- Анимация загрузки -->
-            <div style="
-                display: flex;
-                justify-content: center;
-                gap: 10px;
-                margin: 30px 0;
-            ">
-                <div style="
-                    width: 15px;
-                    height: 15px;
-                    background: #ff0055;
-                    border-radius: 50%;
-                    animation: bounce 1.4s infinite;
-                "></div>
-                <div style="
-                    width: 15px;
-                    height: 15px;
-                    background: #00ffff;
-                    border-radius: 50%;
-                    animation: bounce 1.4s infinite 0.2s;
-                "></div>
-                <div style="
-                    width: 15px;
-                    height: 15px;
-                    background: #ffff00;
-                    border-radius: 50%;
-                    animation: bounce 1.4s infinite 0.4s;
-                "></div>
-                <div style="
-                    width: 15px;
-                    height: 15px;
-                    background: #00ff00;
-                    border-radius: 50%;
-                    animation: bounce 1.4s infinite 0.6s;
-                "></div>
-            </div>
-            
-            <!-- Контакты -->
-            <div style="
-                margin-top: 40px;
-                padding-top: 20px;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                color: #888;
-                font-size: 0.9rem;
-            ">
-                Вернёмся через: <span id="gepardTimer">14:35</span><br>
-                <small>Следите за обновлениями в нашем YouTube</small>
-            </div>
-        </div>
+        }
         
-        <!-- Шестерёнка -->
-        <div style="
+        .message-title {
+            font-size: 1.8rem;
+            color: #00ffff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .message-text {
+            font-size: 1.3rem;
+            color: #ffff00;
+            line-height: 1.6;
+            padding: 20px;
+            background: rgba(255, 255, 0, 0.1);
+            border-radius: 15px;
+            border: 2px solid #ffff00;
+            margin: 20px 0;
+        }
+        
+        /* Прогресс бар */
+        .progress-container {
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .progress-bar-bg {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #ff0055, #ff00ff, #00ffff);
+            border-radius: 6px;
+            animation: progressPulse 2s infinite;
+        }
+        
+        /* Анимация загрузки */
+        .loading-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+        
+        .dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+        
+        .dot:nth-child(1) { background: #ff0055; }
+        .dot:nth-child(2) { background: #00ffff; animation-delay: 0.2s; }
+        .dot:nth-child(3) { background: #ffff00; animation-delay: 0.4s; }
+        .dot:nth-child(4) { background: #00ff00; animation-delay: 0.6s; }
+        
+        /* Контакты */
+        .contacts {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        /* Шестерёнка - ТОЛЬКО ДЕКОРАЦИЯ */
+        .decorative-gear {
             position: absolute;
             top: 20px;
             right: 20px;
@@ -220,152 +221,292 @@
             font-size: 28px;
             animation: rotate 10s linear infinite;
             box-shadow: 0 0 25px rgba(255, 0, 255, 0.6);
-        ">⚙</div>
+            opacity: 0.5;
+            pointer-events: none; /* НЕ КЛИКАБЕЛЬНА */
+            cursor: default;
+        }
+        
+        /* Анимации */
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+        
+        @keyframes glitch {
+            0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+            10% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            30% { clip-path: inset(40% 0 20% 0); transform: translate(-2px, -2px); }
+        }
+        
+        @keyframes scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 1000px; }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        @keyframes progressPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Секретные стили для админов */
+        .admin-gear {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff0055, #00ff00);
+            border-radius: 50%;
+            display: none; /* По умолчанию скрыто */
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            animation: rotate 3s linear infinite;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.8);
+            cursor: pointer;
+            z-index: 10000000;
+        }
+    </style>
+</head>
+<body>
+    <!-- НЕОНОВАЯ ЗАГЛУШКА -->
+    <div id="gepardMaintenance">
+        <div class="maintenance-content">
+            <!-- Глитч текст -->
+            <div class="glitch-container">
+                <h1 class="glitch-main">ГЕПАРД ПРО</h1>
+                <div class="glitch-effect">ГЕПАРД ПРО</div>
+            </div>
+            
+            <!-- Сообщение -->
+            <div class="message-box">
+                <div class="message-title">
+                    <div style="animation: spin 3s linear infinite">⚙️</div>
+                    ТЕХНИЧЕСКИЕ РАБОТЫ
+                    <div style="animation: spin 3s linear infinite reverse">🔧</div>
+                </div>
+                
+                <div class="message-text" id="maintenanceMessage">
+                    Извините за неудобства!<br>
+                    Исправляем баги, скоро всё заработает ещё лучше!
+                </div>
+                
+                <!-- Прогресс бар -->
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <span>Исправление багов:</span>
+                        <span id="progressPercent">65%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                </div>
+                
+                <!-- Анимация загрузки -->
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+                
+                <!-- Контакты -->
+                <div class="contacts">
+                    Вернёмся через: <span id="gepardTimer">14:35</span><br>
+                    <small>Следите за обновлениями в нашем YouTube</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Шестерёнка ДЕКОРАЦИЯ (для всех) -->
+        <div class="decorative-gear">⚙</div>
+        
+        <!-- Шестерёнка ДЛЯ АДМИНОВ (скрыта по умолчанию) -->
+        <div class="admin-gear" id="adminGear" onclick="window.open('emergency-access.html', '_blank')">🔓</div>
     </div>
-</div>
 
-<style>
-    @keyframes rainbow {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 400% 50%; }
-    }
-    
-    @keyframes glitch {
-        0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-        10% { clip-path: inset(20% 0 30% 0); transform: translate(-2px, 2px); }
-        20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
-        30% { clip-path: inset(40% 0 20% 0); transform: translate(-2px, -2px); }
-    }
-    
-    @keyframes scan {
-        0% { background-position: 0 0; }
-        100% { background-position: 0 1000px; }
-    }
-    
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    
-    @keyframes bounce {
-        0%, 80%, 100% { transform: scale(0); }
-        40% { transform: scale(1); }
-    }
-    
-    @keyframes progressPulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
-    }
-</style>
-
-<script>
-    // ============ ПРОВЕРКА: НУЖНА ЛИ ЗАГЛУШКА? ============
-    (function() {
-        console.log('🔧 Проверка: нужна ли заглушка?');
-        
-        // Проверяем админ ли это
-        const urlParams = new URLSearchParams(window.location.search);
-        const isAdmin = urlParams.get('admin') === 'gepard2026' || 
-                       localStorage.getItem('gepard_beta_admin_2026') === 'true';
-        
-        // Если админ - не показываем заглушку
-        if (isAdmin) {
-            console.log('👑 Админ обнаружен, скрываю заглушку');
-            document.getElementById('gepardMaintenance').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            return;
-        }
-        
-        // Проверяем активна ли заглушка
-        const isMaintenanceActive = localStorage.getItem('maintenanceActive') === 'true';
-        const endTime = localStorage.getItem('maintenanceEndTime');
-        
-        if (isMaintenanceActive && endTime) {
-            // Проверяем не истекло ли время
-            const now = new Date();
-            const target = new Date(endTime);
+    <!-- СКРИПТЫ -->
+    <script src="maintenance-check.js"></script>
+    <script>
+        // ============ ОСНОВНАЯ ПРОВЕРКА ============
+        (function() {
+            console.log('🚧 Заглушка инициализируется');
             
-            if (now >= target) {
-                // Время вышло - возвращаем на главную
-                console.log('⏰ Время техработ истекло, возвращаю на главную');
-                localStorage.removeItem('maintenanceActive');
-                localStorage.removeItem('maintenanceEndTime');
-                window.location.href = 'index.html';
-            } else {
-                // Заглушка активна - всё ок, показываем
-                console.log('🚧 Заглушка активна, показываем');
+            // 1. Проверяем админа
+            const isAdmin = window.MAINTENANCE && MAINTENANCE.isAdmin();
+            
+            if (isAdmin) {
+                console.log('👑 Админ обнаружен, показываю специальную шестеренку');
+                document.getElementById('gepardMaintenance').style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // ДЛЯ АДМИНА: Показываем рабочую шестеренку
+                document.getElementById('adminGear').style.display = 'flex';
+                
+                // Админская панель
+                const adminPanel = document.createElement('div');
+                adminPanel.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 10px;
+                        left: 10px;
+                        background: rgba(255,0,255,0.9);
+                        color: white;
+                        padding: 10px 15px;
+                        border-radius: 10px;
+                        z-index: 99999999;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        font-weight: bold;
+                        backdrop-filter: blur(10px);
+                        border: 2px solid #00ffff;
+                    ">
+                        <i class="fas fa-user-shield"></i>
+                        <span>АДМИН РЕЖИМ</span>
+                        <a href="admin-maintenance.html" style="
+                            background: #00ffff;
+                            color: #0a0514;
+                            padding: 5px 10px;
+                            border-radius: 5px;
+                            text-decoration: none;
+                            margin-left: 10px;
+                        ">Панель</a>
+                        <a href="index.html" style="
+                            background: #ff0055;
+                            color: white;
+                            padding: 5px 10px;
+                            border-radius: 5px;
+                            text-decoration: none;
+                        ">На сайт</a>
+                    </div>
+                `;
+                document.body.appendChild(adminPanel);
+                return;
             }
-        } else if (!isMaintenanceActive) {
-            // Заглушка не активна - возвращаем на главную
-            console.log('✅ Заглушка не активна, возвращаю на главную');
-            window.location.href = 'index.html';
-        }
-    })();
-    
-    // Блокировка всего на сайте
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }, true);
-    
-    document.addEventListener('keydown', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }, true);
-    
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }, true);
-    
-    // Анимация прогресс-бара
-    let progress = 65;
-    const progressBar = document.getElementById('progressBar');
-    const progressPercent = document.getElementById('progressPercent');
-    
-    setInterval(() => {
-        if (progress < 95) {
-            progress += Math.random() * 5;
-            if (progress > 95) progress = 95;
             
-            progressBar.style.width = progress + '%';
-            progressPercent.textContent = Math.round(progress) + '%';
+            // 2. Проверяем техработы (для обычных пользователей)
+            if (!window.MAINTENANCE || !MAINTENANCE.isActive()) {
+                console.log('✅ Техработы не активны, возвращаю на главную');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 3. Если дошли сюда - ПОКАЗЫВАЕМ ЗАГЛУШКУ ОБЫЧНЫМ ПОЛЬЗОВАТЕЛЯМ
+            console.log('🎬 Показываю заглушку обычным пользователям');
+            document.body.style.overflow = 'hidden';
+            
+            // Блокируем действия
+            ['click', 'keydown', 'contextmenu'].forEach(event => {
+                document.addEventListener(event, function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, true);
+            });
+            
+        })();
+        
+        // ============ ТАЙМЕР ОБРАТНОГО ОТСЧЕТА ============
+        function startMaintenanceTimer() {
+            const data = MAINTENANCE.getData();
+            if (!data || !data.endTime) return;
+            
+            function updateTimer() {
+                const now = new Date();
+                const end = new Date(data.endTime);
+                const diff = end - now;
+                
+                if (diff <= 0) {
+                    MAINTENANCE.deactivate();
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                const timerEl = document.getElementById('gepardTimer');
+                if (timerEl) {
+                    timerEl.textContent = 
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+                
+                // Обновляем прогресс
+                const totalMinutes = data.duration || 60;
+                const elapsedMinutes = totalMinutes - (hours * 60 + minutes);
+                const progressPercent = Math.min(95, 65 + (elapsedMinutes / totalMinutes * 30));
+                
+                const progressBar = document.getElementById('progressBar');
+                const progressPercentEl = document.getElementById('progressPercent');
+                if (progressBar && progressPercentEl) {
+                    progressBar.style.width = `${progressPercent}%`;
+                    progressPercentEl.textContent = `${Math.round(progressPercent)}%`;
+                }
+            }
+            
+            setInterval(updateTimer, 1000);
+            updateTimer();
         }
-    }, 3000);
-    
-    // Таймер
-    function updateTimer() {
-        const now = new Date();
-        const target = new Date();
-        target.setHours(target.getHours() + 1);
         
-        const diff = target - now;
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        // Запускаем таймер после загрузки
+        setTimeout(startMaintenanceTimer, 500);
         
-        document.getElementById('gepardTimer').textContent = 
-            minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-    }
-    
-    setInterval(updateTimer, 1000);
-    updateTimer();
-    
-    // Секретный код для временного доступа (на случай если нужно посмотреть)
-    let secretCode = '';
-    document.addEventListener('keydown', function(e) {
-        secretCode += e.key;
-        if (secretCode.length > 10) secretCode = secretCode.slice(-10);
+        // ============ АНИМАЦИЯ ПРОГРЕСС-БАРА ============
+        setInterval(() => {
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            
+            if (progressBar && progressPercent) {
+                let currentWidth = parseFloat(progressBar.style.width) || 65;
+                if (currentWidth < 95) {
+                    currentWidth += Math.random() * 0.3;
+                    if (currentWidth > 95) currentWidth = 95;
+                    
+                    progressBar.style.width = `${currentWidth}%`;
+                    progressPercent.textContent = `${Math.round(currentWidth)}%`;
+                }
+            }
+        }, 3000);
         
-        // Код для временного отключения заглушки: gepard2026
-        if (secretCode.includes('gepard2026')) {
-            document.getElementById('gepardMaintenance').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-    });
-</script>
+        // ============ СЕКРЕТНЫЕ КОДЫ ДЛЯ АДМИНОВ ============
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Shift+G - временный доступ
+            if (e.ctrlKey && e.shiftKey && e.key === 'G') {
+                e.preventDefault();
+                localStorage.setItem('gepard_is_admin', 'true');
+                alert('🔓 Временный доступ активирован! Перезагрузите страницу');
+            }
+            
+            // Ctrl+Shift+E - открыть emergency-access (только если админ)
+            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                e.preventDefault();
+                if (window.MAINTENANCE && MAINTENANCE.isAdmin()) {
+                    window.open('emergency-access.html', '_blank');
+                }
+            }
+        });
+        
+        // ============ ИНИЦИАЛИЗАЦИЯ ============
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚧 Заглушка полностью загружена');
+        });
+    </script>
+</body>
+</html>
