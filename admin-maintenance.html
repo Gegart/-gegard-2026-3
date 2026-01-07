@@ -430,102 +430,70 @@
                 <i class="fas fa-home"></i> На главную
             </a>
             
-            <a href="#" onclick="openMaintenancePage()" class="back-btn" style="margin-left: 15px;">
+            <button onclick="openMaintenancePage()" class="back-btn" style="margin-left: 15px;">
                 <i class="fas fa-eye"></i> Посмотреть заглушку
-            </a>
+            </button>
         </div>
     </div>
 
+    <!-- СКРИПТЫ -->
+    <script src="maintenance-check.js"></script>
     <script>
         // ==================== ПЕРЕМЕННЫЕ ====================
-        let maintenanceActive = false;
-        let maintenanceTimer = null;
-        let endTime = null;
         let logEntries = [];
         
-        // ==================== ЛОГИРОВАНИЕ ====================
-        function addLog(message, type = 'info') {
-            const log = {
-                time: new Date().toLocaleTimeString(),
-                message: message,
-                type: type
-            };
+        // ==================== ПРОВЕРКА АДМИНА ====================
+        (function init() {
+            console.log('🔧 Админ-панель инициализируется');
             
-            logEntries.unshift(log); // Добавляем в начало
-            
-            // Обновляем отображение
-            const logContainer = document.getElementById('actionLog');
-            const entry = document.createElement('div');
-            entry.className = `log-entry ${type}`;
-            entry.textContent = `[${log.time}] ${log.message}`;
-            
-            logContainer.prepend(entry);
-            
-            // Сохраняем в localStorage
-            localStorage.setItem('maintenanceLog', JSON.stringify(logEntries.slice(0, 20)));
-            
-            console.log(`📝 ${message}`);
-        }
-        
-        // ==================== УПРАВЛЕНИЕ ЗАГЛУШКОЙ ====================
-        function activateMaintenance() {
-            if (maintenanceActive) {
-                addLog('Заглушка уже активна', 'warning');
+            // Проверяем права админа
+            if (!window.MAINTENANCE || !MAINTENANCE.isAdmin()) {
+                console.log('❌ Доступ запрещен! Не админ.');
+                alert('⚠️ Требуются права администратора!');
+                window.location.href = 'emergency-access.html';
                 return;
             }
             
-            maintenanceActive = true;
+            console.log('👑 Админ доступ подтвержден');
             updateUI();
+            loadLogs();
+            startTimer();
             
-            // Сохраняем состояние
-            localStorage.setItem('maintenanceActive', 'true');
-            
-            // Устанавливаем время окончания если есть таймер
+        })();
+        
+        // ==================== ФУНКЦИИ УПРАВЛЕНИЯ ====================
+        function activateMaintenance() {
             const hours = parseInt(document.getElementById('hoursInput').value) || 1;
             const minutes = parseInt(document.getElementById('minutesInput').value) || 30;
-            const totalMinutes = hours * 60 + minutes;
-            
-            if (totalMinutes > 0) {
-                endTime = new Date(Date.now() + totalMinutes * 60000);
-                localStorage.setItem('maintenanceEndTime', endTime.toISOString());
-                startTimer();
-            }
-            
-            // Сохраняем сообщение
             const message = document.getElementById('messageInput').value || 'Технические работы';
-            localStorage.setItem('maintenanceMessage', message);
             
-            addLog(`Заглушка активирована на ${hours}ч ${minutes}мин: "${message}"`, 'success');
+            // Активируем через общую систему
+            MAINTENANCE.activate(hours, minutes, message);
             
-            // Показываем уведомление
-            showNotification('Заглушка активирована!', 'success');
+            // Обновляем UI
+            updateUI();
+            
+            // Логируем
+            addLog(`Активированы техработы на ${hours}ч ${minutes}мин: "${message}"`, 'success');
+            
+            // Уведомление
+            showNotification('Техработы активированы!', 'success');
         }
         
         function deactivateMaintenance() {
-            if (!maintenanceActive) {
-                addLog('Заглушка уже выключена', 'warning');
-                return;
-            }
+            // Деактивируем через общую систему
+            MAINTENANCE.deactivate();
             
-            maintenanceActive = false;
+            // Обновляем UI
             updateUI();
             
-            // Очищаем состояние
-            localStorage.removeItem('maintenanceActive');
-            localStorage.removeItem('maintenanceEndTime');
-            localStorage.removeItem('maintenanceMessage');
+            // Логируем
+            addLog('Техработы отключены', 'success');
             
-            // Останавливаем таймер
-            if (maintenanceTimer) {
-                clearInterval(maintenanceTimer);
-                maintenanceTimer = null;
-            }
-            
-            addLog('Заглушка деактивирована', 'success');
-            showNotification('Заглушка выключена!', 'success');
+            // Уведомление
+            showNotification('Техработы отключены!', 'success');
         }
         
-        // ==================== ТАЙМЕР ====================
         function setTimer() {
             const hours = parseInt(document.getElementById('hoursInput').value) || 0;
             const minutes = parseInt(document.getElementById('minutesInput').value) || 0;
@@ -540,50 +508,19 @@
             showNotification('Таймер установлен!', 'success');
         }
         
-        function startTimer() {
-            if (!endTime) return;
-            
-            if (maintenanceTimer) {
-                clearInterval(maintenanceTimer);
-            }
-            
-            maintenanceTimer = setInterval(updateTimerDisplay, 1000);
-            updateTimerDisplay();
-        }
-        
-        function updateTimerDisplay() {
-            if (!endTime) {
-                document.getElementById('timerValue').textContent = '00:00:00';
-                return;
-            }
-            
-            const now = new Date();
-            const diff = endTime - now;
-            
-            if (diff <= 0) {
-                // Время вышло - автоматически отключаем
-                deactivateMaintenance();
-                addLog('Таймер завершен, заглушка отключена', 'info');
-                return;
-            }
-            
-            const hours = Math.floor(diff / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            document.getElementById('timerValue').textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        // ==================== UI ====================
+        // ==================== UI ФУНКЦИИ ====================
         function updateUI() {
+            const isActive = MAINTENANCE.isActive();
+            const data = MAINTENANCE.getData();
+            
+            // Обновляем статус
             const statusIndicator = document.getElementById('statusIndicator');
             const statusText = document.getElementById('statusText');
             const activateCard = document.getElementById('activateCard');
             const deactivateCard = document.getElementById('deactivateCard');
             
-            if (maintenanceActive) {
-                // Активна
+            if (isActive) {
+                // АКТИВНО
                 statusIndicator.className = 'status-indicator status-on';
                 statusIndicator.querySelector('.status-dot').className = 'status-dot on';
                 statusText.textContent = 'Заглушка АКТИВНА';
@@ -593,7 +530,7 @@
                 deactivateCard.classList.remove('active');
                 deactivateCard.classList.add('inactive');
             } else {
-                // Неактивна
+                // НЕАКТИВНО
                 statusIndicator.className = 'status-indicator status-off';
                 statusIndicator.querySelector('.status-dot').className = 'status-dot off';
                 statusText.textContent = 'Заглушка ВЫКЛЮЧЕНА';
@@ -603,10 +540,80 @@
                 deactivateCard.classList.remove('inactive');
                 deactivateCard.classList.add('active');
             }
+            
+            // Обновляем таймер
+            updateTimerDisplay();
         }
         
+        function updateTimerDisplay() {
+            const data = MAINTENANCE.getData();
+            const timerValue = document.getElementById('timerValue');
+            
+            if (!data || !data.endTime) {
+                timerValue.textContent = '00:00:00';
+                return;
+            }
+            
+            const now = new Date();
+            const end = new Date(data.endTime);
+            const diff = end - now;
+            
+            if (diff <= 0) {
+                MAINTENANCE.deactivate();
+                updateUI();
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            timerValue.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        function startTimer() {
+            setInterval(updateTimerDisplay, 1000);
+            updateTimerDisplay();
+        }
+        
+        // ==================== ЛОГИРОВАНИЕ ====================
+        function addLog(message, type = 'info') {
+            const log = {
+                time: new Date().toLocaleTimeString(),
+                message: message,
+                type: type
+            };
+            
+            logEntries.unshift(log);
+            
+            const logContainer = document.getElementById('actionLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${log.time}] ${log.message}`;
+            logContainer.prepend(entry);
+            
+            // Сохраняем
+            localStorage.setItem('maintenanceLog', JSON.stringify(logEntries.slice(0, 20)));
+            
+            console.log(`📝 ${message}`);
+        }
+        
+        function loadLogs() {
+            const savedLog = localStorage.getItem('maintenanceLog');
+            if (savedLog) {
+                logEntries = JSON.parse(savedLog);
+                logEntries.forEach(log => {
+                    const entry = document.createElement('div');
+                    entry.className = `log-entry ${log.type}`;
+                    entry.textContent = `[${log.time}] ${log.message}`;
+                    document.getElementById('actionLog').appendChild(entry);
+                });
+            }
+        }
+        
+        // ==================== УВЕДОМЛЕНИЯ ====================
         function showNotification(message, type) {
-            // Создаём уведомление
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -643,75 +650,21 @@
             
             document.body.appendChild(notification);
             
-            // Автоудаление через 3 секунды
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease-out';
                 setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                    if (style.parentNode) {
-                        style.remove();
-                    }
+                    notification.remove();
+                    style.remove();
                 }, 300);
             }, 3000);
         }
         
         function openMaintenancePage() {
-            window.open('maintenance.html', '_blank');
+            window.open('maintenance.html?admin=gepard2026', '_blank');
         }
         
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-        function init() {
-            console.log('🔧 Админ-панель загружена');
-            
-            // ============ ПРОВЕРКА АДМИНА (ДОБАВИЛ ЭТО) ============
-            const urlParams = new URLSearchParams(window.location.search);
-            const isAdmin = urlParams.get('admin') === 'gepard2026' || 
-                           localStorage.getItem('gepard_beta_admin_2026') === 'true';
-            
-            if (!isAdmin) {
-                console.log('⚠️ Не админ, перенаправляю на главную');
-                window.location.href = 'index.html';
-                return;
-            }
-            // ============ КОНЕЦ ПРОВЕРКИ АДМИНА ============
-            
-            // Загружаем состояние
-            maintenanceActive = localStorage.getItem('maintenanceActive') === 'true';
-            
-            // Загружаем таймер
-            const savedEndTime = localStorage.getItem('maintenanceEndTime');
-            if (savedEndTime) {
-                endTime = new Date(savedEndTime);
-                if (endTime > new Date()) {
-                    startTimer();
-                } else {
-                    // Таймер истёк
-                    localStorage.removeItem('maintenanceEndTime');
-                    localStorage.removeItem('maintenanceActive');
-                    maintenanceActive = false;
-                }
-            }
-            
-            // Загружаем лог
-            const savedLog = localStorage.getItem('maintenanceLog');
-            if (savedLog) {
-                logEntries = JSON.parse(savedLog);
-                logEntries.forEach(log => {
-                    const entry = document.createElement('div');
-                    entry.className = `log-entry ${log.type}`;
-                    entry.textContent = `[${log.time}] ${log.message}`;
-                    document.getElementById('actionLog').appendChild(entry);
-                });
-            }
-            
-            updateUI();
-            addLog('Система инициализирована', 'info');
-        }
-        
-        // Запуск при загрузке
-        document.addEventListener('DOMContentLoaded', init);
+        // ==================== ДЛЯ ОТЛАДКИ ====================
+        window.MAINTENANCE.debug();
     </script>
 </body>
 </html>
